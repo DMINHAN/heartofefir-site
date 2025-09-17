@@ -850,33 +850,33 @@
 
         // CRUD Functions for Chapters
         async function addChapter() {
-            const number = document.getElementById('chapterNumber').value;
-            const title = document.getElementById('chapterTitle').value;
-            const description = document.getElementById('chapterDescription').value;
-            const content = document.getElementById('chapterContent').value;
+    const chapterCode = document.getElementById('chapterNumber').value; // Например: "7.1"
+    const title = document.getElementById('chapterTitle').value;
+    const description = document.getElementById('chapterDescription').value;
+    const content = document.getElementById('chapterContent').value;
 
-            if (!number || !title || !content) {
-                showError('admin', 'Пожалуйста, заполните все обязательные поля');
-                return;
-            }
+    if (!chapterCode || !title || !content) {
+        showError('admin', 'Пожалуйста, заполните все обязательные поля');
+        return;
+    }
 
-            try {
-                showLoading('admin');
-                await db.collection('chapters').add({
-                    number: parseInt(number),
-                    title: title,
-                    description: description,
-                    content: content,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                await loadChapters();
-                clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
-                hideLoading('admin');
-            } catch (error) {
-                hideLoading('admin');
-                showError('admin', 'Ошибка при добавлении главы: ' + error.message);
-            }
-        }
+    try {
+        showLoading('admin');
+        await db.collection('chapters').add({
+            chapterCode: chapterCode, // "7.1", "7.2", "8.1" и т.д.
+            title: title,
+            description: description,
+            content: content,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await loadChapters();
+        clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
+        hideLoading('admin');
+    } catch (error) {
+        hideLoading('admin');
+        showError('admin', 'Ошибка при добавлении главы: ' + error.message);
+    }
+}
 
         async function loadChapters() {
             try {
