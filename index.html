@@ -7,6 +7,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
         * {
@@ -63,31 +64,44 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            animation: fadeOut 1s ease-in-out 2s forwards;
+            animation: fadeOut 1s ease-in-out 3s forwards;
         }
 
-        .loading-content {
+        .welcome-screen {
             text-align: center;
+            position: relative;
+            z-index: 1001;
         }
 
-        .loading-logo {
+        .welcome-text {
             font-family: 'Cinzel', serif;
             font-size: 3rem;
             font-weight: 900;
             color: var(--gold);
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
-            animation: pulse 2s infinite;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+            animation: pulse 2s infinite, fadeInOut 3s forwards;
         }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(139, 92, 246, 0.3);
-            border-top: 3px solid var(--primary);
+        /* Stars animation */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+            animation: twinkle var(--duration, 3s) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
         }
 
         @keyframes spin {
@@ -99,6 +113,13 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         @keyframes fadeOut {
@@ -147,11 +168,113 @@
             text-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
         }
 
+        /* Menu Button */
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        /* Chapters Menu */
+        .chapters-menu {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            transition: left 0.4s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            border-right: 1px solid var(--primary);
+        }
+
+        .chapters-menu.open {
+            left: 0;
+        }
+
+        .menu-header {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--light);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .menu-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-menu:hover {
+            background: rgba(236, 72, 153, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .menu-content {
+            padding: 20px;
+        }
+
+        .menu-chapters-list {
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
+        }
+
+        .menu-chapters-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .menu-chapters-list::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 4px;
+        }
+
+        .menu-chapters-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .menu-chapters-list::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
         /* Hero Section */
         .hero {
             padding: 100px 0 60px;
             text-align: center;
             position: relative;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 3.5s forwards;
         }
 
         .hero h1 {
@@ -161,7 +284,7 @@
             margin-bottom: 20px;
             color: var(--gold);
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInUp 1s ease-out 3.5s both;
         }
 
         .hero-description {
@@ -169,7 +292,7 @@
             color: var(--gray);
             max-width: 700px;
             margin: 0 auto 40px;
-            animation: fadeInUp 1s ease-out 0.2s both;
+            animation: fadeInUp 1s ease-out 3.7s both;
         }
 
         /* Navigation Tabs */
@@ -179,7 +302,7 @@
             gap: 10px;
             margin-bottom: 40px;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.4s both;
+            animation: fadeInUp 1s ease-out 3.9s both;
         }
 
         .tab {
@@ -211,6 +334,8 @@
             padding: 60px 0;
             animation: fadeIn 1s ease-out;
             display: none;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 3.5s forwards;
         }
 
         .section.active {
@@ -235,10 +360,10 @@
             margin: 15px auto;
         }
 
-        /* Chapters Sidebar */
+        /* Main Layout */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 1fr;
             gap: 30px;
         }
 
@@ -248,80 +373,6 @@
             padding: 30px;
             border: 1px solid rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(10px);
-        }
-
-        .sidebar {
-            background: rgba(30, 27, 75, 0.5);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            backdrop-filter: blur(10px);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .sidebar-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .chapters-list {
-            max-height: 600px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
-        }
-
-        .chapters-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .chapters-list::-webkit-scrollbar-track {
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 4px;
-        }
-
-        .chapters-list::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        .chapters-list::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
-        .chapter-item {
-            padding: 15px;
-            margin-bottom: 10px;
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border-left: 3px solid var(--primary);
-        }
-
-        .chapter-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-        }
-
-        .chapter-number {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 5px;
-            font-family: 'Cinzel', serif;
-        }
-
-        .chapter-title {
-            font-size: 0.9rem;
-            color: var(--light);
-            margin-bottom: 5px;
         }
 
         /* Chapters Grid */
@@ -349,6 +400,8 @@
         .chapter-card .chapter-number {
             font-size: 1.2rem;
             margin-bottom: 10px;
+            color: var(--primary);
+            font-family: 'Cinzel', serif;
         }
 
         .chapter-card .chapter-title {
@@ -387,9 +440,18 @@
             border-color: var(--primary);
         }
 
+        .character-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
         .character-avatar {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             margin: 0 auto 20px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
@@ -397,7 +459,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
             border: 2px solid var(--gold);
         }
@@ -618,6 +680,13 @@
             resize: vertical;
         }
 
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
         .admin-toggle {
             position: fixed;
             top: 20px;
@@ -682,6 +751,18 @@
             box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
         }
 
+        .delete-btn {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+            transform: translateY(-1px);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -726,17 +807,79 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                position: static;
-            }
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            display: none;
         }
 
+        .modal-content {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--primary);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(45deg, #6b7280, #4b5563);
+        }
+
+        .cancel-btn:hover {
+            background: linear-gradient(45deg, #4b5563, #374151);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 4s forwards;
+        }
+
+        /* Color Settings */
+        .color-setting {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .color-setting label {
+            min-width: 120px;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -760,15 +903,33 @@
                 width: 100%;
                 right: -100%;
             }
+            
+            .chapters-menu {
+                width: 100%;
+                left: -100%;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Loading Animation -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="loading-logo">Сердце Эфира: Селлестиал</div>
-            <div class="loading-spinner"></div>
+        <div class="stars" id="stars"></div>
+        <div class="welcome-screen">
+            <div class="welcome-text">Добро пожаловать на сайт!</div>
+        </div>
+    </div>
+
+    <!-- Chapters Menu -->
+    <div class="chapters-menu" id="chaptersMenu">
+        <div class="menu-header">
+            <h2>Все главы</h2>
+            <button class="close-menu" onclick="toggleChaptersMenu()">×</button>
+        </div>
+        <div class="menu-content">
+            <div class="menu-chapters-list" id="menuChaptersList">
+                <!-- Chapters will be added here dynamically -->
+            </div>
         </div>
     </div>
 
@@ -788,6 +949,36 @@
             </div>
             <div class="error-message" id="adminError"></div>
             
+            <!-- Color Settings -->
+            <div class="admin-section">
+                <h3>Настройки цветов</h3>
+                <div class="color-setting">
+                    <label>Основной цвет:</label>
+                    <input type="color" class="color-picker" id="primaryColor" value="#8B5CF6" onchange="updateColor('--primary', this.value)">
+                </div>
+                <div class="color-setting">
+                    <label>Темный основной:</label>
+                    <input type="color" class="color-picker" id="primaryDarkColor" value="#7C3AED" onchange="updateColor('--primary-dark', this.value)">
+                </div>
+                <div class="color-setting">
+                    <label>Вторичный цвет:</label>
+                    <input type="color" class="color-picker" id="secondaryColor" value="#EC4899" onchange="updateColor('--secondary', this.value)">
+                </div>
+                <div class="color-setting">
+                    <label>Золотой цвет:</label>
+                    <input type="color" class="color-picker" id="goldColor" value="#f59e0b" onchange="updateColor('--gold', this.value)">
+                </div>
+                <div class="color-setting">
+                    <label>Темный фон:</label>
+                    <input type="color" class="color-picker" id="darkColor" value="#1e1b4b" onchange="updateColor('--dark', this.value)">
+                </div>
+                <div class="color-setting">
+                    <label>Очень темный:</label>
+                    <input type="color" class="color-picker" id="darkerColor" value="#0f0e24" onchange="updateColor('--darker', this.value)">
+                </div>
+                <button class="btn" onclick="resetColors()">Сбросить цвета</button>
+            </div>
+
             <div class="admin-section">
                 <h3>Добавить Главу</h3>
                 <div class="form-group">
@@ -818,6 +1009,11 @@
                 <div class="form-group">
                     <label>Описание персонажа:</label>
                     <textarea id="characterDescription" placeholder="Введите описание"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Изображение персонажа:</label>
+                    <input type="file" id="characterImage" accept="image/*">
+                    <img id="characterImagePreview" class="image-preview" style="display: none;">
                 </div>
                 <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
             </div>
@@ -869,13 +1065,26 @@
         </div>
     </div>
 
+    <!-- Modals -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3 style="color: var(--gold); margin-bottom: 15px;">Подтверждение удаления</h3>
+            <p id="deleteMessage">Вы уверены, что хотите удалить этот элемент?</p>
+            <div class="modal-buttons">
+                <button class="btn cancel-btn" onclick="closeDeleteModal()">Отмена</button>
+                <button class="btn delete-btn" onclick="confirmDelete()">Удалить</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="toggleAdminPanel()"></div>
+    <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
+                <button class="menu-btn" onclick="toggleChaptersMenu()">☰</button>
                 <a href="#" class="logo">Сердце Эфира: Селлестиал</a>
             </div>
         </div>
@@ -975,14 +1184,14 @@
                     </div>
                 </section>
             </div>
+        </div>
+    </div>
 
-            <!-- Sidebar with Chapters List -->
-            <div class="sidebar">
-                <h3 class="sidebar-title">Все главы</h3>
-                <div class="chapters-list" id="sidebarChapters">
-                    <!-- Chapters list will be added here dynamically -->
-                </div>
-            </div>
+    <!-- Footer -->
+    <div class="container">
+        <div class="footer">
+            <p>© 2024 Сердце Эфира: Селлестиал</p>
+            <p>@WhiteX author: WhiteMeovv</p>
         </div>
     </div>
 
@@ -1001,29 +1210,83 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
+        const storage = firebase.storage();
 
         // Check if user is admin
         let isAdmin = false;
+        let deleteCallback = null;
+
+        // Create stars for welcome screen
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Toggle Chapters Menu
+        function toggleChaptersMenu() {
+            const menu = document.getElementById('chaptersMenu');
+            const overlay = document.getElementById('overlay');
+            
+            menu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
 
         // Toggle Admin Panel
         function toggleAdminPanel() {
-            if (!isAdmin) return; // Только админ может открыть панель
+            if (!isAdmin) return;
             
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
-            const toggle = document.getElementById('adminToggle');
             
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
-            toggle.classList.toggle('active');
+        }
+
+        // Close all panels
+        function closeAllPanels() {
+            document.getElementById('chaptersMenu').classList.remove('open');
+            document.getElementById('adminPanel').classList.remove('open');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Update color
+        function updateColor(variable, value) {
+            document.documentElement.style.setProperty(variable, value);
+        }
+
+        // Reset colors
+        function resetColors() {
+            updateColor('--primary', '#8B5CF6');
+            updateColor('--primary-dark', '#7C3AED');
+            updateColor('--secondary', '#EC4899');
+            updateColor('--gold', '#f59e0b');
+            updateColor('--dark', '#1e1b4b');
+            updateColor('--darker', '#0f0e24');
+            
+            document.getElementById('primaryColor').value = '#8B5CF6';
+            document.getElementById('primaryDarkColor').value = '#7C3AED';
+            document.getElementById('secondaryColor').value = '#EC4899';
+            document.getElementById('goldColor').value = '#f59e0b';
+            document.getElementById('darkColor').value = '#1e1b4b';
+            document.getElementById('darkerColor').value = '#0f0e24';
         }
 
         // Authentication Functions
         function checkAdminStatus() {
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    // Проверяем, является ли пользователь админом
-                    // В реальной системе это можно сделать через Firestore
                     isAdmin = true;
                     document.getElementById('adminToggle').classList.add('show');
                 } else {
@@ -1034,8 +1297,6 @@
         }
 
         function login() {
-            // В реальной системе здесь будет форма входа
-            // Для тестирования используем простой вход
             const email = prompt('Введите email администратора:');
             const password = prompt('Введите пароль:');
             
@@ -1058,20 +1319,16 @@
 
         // Navigation Functions
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Remove active class from all tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             
-            // Show selected section
             document.getElementById(sectionId + 'Section').classList.add('active');
             
-            // Add active class to clicked tab (if event exists)
             if (event && event.target) {
                 event.target.classList.add('active');
             }
@@ -1099,6 +1356,39 @@
                 }, 5000);
             }
         }
+
+        // Modal functions
+        function openDeleteModal(message, callback) {
+            deleteCallback = callback;
+            document.getElementById('deleteMessage').textContent = message;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            deleteCallback = null;
+        }
+        
+        function confirmDelete() {
+            if (deleteCallback) {
+                deleteCallback();
+            }
+            closeDeleteModal();
+        }
+
+        // Image preview
+        document.getElementById('characterImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('characterImagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
 
         // CRUD Functions for Chapters
         async function addChapter() {
@@ -1149,7 +1439,7 @@
                     chapters.push({ id: doc.id, ...doc.data() });
                 });
                 renderChapters(chapters);
-                renderSidebarChapters(chapters);
+                renderMenuChapters(chapters);
                 hideLoading('chapters');
             } catch (error) {
                 hideLoading('chapters');
@@ -1161,7 +1451,6 @@
             const container = document.getElementById('chaptersGrid');
             container.innerHTML = '';
 
-            // Сортировка с поддержкой обеих структур
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1186,16 +1475,16 @@
                     <div class="chapter-number">Глава ${chapterNumber}</div>
                     <h3 class="chapter-title">${chapter.title}</h3>
                     <p class="chapter-description">${chapter.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteChapter('${chapter.id}', '${chapter.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(chapterCard);
             });
         }
 
-        function renderSidebarChapters(chapters) {
-            const container = document.getElementById('sidebarChapters');
+        function renderMenuChapters(chapters) {
+            const container = document.getElementById('menuChaptersList');
             container.innerHTML = '';
 
-            // Сортировка
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1217,8 +1506,11 @@
                     <div class="chapter-title">${chapter.title}</div>
                 `;
                 chapterItem.onclick = (e) => {
-                    e.stopPropagation();
-                    showChapter(chapter.id);
+                    if (!e.target.classList.contains('delete-btn')) {
+                        e.stopPropagation();
+                        showChapter(chapter.id);
+                        toggleChaptersMenu();
+                    }
                 };
                 container.appendChild(chapterItem);
             });
@@ -1228,12 +1520,30 @@
             window.location.href = `chapter.html?id=${id}`;
         }
 
+        async function deleteChapter(chapterId, chapterTitle) {
+            if (!isAdmin) return;
+            
+            openDeleteModal(`Вы уверены, что хотите удалить главу "${chapterTitle}"?`, async () => {
+                try {
+                    showLoading('admin');
+                    await db.collection('chapters').doc(chapterId).delete();
+                    await loadChapters();
+                    hideLoading('admin');
+                    alert('Глава успешно удалена!');
+                } catch (error) {
+                    hideLoading('admin');
+                    showError('admin', 'Ошибка при удалении главы: ' + error.message);
+                }
+            });
+        }
+
         // CRUD Functions for Characters
         async function addCharacter() {
             if (!isAdmin) return;
             
             const name = document.getElementById('characterName').value;
             const description = document.getElementById('characterDescription').value;
+            const imageFile = document.getElementById('characterImage').files[0];
 
             if (!name || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
@@ -1242,13 +1552,27 @@
 
             try {
                 showLoading('admin');
-                await db.collection('characters').add({
+                
+                const characterData = {
                     name: name,
                     description: description,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                };
+
+                // Upload image if provided
+                if (imageFile) {
+                    const storageRef = storage.ref();
+                    const imageRef = storageRef.child(`characters/${Date.now()}_${imageFile.name}`);
+                    await imageRef.put(imageFile);
+                    const imageUrl = await imageRef.getDownloadURL();
+                    characterData.imageUrl = imageUrl;
+                }
+
+                await db.collection('characters').add(characterData);
                 await loadCharacters();
                 clearForm(['characterName', 'characterDescription']);
+                document.getElementById('characterImage').value = '';
+                document.getElementById('characterImagePreview').style.display = 'none';
                 hideLoading('admin');
             } catch (error) {
                 hideLoading('admin');
@@ -1277,14 +1601,40 @@
             container.innerHTML = '';
 
             characters.forEach(character => {
-                const characterCard = document.createElement('div');
-                characterCard.className = 'character-card';
-                characterCard.innerHTML = `
-                    <div class="character-avatar">${character.name.charAt(0)}</div>
+                const characterElement = document.createElement('div');
+                characterElement.className = 'character-card';
+                
+                let imageHtml = '';
+                if (character.imageUrl) {
+                    imageHtml = `<img src="${character.imageUrl}" alt="${character.name}" class="character-image">`;
+                } else {
+                    imageHtml = `<div class="character-avatar">${character.name.charAt(0)}</div>`;
+                }
+                
+                characterElement.innerHTML = `
+                    ${imageHtml}
                     <h3 class="character-name">${character.name}</h3>
                     <p class="character-description">${character.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteCharacter('${character.id}', '${character.name}')">Удалить</button>` : ''}
                 `;
-                container.appendChild(characterCard);
+                container.appendChild(characterElement);
+            });
+        }
+
+        async function deleteCharacter(characterId, characterName) {
+            if (!isAdmin) return;
+            
+            openDeleteModal(`Вы уверены, что хотите удалить персонажа "${characterName}"?`, async () => {
+                try {
+                    showLoading('admin');
+                    await db.collection('characters').doc(characterId).delete();
+                    await loadCharacters();
+                    hideLoading('admin');
+                    alert('Персонаж успешно удален!');
+                } catch (error) {
+                    hideLoading('admin');
+                    showError('admin', 'Ошибка при удалении персонажа: ' + error.message);
+                }
             });
         }
 
@@ -1342,8 +1692,26 @@
                 wikiItem.innerHTML = `
                     <h3 class="wiki-title">${item.title}</h3>
                     <div class="wiki-text">${item.content}</div>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteWikiItem('${item.id}', '${item.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(wikiItem);
+            });
+        }
+
+        async function deleteWikiItem(wikiId, wikiTitle) {
+            if (!isAdmin) return;
+            
+            openDeleteModal(`Вы уверены, что хотите удалить запись "${wikiTitle}"?`, async () => {
+                try {
+                    showLoading('admin');
+                    await db.collection('wiki').doc(wikiId).delete();
+                    await loadWiki();
+                    hideLoading('admin');
+                    alert('Запись успешно удалена!');
+                } catch (error) {
+                    hideLoading('admin');
+                    showError('admin', 'Ошибка при удалении записи: ' + error.message);
+                }
             });
         }
 
@@ -1404,8 +1772,26 @@
                     <div class="book-number">${book.number}</div>
                     <h3 class="book-title">${book.title}</h3>
                     <p class="book-description">${book.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteBook('${book.id}', '${book.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(bookCard);
+            });
+        }
+
+        async function deleteBook(bookId, bookTitle) {
+            if (!isAdmin) return;
+            
+            openDeleteModal(`Вы уверены, что хотите удалить книгу "${bookTitle}"?`, async () => {
+                try {
+                    showLoading('admin');
+                    await db.collection('books').doc(bookId).delete();
+                    await loadBooks();
+                    hideLoading('admin');
+                    alert('Книга успешно удалена!');
+                } catch (error) {
+                    hideLoading('admin');
+                    showError('admin', 'Ошибка при удалении книги: ' + error.message);
+                }
             });
         }
 
@@ -1465,8 +1851,26 @@
                 row.innerHTML = `
                     <td>${dateStr}</td>
                     <td>${date.description}</td>
+                    ${isAdmin ? `<td><button class="btn delete-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteScheduleItem('${date.id}', '${date.description}')">Удалить</button></td>` : '<td></td>'}
                 `;
                 container.appendChild(row);
+            });
+        }
+
+        async function deleteScheduleItem(scheduleId, scheduleDescription) {
+            if (!isAdmin) return;
+            
+            openDeleteModal(`Вы уверены, что хотите удалить запись "${scheduleDescription}"?`, async () => {
+                try {
+                    showLoading('admin');
+                    await db.collection('schedule').doc(scheduleId).delete();
+                    await loadSchedule();
+                    hideLoading('admin');
+                    alert('Запись успешно удалена!');
+                } catch (error) {
+                    hideLoading('admin');
+                    showError('admin', 'Ошибка при удалении записи: ' + error.message);
+                }
             });
         }
 
@@ -1490,10 +1894,12 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide loading overlay after 2 seconds
+            createStars();
+            
+            // Hide loading overlay after 3 seconds
             setTimeout(() => {
                 document.getElementById('loadingOverlay').style.display = 'none';
-            }, 2000);
+            }, 3000);
             
             // Check admin status
             checkAdminStatus();
