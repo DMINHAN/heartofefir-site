@@ -7,7 +7,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
         * {
@@ -26,14 +25,6 @@
             --gray: #94a3b8;
             --border: #334155;
             --gold: #f59e0b;
-            --cyber-blue: #00bfff;
-            --cyber-purple: #8a2be2;
-            --cyber-pink: #ff1493;
-            --cyber-red: #ff0000;
-            --cyber-yellow: #ffff00;
-            --cyber-green: #00ff00;
-            --cyber-cyan: #00ffff;
-            --cyber-magenta: #ff00ff;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -776,157 +767,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        /* Maintenance Mode */
-        .maintenance-mode {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            color: var(--cyber-blue);
-            font-family: 'Courier New', monospace;
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .maintenance-mode.active {
-            display: flex;
-        }
-        .terminal-header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            border-bottom: 1px solid var(--cyber-blue);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .terminal-title {
-            font-weight: bold;
-            text-shadow: 0 0 5px var(--cyber-blue);
-            font-size: 1.2rem;
-        }
-        .terminal-close {
-            background: none;
-            border: 1px solid var(--cyber-blue);
-            color: var(--cyber-blue);
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-        }
-        .terminal-content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            position: relative;
-            background: #000;
-            color: var(--cyber-blue);
-        }
-        .terminal-line {
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 0.9rem;
-        }
-        .terminal-prompt {
-            color: var(--cyber-blue);
-            margin-right: 10px;
-        }
-        .terminal-command {
-            color: var(--cyber-blue);
-        }
-        .terminal-output {
-            color: var(--cyber-green);
-        }
-        .terminal-error {
-            color: var(--cyber-red);
-        }
-        .terminal-warning {
-            color: var(--cyber-yellow);
-        }
-        .maintenance-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
-        }
-        .maintenance-title {
-            font-size: 3rem;
-            color: var(--cyber-red);
-            text-shadow: 0 0 20px var(--cyber-red);
-            margin-bottom: 20px;
-            animation: blink 1s infinite;
-        }
-        .maintenance-subtitle {
-            font-size: 1.5rem;
-            color: var(--cyber-blue);
-            margin-bottom: 30px;
-        }
-        .maintenance-footer {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        .matrix-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.1;
-            z-index: 1;
-        }
-        .matrix-char {
-            position: absolute;
-            color: var(--cyber-blue);
-            font-size: 14px;
-            opacity: 0;
-        }
-        .neon-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.1;
-            z-index: 2;
-        }
-        .neon-grid::before, .neon-grid::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 10px,
-                rgba(0, 255, 255, 0.2) 10px,
-                rgba(0, 255, 255, 0.2) 11px
-            );
-            transform-origin: center;
-        }
-        .neon-grid::before {
-            transform: rotate(0deg);
-        }
-        .neon-grid::after {
-            transform: rotate(90deg);
-        }
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -963,26 +803,6 @@
         </div>
     </div>
 
-    <!-- Maintenance Mode -->
-    <div class="maintenance-mode" id="maintenanceMode">
-        <div class="terminal-header">
-            <div class="terminal-title"> >WhiteX.EVESystem</div>
-            <button class="terminal-close" onclick="exitMaintenanceMode()" id="exitMaintenanceBtn" style="display: none;">EXIT</button>
-        </div>
-        <div class="matrix-effect" id="matrixEffect"></div>
-        <div class="neon-grid"></div>
-        <div class="terminal-content" id="terminalContent">
-            <!-- Terminal lines will be added here dynamically -->
-        </div>
-        <div class="maintenance-message">
-            <div class="maintenance-title">САЙТ ПРИОСТАНОВЛЕН</div>
-            <div class="maintenance-subtitle"> >Технические работы...</div>
-        </div>
-        <div class="maintenance-footer">
-            > SYSTEM STATUS: MAINTENANCE MODE ACTIVE | ACCESS RESTRICTED
-        </div>
-    </div>
-
     <!-- Chapters Menu -->
     <div class="chapters-menu" id="chaptersMenu">
         <div class="menu-header">
@@ -1012,15 +832,6 @@
             </div>
             <div class="error-message" id="adminError"></div>
             
-            <!-- Maintenance Mode Toggle -->
-            <div class="admin-section">
-                <h3>Режим технических работ</h3>
-                <button class="btn" onclick="toggleMaintenanceMode()" id="maintenanceToggleBtn">Включить тех. работы</button>
-                <p style="margin-top: 10px; color: var(--gray); font-size: 0.9rem;">
-                    При включении режима технических работ сайт будет недоступен для посетителей.
-                </p>
-            </div>
-
             <!-- Color Settings -->
             <div class="admin-section">
                 <h3>Настройки цветов</h3>
@@ -1292,6 +1103,8 @@
         // Create stars for welcome screen
         function createStars() {
             const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            
             const starCount = 100;
             
             for (let i = 0; i < starCount; i++) {
@@ -1312,8 +1125,10 @@
             const menu = document.getElementById('chaptersMenu');
             const overlay = document.getElementById('overlay');
             
-            menu.classList.toggle('open');
-            overlay.classList.toggle('active');
+            if (menu && overlay) {
+                menu.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
         }
 
         // Toggle Admin Panel
@@ -1323,15 +1138,21 @@
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
             
-            panel.classList.toggle('open');
-            overlay.classList.toggle('active');
+            if (panel && overlay) {
+                panel.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
         }
 
         // Close all panels
         function closeAllPanels() {
-            document.getElementById('chaptersMenu').classList.remove('open');
-            document.getElementById('adminPanel').classList.remove('open');
-            document.getElementById('overlay').classList.remove('active');
+            const chaptersMenu = document.getElementById('chaptersMenu');
+            const adminPanel = document.getElementById('adminPanel');
+            const overlay = document.getElementById('overlay');
+            
+            if (chaptersMenu) chaptersMenu.classList.remove('open');
+            if (adminPanel) adminPanel.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
         }
 
         // Update color
@@ -1348,12 +1169,19 @@
             updateColor('--dark', '#1e1b4b');
             updateColor('--darker', '#0f0e24');
             
-            document.getElementById('primaryColor').value = '#8B5CF6';
-            document.getElementById('primaryDarkColor').value = '#7C3AED';
-            document.getElementById('secondaryColor').value = '#EC4899';
-            document.getElementById('goldColor').value = '#f59e0b';
-            document.getElementById('darkColor').value = '#1e1b4b';
-            document.getElementById('darkerColor').value = '#0f0e24';
+            const primaryColor = document.getElementById('primaryColor');
+            const primaryDarkColor = document.getElementById('primaryDarkColor');
+            const secondaryColor = document.getElementById('secondaryColor');
+            const goldColor = document.getElementById('goldColor');
+            const darkColor = document.getElementById('darkColor');
+            const darkerColor = document.getElementById('darkerColor');
+            
+            if (primaryColor) primaryColor.value = '#8B5CF6';
+            if (primaryDarkColor) primaryDarkColor.value = '#7C3AED';
+            if (secondaryColor) secondaryColor.value = '#EC4899';
+            if (goldColor) goldColor.value = '#f59e0b';
+            if (darkColor) darkColor.value = '#1e1b4b';
+            if (darkerColor) darkerColor.value = '#0f0e24';
         }
 
         // Authentication Functions
@@ -1361,11 +1189,16 @@
             auth.onAuthStateChanged(user => {
                 if (user) {
                     isAdmin = true;
-                    document.getElementById('adminToggle').classList.add('show');
-                    checkMaintenanceMode(); // Проверяем режим тех. работ при входе админа
+                    const adminToggle = document.getElementById('adminToggle');
+                    if (adminToggle) {
+                        adminToggle.classList.add('show');
+                    }
                 } else {
                     isAdmin = false;
-                    document.getElementById('adminToggle').classList.remove('show');
+                    const adminToggle = document.getElementById('adminToggle');
+                    if (adminToggle) {
+                        adminToggle.classList.remove('show');
+                    }
                 }
             });
         }
@@ -1391,224 +1224,7 @@
             alert('Вы вышли из системы');
         }
 
-        // Maintenance Mode Functions
-        async function checkMaintenanceMode() {
-            try {
-                const doc = await db.collection('settings').doc('maintenance').get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    isMaintenanceMode = data.enabled || false;
-                    updateMaintenanceToggleButton();
-                    
-                    // Если админ вошел, не показываем режим тех. работ
-                    if (!isAdmin) {
-                        if (isMaintenanceMode) {
-                            showMaintenanceMode();
-                        }
-                    }
-                }
-            } catch (error) {
-                console.log('Ошибка проверки режима тех. работ:', error);
-            }
-        }
-
-        function updateMaintenanceToggleButton() {
-            const button = document.getElementById('maintenanceToggleBtn');
-            if (button) {
-                button.textContent = isMaintenanceMode ? 'Выключить тех. работы' : 'Включить тех. работы';
-                button.style.background = isMaintenanceMode ? 
-                    'linear-gradient(45deg, #ef4444, #dc2626)' : 
-                    'linear-gradient(45deg, var(--primary), var(--secondary))';
-            }
-        }
-
-        async function toggleMaintenanceMode() {
-            if (!isAdmin) return;
-            
-            try {
-                isMaintenanceMode = !isMaintenanceMode;
-                
-                // Сохраняем состояние в Firestore
-                await db.collection('settings').doc('maintenance').set({
-                    enabled: isMaintenanceMode,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedBy: auth.currentUser ? auth.currentUser.uid : null
-                }, { merge: true });
-                
-                updateMaintenanceToggleButton();
-                
-                if (isMaintenanceMode) {
-                    alert('Режим технических работ включен!');
-                    showMaintenanceMode();
-                } else {
-                    alert('Режим технических работ выключен!');
-                    hideMaintenanceMode();
-                }
-            } catch (error) {
-                console.error('Ошибка переключения режима тех. работ:', error);
-                alert('Ошибка: ' + error.message);
-                // Возвращаем предыдущее состояние
-                isMaintenanceMode = !isMaintenanceMode;
-                updateMaintenanceToggleButton();
-            }
-        }
-
-        function showMaintenanceMode() {
-            const maintenanceMode = document.getElementById('maintenanceMode');
-            if (maintenanceMode) {
-                maintenanceMode.classList.add('active');
-                startTerminalSimulation();
-                createMatrixEffect();
-                createNeonGrid();
-            }
-        }
-
-        function hideMaintenanceMode() {
-            const maintenanceMode = document.getElementById('maintenanceMode');
-            if (maintenanceMode) {
-                maintenanceMode.classList.remove('active');
-            }
-        }
-
-        function exitMaintenanceMode() {
-            if (!isAdmin) return;
-            
-            const maintenanceMode = document.getElementById('maintenanceMode');
-            if (maintenanceMode) {
-                maintenanceMode.classList.remove('active');
-            }
-            
-            // Показываем кнопку выхода для админа
-            const exitBtn = document.getElementById('exitMaintenanceBtn');
-            if (exitBtn) {
-                exitBtn.style.display = 'block';
-            }
-        }
-
-        function startTerminalSimulation() {
-            const terminalContent = document.getElementById('terminalContent');
-            if (!terminalContent) return;
-            
-            terminalContent.innerHTML = '';
-            
-            // Начальные строки терминала
-            const initialLines = [
-                '> Initializing CYBER_TERMINAL v2.1.5...',
-                '> System boot sequence initiated',
-                '> Loading kernel modules...',
-                '> Establishing secure connection...',
-                '> Authentication successful',
-                '> Welcome, SYSTEM_ADMIN',
-                '',
-                '> SYSTEM STATUS: MAINTENANCE MODE',
-                '> ACCESS TO PUBLIC CONTENT RESTRICTED',
-                '> All services temporarily unavailable',
-                '',
-                '> INITIATING SYSTEM DIAGNOSTICS...',
-                ''
-            ];
-            
-            initialLines.forEach(line => {
-                const lineElement = document.createElement('div');
-                lineElement.className = 'terminal-line';
-                lineElement.textContent = line;
-                terminalContent.appendChild(lineElement);
-            });
-            
-            // Симуляция активности терминала
-            setInterval(() => {
-                const activities = [
-                    '[INFO] Running system checks...',
-                    '[INFO] Scanning for corrupted files...',
-                    '[INFO] Running system checks...',
-                    '[DEBUG] Cache cleared successfully',
-                    '[WARNING] Disk space low (15% remaining)',
-                    '[INFO] System optimization complete',
-                    '[WARNING] Memory usage at 87%',
-                    '[INFO] Log files archived',
-                    '[DEBUG] Module core.dll loaded',
-                    '[INFO] Encryption protocols updated',
-                    '[INFO] SSL certificates renewed',
-                    '[INFO] Firewall status: ACTIVE',
-                    '[INFO] Network connectivity stable',
-                    '[INFO] Database backup in progress...',
-                    '[INFO] Security protocols updated',
-                    '[INFO] API endpoints secured',
-                    '[INFO] SSL certificates renewed',
-                    '[INFO] Core modules initialized',
-                    '[INFO] System diagnostics complete',
-                    '[INFO] System ready for maintenance'
-                ];
-                
-                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-                const lineElement = document.createElement('div');
-                lineElement.className = 'terminal-line';
-                lineElement.textContent = '> ' + randomActivity;
-                terminalContent.appendChild(lineElement);
-                terminalContent.scrollTop = terminalContent.scrollHeight;
-            }, 2000);
-        }
-
-        function createMatrixEffect() {
-            const matrixEffect = document.getElementById('matrixEffect');
-            if (!matrixEffect) return;
-            
-            matrixEffect.innerHTML = '';
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
-            const fontSize = 14;
-            const columns = Math.floor(window.innerWidth / fontSize);
-            
-            for (let i = 0; i < 100; i++) {
-                const char = document.createElement('div');
-                char.className = 'matrix-char';
-                char.textContent = chars[Math.floor(Math.random() * chars.length)];
-                char.style.left = `${Math.random() * 100}%`;
-                char.style.top = `${Math.random() * 100}%`;
-                char.style.fontSize = `${Math.random() * 10 + 10}px`;
-                char.style.opacity = Math.random() * 0.5;
-                matrixEffect.appendChild(char);
-                
-                // Анимация падения
-                animateMatrixChar(char);
-            }
-        }
-
-        function createNeonGrid() {
-            const neonGrid = document.querySelector('.neon-grid');
-            if (!neonGrid) return;
-            
-            // Создаем анимацию сетки
-            const interval = setInterval(() => {
-                const currentOpacity = parseFloat(getComputedStyle(neonGrid).opacity);
-                const newOpacity = currentOpacity === 0.1 ? 0.2 : 0.1;
-                neonGrid.style.opacity = newOpacity;
-            }, 1000);
-            
-            // Очищаем интервал при уничтожении элемента
-            neonGrid.addEventListener('remove', () => clearInterval(interval));
-        }
-
-        function animateMatrixChar(char) {
-            let posY = -20;
-            const speed = Math.random() * 2 + 1;
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
-            
-            function fall() {
-                posY += speed;
-                char.style.top = `${posY}%`;
-                
-                if (posY > 100) {
-                    posY = -20;
-                    char.textContent = chars[Math.floor(Math.random() * chars.length)];
-                }
-                
-                requestAnimationFrame(fall);
-            }
-            
-            fall();
-        }
-
-        // Navigation Functions
+        // Navigation Functions - ИСПРАВЛЕНА ОШИБКА
         function showSection(sectionId) {
             // Hide all sections
             const sections = document.querySelectorAll('.section');
@@ -1720,31 +1336,38 @@
             const titleInput = document.getElementById('chapterTitle');
             const descriptionInput = document.getElementById('chapterDescription');
             const contentInput = document.getElementById('chapterContent');
+
             if (!chapterInput || !titleInput || !descriptionInput || !contentInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
+
             const chapterInputValue = chapterInput.value;
             const title = titleInput.value;
             const description = descriptionInput.value;
             const content = contentInput.value;
+
             if (!chapterInputValue || !title || !content) {
                 showError('admin', 'Пожалуйста, заполните все обязательные поля');
                 return;
             }
+
             try {
                 showLoading('admin');
+                
                 const chapterData = {
                     title: title,
                     description: description,
                     content: content,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
+
                 if (chapterInputValue.includes('.')) {
                     chapterData.chapterCode = chapterInputValue;
                 } else {
                     chapterData.number = parseInt(chapterInputValue);
                 }
+
                 await db.collection('chapters').add(chapterData);
                 await loadChapters();
                 clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
@@ -1776,6 +1399,7 @@
             const container = document.getElementById('chaptersGrid');
             if (!container) return;
             container.innerHTML = '';
+
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1783,13 +1407,16 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
+                
                 if (numA === numB) {
                     return a.id.localeCompare(b.id);
                 }
                 return numA - numB;
             });
+
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
                 chapterCard.onclick = () => showChapter(chapter.id);
@@ -1807,6 +1434,7 @@
             const container = document.getElementById('menuChaptersList');
             if (!container) return;
             container.innerHTML = '';
+
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1814,10 +1442,13 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
+                
                 return numA - numB;
             });
+
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
                 const chapterItem = document.createElement('div');
                 chapterItem.className = 'chapter-item';
                 chapterItem.innerHTML = `
@@ -1858,27 +1489,34 @@
         // CRUD Functions for Characters
         async function addCharacter() {
             if (!isAdmin) return;
+            
             const nameInput = document.getElementById('characterName');
             const descriptionInput = document.getElementById('characterDescription');
             const imageInput = document.getElementById('characterImage');
+
             if (!nameInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
+
             const name = nameInput.value;
             const description = descriptionInput.value;
             const imageFile = imageInput ? imageInput.files[0] : null;
+
             if (!name || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
+                
                 const characterData = {
                     name: name,
                     description: description,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
+
                 // Upload image if provided
                 if (imageFile) {
                     try {
@@ -1892,6 +1530,7 @@
                         // Продолжаем без изображения
                     }
                 }
+
                 await db.collection('characters').add(characterData);
                 await loadCharacters();
                 clearForm(['characterName', 'characterDescription']);
@@ -1925,9 +1564,11 @@
             const container = document.getElementById('charactersGrid');
             if (!container) return;
             container.innerHTML = '';
+
             characters.forEach(character => {
                 const characterElement = document.createElement('div');
                 characterElement.className = 'character-card';
+                
                 let imageHtml = '';
                 if (character.imageUrl) {
                     imageHtml = `<img src="${character.imageUrl}" alt="${character.name || 'Персонаж'}" class="character-image" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
@@ -1935,6 +1576,7 @@
                 } else {
                     imageHtml = `<div class="character-avatar">${(character.name || '?').charAt(0)}</div>`;
                 }
+                
                 characterElement.innerHTML = `
                     ${imageHtml}
                     <h3 class="character-name">${character.name || 'Без имени'}</h3>
@@ -1947,6 +1589,7 @@
 
         async function deleteCharacter(characterId, characterName) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить персонажа "${characterName}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1964,18 +1607,23 @@
         // CRUD Functions for Wiki
         async function addWikiItem() {
             if (!isAdmin) return;
+            
             const titleInput = document.getElementById('wikiTitle');
             const contentInput = document.getElementById('wikiContent');
+
             if (!titleInput || !contentInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
+
             const title = titleInput.value;
             const content = contentInput.value;
+
             if (!title || !content) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('wiki').add({
@@ -2012,6 +1660,7 @@
             const container = document.getElementById('wikiContent');
             if (!container) return;
             container.innerHTML = '';
+
             wikiItems.forEach(item => {
                 const wikiItem = document.createElement('div');
                 wikiItem.className = 'wiki-item';
@@ -2026,6 +1675,7 @@
 
         async function deleteWikiItem(wikiId, wikiTitle) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${wikiTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -2043,20 +1693,25 @@
         // CRUD Functions for Books
         async function addBook() {
             if (!isAdmin) return;
+            
             const numberInput = document.getElementById('bookNumber');
             const titleInput = document.getElementById('bookTitle');
             const descriptionInput = document.getElementById('bookDescription');
+
             if (!numberInput || !titleInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
+
             const number = numberInput.value;
             const title = titleInput.value;
             const description = descriptionInput.value;
+
             if (!number || !title) {
                 showError('admin', 'Пожалуйста, заполните обязательные поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('books').add({
@@ -2094,6 +1749,7 @@
             const container = document.getElementById('booksList');
             if (!container) return;
             container.innerHTML = '';
+
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
@@ -2109,6 +1765,7 @@
 
         async function deleteBook(bookId, bookTitle) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить книгу "${bookTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -2126,18 +1783,23 @@
         // CRUD Functions for Schedule
         async function addReleaseDate() {
             if (!isAdmin) return;
+            
             const dateInput = document.getElementById('releaseDate');
             const descriptionInput = document.getElementById('releaseDescription');
+
             if (!dateInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
+
             const date = dateInput.value;
             const description = descriptionInput.value;
+
             if (!date || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('schedule').add({
@@ -2174,6 +1836,7 @@
             const container = document.getElementById('scheduleTable');
             if (!container) return;
             container.innerHTML = '';
+
             schedule.forEach(date => {
                 const row = document.createElement('tr');
                 const dateStr = date.date instanceof Date ? 
@@ -2190,6 +1853,7 @@
 
         async function deleteScheduleItem(scheduleId, scheduleDescription) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${scheduleDescription}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -2225,30 +1889,38 @@
             ]);
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            createStars();
+        // Maintenance Mode Functions
+        async function toggleMaintenanceMode() {
+            if (!isAdmin) return;
             
-            // Hide loading overlay after 3 seconds
-            setTimeout(() => {
-                const overlay = document.getElementById('loadingOverlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
+            try {
+                isMaintenanceMode = !isMaintenanceMode;
+                
+                // Сохраняем состояние в Firestore
+                await db.collection('settings').doc('maintenance').set({
+                    enabled: isMaintenanceMode,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: auth.currentUser ? auth.currentUser.uid : null
+                }, { merge: true });
+                
+                const button = document.getElementById('maintenanceToggleBtn');
+                if (button) {
+                    button.textContent = isMaintenanceMode ? 'Выключить тех. работы' : 'Включить тех. работы';
+                    button.style.background = isMaintenanceMode ? 
+                        'linear-gradient(45deg, #ef4444, #dc2626)' : 
+                        'linear-gradient(45deg, var(--primary), var(--secondary))';
                 }
-            }, 3000);
-            
-            // Check admin status
-            checkAdminStatus();
-            
-            // Check maintenance mode
-            checkMaintenanceMode();
-            
-            // Load all data
-            loadAllData();
-            
-            // Show initial section
-            showSection('chapters');
-        });
-    </script>
-</body>
-</html>
+                
+                if (isMaintenanceMode) {
+                    showMaintenanceMode();
+                    alert('Режим технических работ включен!');
+                } else {
+                    hideMaintenanceMode();
+                    alert('Режим технических работ выключен!');
+                }
+            } catch (error) {
+                console.error('Ошибка переключения режима тех. работ:', error);
+                alert('Ошибка: ' + error.message);
+                // Возвращаем предыдущее состояние
+                isMaintenanceMode = !isMaintenanceMode;
+                const button = document.getElementById('maintenanc
