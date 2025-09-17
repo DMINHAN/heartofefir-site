@@ -172,55 +172,6 @@
             animation: fadeInUp 1s ease-out 0.2s both;
         }
 
-        /* Book Description Input */
-        .book-description-input {
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .description-label {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--gold);
-            margin-bottom: 15px;
-        }
-
-        .description-textarea {
-            width: 80%;
-            max-width: 800px;
-            padding: 20px;
-            background: rgba(30, 27, 75, 0.5);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 15px;
-            color: var(--light);
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            resize: vertical;
-            min-height: 150px;
-            max-height: 300px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
-        }
-
-        .description-textarea::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .description-textarea::-webkit-scrollbar-track {
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 4px;
-        }
-
-        .description-textarea::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        .description-textarea::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
         /* Navigation Tabs */
         .tabs {
             display: flex;
@@ -316,6 +267,26 @@
         .chapters-list {
             max-height: 600px;
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
+        }
+
+        .chapters-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chapters-list::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 4px;
+        }
+
+        .chapters-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .chapters-list::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
         .chapter-item {
@@ -326,22 +297,26 @@
             border: 1px solid rgba(139, 92, 246, 0.2);
             transition: all 0.3s ease;
             cursor: pointer;
+            border-left: 3px solid var(--primary);
         }
 
         .chapter-item:hover {
             background: rgba(139, 92, 246, 0.2);
             transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
         }
 
         .chapter-number {
             font-weight: 600;
             color: var(--primary);
             margin-bottom: 5px;
+            font-family: 'Cinzel', serif;
         }
 
         .chapter-title {
             font-size: 0.9rem;
             color: var(--light);
+            margin-bottom: 5px;
         }
 
         /* Characters Section */
@@ -868,14 +843,6 @@
             <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
         </div>
     </section>
-
-    <!-- Book Description Input -->
-    <div class="container">
-        <div class="book-description-input">
-            <div class="description-label">Описание книги</div>
-            <textarea class="description-textarea" id="bookDescriptionInput" placeholder="Введите описание вашей книги..."></textarea>
-        </div>
-    </div>
 
     <!-- Navigation Tabs -->
     <div class="container">
