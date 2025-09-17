@@ -124,24 +124,24 @@
         </div>
     </div>
 
-   <script>
-    // Firebase Configuration (замените на вашу конфигурацию)
-    const firebaseConfig = {
-        apiKey: "AIzaSyCLuEVA6AYJereNnGnxDC8lqjCDmvGfqwc",
-        authDomain: "heart-of-efir.firebaseapp.com",
-        projectId: "heart-of-efir",
-        storageBucket: heart-of-efir.firebasestorage.app",
-        messagingSenderId: "296902937897",
-        appId: "1:296902937897:web:11de57e0de55eb84a63b38"
-    };
+    <script>
+        // Firebase Configuration (замените на вашу конфигурацию)
+        var firebaseConfig = {
+            apiKey: "AIzaSyCLuEVA6AYJereNnGnxDC8lqjCDmvGfqwc",
+            authDomain: "heart-of-efir.firebaseapp.com",
+            projectId: "heart-of-efir",
+            storageBucket: "heart-of-efir.firebasestorage.app",
+            messagingSenderId: "296902937897",
+            appId: "1:296902937897:web:11de57e0de55eb84a63b38"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        var db = firebase.firestore();
 
         // Get chapter ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const chapterId = urlParams.get("id");
+        var urlParams = new URLSearchParams(window.location.search);
+        var chapterId = urlParams.get("id");
 
         console.log("Chapter ID from URL:", chapterId);
 
@@ -155,13 +155,13 @@
             try {
                 console.log("Attempting to load chapter with ID:", id);
                 
-                const doc = await db.collection("chapters").doc(id).get();
+                var doc = await db.collection("chapters").doc(id).get();
                 
                 console.log("Document exists:", doc.exists);
                 console.log("Document data:", doc.data());
                 
                 if (doc.exists) {
-                    const chapter = doc.data();
+                    var chapter = doc.data();
                     console.log("Chapter data:", chapter);
                     
                     // Проверим наличие всех необходимых полей
