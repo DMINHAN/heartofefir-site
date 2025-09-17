@@ -894,28 +894,25 @@
             }
         }
 
-        function renderChapters(chapters) {
+       function renderChapters(chapters) {
     const container = document.getElementById('chaptersGrid');
     container.innerHTML = '';
 
-    // Сортировка по chapterCode
+    // Сортировка с поддержкой обеих структур
     chapters.sort((a, b) => {
-        const aParts = a.chapterCode.split('.').map(Number);
-        const bParts = b.chapterCode.split('.').map(Number);
-        
-        // Сравниваем основные номера
-        if (aParts[0] !== bParts[0]) {
-            return aParts[0] - bParts[0];
-        }
-        // Если основные номера равны, сравниваем подглавы
-        return (aParts[1] || 0) - (bParts[1] || 0);
+        const numA = a.chapterCode ? parseFloat(a.chapterCode) : a.number;
+        const numB = b.chapterCode ? parseFloat(b.chapterCode) : b.number;
+        return numA - numB;
     });
 
     chapters.forEach(chapter => {
+        // Определение номера главы
+        const chapterNumber = chapter.chapterCode || chapter.number;
+        
         const chapterCard = document.createElement('div');
         chapterCard.className = 'chapter-card';
         chapterCard.innerHTML = `
-            <div class="chapter-number">Глава ${chapter.chapterCode}</div>
+            <div class="chapter-number">Глава ${chapterNumber}</div>
             <h3 class="chapter-title">${chapter.title}</h3>
             <p class="chapter-description">${chapter.description}</p>
             <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
