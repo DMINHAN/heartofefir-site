@@ -210,6 +210,11 @@
         .section {
             padding: 60px 0;
             animation: fadeIn 1s ease-out;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
         }
 
         .section-title {
@@ -317,6 +322,46 @@
             font-size: 0.9rem;
             color: var(--light);
             margin-bottom: 5px;
+        }
+
+        /* Chapters Grid */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .chapter-card {
+            background: rgba(30, 27, 75, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            border-color: var(--primary);
+        }
+
+        .chapter-card .chapter-number {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .chapter-card .chapter-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+
+        .chapter-card .chapter-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
         }
 
         /* Characters Section */
@@ -861,7 +906,7 @@
             <!-- Content Area -->
             <div class="content-area">
                 <!-- Chapters Section -->
-                <section class="section" id="chaptersSection">
+                <section class="section active" id="chaptersSection">
                     <h2 class="section-title">Главы книги</h2>
                     <div class="loading" id="chaptersLoading">
                         <div class="spinner"></div>
@@ -873,7 +918,7 @@
                 </section>
 
                 <!-- Characters Section -->
-                <section class="section" id="charactersSection" style="display: none;">
+                <section class="section" id="charactersSection">
                     <h2 class="section-title">Персонажи</h2>
                     <div class="loading" id="charactersLoading">
                         <div class="spinner"></div>
@@ -885,7 +930,7 @@
                 </section>
 
                 <!-- Wiki Section -->
-                <section class="section" id="wikiSection" style="display: none;">
+                <section class="section" id="wikiSection">
                     <h2 class="section-title">Википедия</h2>
                     <div class="loading" id="wikiLoading">
                         <div class="spinner"></div>
@@ -897,7 +942,7 @@
                 </section>
 
                 <!-- Books Series Section -->
-                <section class="section" id="booksSection" style="display: none;">
+                <section class="section" id="booksSection">
                     <h2 class="section-title">Серия книг</h2>
                     <div class="loading" id="booksLoading">
                         <div class="spinner"></div>
@@ -909,7 +954,7 @@
                 </section>
 
                 <!-- Release Schedule Section -->
-                <section class="section" id="scheduleSection" style="display: none;">
+                <section class="section" id="scheduleSection">
                     <h2 class="section-title">Расписание выхода глав</h2>
                     <div class="loading" id="scheduleLoading">
                         <div class="spinner"></div>
@@ -1015,7 +1060,7 @@
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
-                section.style.display = 'none';
+                section.classList.remove('active');
             });
             
             // Remove active class from all tabs
@@ -1024,10 +1069,12 @@
             });
             
             // Show selected section
-            document.getElementById(sectionId + 'Section').style.display = 'block';
+            document.getElementById(sectionId + 'Section').classList.add('active');
             
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+            // Add active class to clicked tab (if event exists)
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         // Show loading indicator
@@ -1134,11 +1181,11 @@
                 
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
+                chapterCard.onclick = () => showChapter(chapter.id);
                 chapterCard.innerHTML = `
                     <div class="chapter-number">Глава ${chapterNumber}</div>
                     <h3 class="chapter-title">${chapter.title}</h3>
                     <p class="chapter-description">${chapter.description}</p>
-                    <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
                 `;
                 container.appendChild(chapterCard);
             });
@@ -1169,7 +1216,10 @@
                     <div class="chapter-number">Глава ${chapterNumber}</div>
                     <div class="chapter-title">${chapter.title}</div>
                 `;
-                chapterItem.onclick = () => showChapter(chapter.id);
+                chapterItem.onclick = (e) => {
+                    e.stopPropagation();
+                    showChapter(chapter.id);
+                };
                 container.appendChild(chapterItem);
             });
         }
