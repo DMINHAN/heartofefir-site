@@ -15,7 +15,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #8B5CF6;
             --primary-dark: #7C3AED;
@@ -28,7 +27,6 @@
             --border: #334155;
             --gold: #f59e0b;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
@@ -38,7 +36,6 @@
             position: relative;
             overflow-x: hidden;
         }
-
         body::before {
             content: '';
             position: absolute;
@@ -51,7 +48,6 @@
                 radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
             z-index: -1;
         }
-
         /* Loading Animation */
         .loading-overlay {
             position: fixed;
@@ -66,13 +62,11 @@
             z-index: 1000;
             animation: fadeOut 1s ease-in-out 3s forwards;
         }
-
         .welcome-screen {
             text-align: center;
             position: relative;
             z-index: 1001;
         }
-
         .welcome-text {
             font-family: 'Cinzel', serif;
             font-size: 3rem;
@@ -81,7 +75,6 @@
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
             animation: pulse 2s infinite, fadeInOut 3s forwards;
         }
-
         /* Stars animation */
         .stars {
             position: absolute;
@@ -91,50 +84,42 @@
             height: 100%;
             pointer-events: none;
         }
-
         .star {
             position: absolute;
             background-color: white;
             border-radius: 50%;
             animation: twinkle var(--duration, 3s) infinite ease-in-out;
         }
-
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-
         @keyframes fadeInOut {
             0% { opacity: 0; }
             20% { opacity: 1; }
             80% { opacity: 1; }
             100% { opacity: 0; }
         }
-
         @keyframes fadeOut {
             to {
                 opacity: 0;
                 visibility: hidden;
             }
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
         /* Header Styles */
         header {
             background: rgba(30, 27, 75, 0.8);
@@ -145,14 +130,12 @@
             z-index: 100;
             border-bottom: 1px solid rgba(139, 92, 246, 0.3);
         }
-
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
         }
-
         .logo {
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
@@ -162,12 +145,10 @@
             text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
             transition: all 0.3s ease;
         }
-
         .logo:hover {
             transform: scale(1.05);
             text-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
         }
-
         /* Menu Button */
         .menu-btn {
             background: none;
@@ -179,11 +160,9 @@
             border-radius: 5px;
             transition: all 0.3s ease;
         }
-
         .menu-btn:hover {
             background: rgba(139, 92, 246, 0.2);
         }
-
         /* Chapters Menu */
         .chapters-menu {
             position: fixed;
@@ -198,11 +177,9 @@
             overflow-y: auto;
             border-right: 1px solid var(--primary);
         }
-
         .chapters-menu.open {
             left: 0;
         }
-
         .menu-header {
             background: rgba(139, 92, 246, 0.2);
             color: var(--light);
@@ -212,13 +189,11 @@
             align-items: center;
             border-bottom: 1px solid var(--primary);
         }
-
         .menu-header h2 {
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
             color: var(--gold);
         }
-
         .close-menu {
             background: none;
             border: none;
@@ -233,41 +208,33 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-
         .close-menu:hover {
             background: rgba(236, 72, 153, 0.2);
             transform: rotate(90deg);
         }
-
         .menu-content {
             padding: 20px;
         }
-
         .menu-chapters-list {
             max-height: calc(100vh - 150px);
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
         }
-
         .menu-chapters-list::-webkit-scrollbar {
             width: 8px;
         }
-
         .menu-chapters-list::-webkit-scrollbar-track {
             background: rgba(139, 92, 246, 0.1);
             border-radius: 4px;
         }
-
         .menu-chapters-list::-webkit-scrollbar-thumb {
             background: var(--primary);
             border-radius: 4px;
         }
-
         .menu-chapters-list::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
         }
-
         /* Hero Section */
         .hero {
             padding: 100px 0 60px;
@@ -276,7 +243,6 @@
             opacity: 0;
             animation: fadeIn 1s ease-out 3.5s forwards;
         }
-
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: 4rem;
@@ -286,7 +252,6 @@
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
             animation: fadeInUp 1s ease-out 3.5s both;
         }
-
         .hero-description {
             font-size: 1.3rem;
             color: var(--gray);
@@ -294,7 +259,6 @@
             margin: 0 auto 40px;
             animation: fadeInUp 1s ease-out 3.7s both;
         }
-
         /* Navigation Tabs */
         .tabs {
             display: flex;
@@ -304,7 +268,6 @@
             flex-wrap: wrap;
             animation: fadeInUp 1s ease-out 3.9s both;
         }
-
         .tab {
             padding: 12px 25px;
             background: rgba(139, 92, 246, 0.1);
@@ -316,19 +279,16 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .tab:hover {
             background: rgba(139, 92, 246, 0.3);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
         }
-
         .tab.active {
             background: var(--primary);
             border-color: var(--primary);
             box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
         }
-
         /* Sections */
         .section {
             padding: 60px 0;
@@ -337,11 +297,9 @@
             opacity: 0;
             animation: fadeIn 1s ease-out 3.5s forwards;
         }
-
         .section.active {
             display: block;
         }
-
         .section-title {
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
@@ -350,7 +308,6 @@
             color: var(--gold);
             position: relative;
         }
-
         .section-title::after {
             content: '';
             display: block;
@@ -359,14 +316,12 @@
             background: linear-gradient(90deg, transparent, var(--primary), transparent);
             margin: 15px auto;
         }
-
         /* Main Layout */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr;
             gap: 30px;
         }
-
         .content-area {
             background: rgba(30, 27, 75, 0.5);
             border-radius: 15px;
@@ -374,14 +329,12 @@
             border: 1px solid rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(10px);
         }
-
         /* Chapters Grid */
         .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
-
         .chapter-card {
             background: rgba(30, 27, 75, 0.7);
             border-radius: 15px;
@@ -390,40 +343,34 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .chapter-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
             border-color: var(--primary);
         }
-
         .chapter-card .chapter-number {
             font-size: 1.2rem;
             margin-bottom: 10px;
             color: var(--primary);
             font-family: 'Cinzel', serif;
         }
-
         .chapter-card .chapter-title {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--gold);
         }
-
         .chapter-card .chapter-description {
             color: var(--gray);
             margin-bottom: 20px;
             font-size: 0.9rem;
         }
-
         /* Characters Section */
         .characters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
-
         .character-card {
             background: rgba(30, 27, 75, 0.5);
             border-radius: 15px;
@@ -433,13 +380,11 @@
             transition: all 0.3s ease;
             text-align: center;
         }
-
         .character-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
             border-color: var(--primary);
         }
-
         .character-image {
             width: 100px;
             height: 100px;
@@ -448,7 +393,6 @@
             object-fit: cover;
             border: 2px solid var(--gold);
         }
-
         .character-avatar {
             width: 100px;
             height: 100px;
@@ -463,19 +407,16 @@
             font-weight: bold;
             border: 2px solid var(--gold);
         }
-
         .character-name {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 10px;
             color: var(--gold);
         }
-
         .character-description {
             color: var(--gray);
             font-size: 0.9rem;
         }
-
         /* Wiki Section */
         .wiki-content {
             background: rgba(30, 27, 75, 0.5);
@@ -484,38 +425,32 @@
             border: 1px solid rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(10px);
         }
-
         .wiki-item {
             margin-bottom: 30px;
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
-
         .wiki-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
         }
-
         .wiki-title {
             font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--primary);
         }
-
         .wiki-text {
             color: var(--gray);
             line-height: 1.7;
         }
-
         /* Books List */
         .books-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
         }
-
         .book-card {
             background: rgba(30, 27, 75, 0.5);
             border-radius: 15px;
@@ -525,12 +460,10 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-
         .book-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
         }
-
         .book-number {
             font-size: 2.5rem;
             font-weight: 700;
@@ -538,19 +471,16 @@
             margin-bottom: 15px;
             font-family: 'Cinzel', serif;
         }
-
         .book-title {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--gold);
         }
-
         .book-description {
             color: var(--gray);
             font-size: 0.9rem;
         }
-
         /* Release Schedule */
         .schedule-table {
             width: 100%;
@@ -560,24 +490,20 @@
             border: 1px solid rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(10px);
         }
-
         .schedule-table th,
         .schedule-table td {
             padding: 15px 20px;
             text-align: left;
             border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
-
         .schedule-table th {
             background: rgba(139, 92, 246, 0.3);
             color: var(--light);
             font-weight: 600;
         }
-
         .schedule-table tr:last-child td {
             border-bottom: none;
         }
-
         /* Admin Panel */
         .admin-panel {
             position: fixed;
@@ -592,11 +518,9 @@
             overflow-y: auto;
             border-left: 1px solid var(--primary);
         }
-
         .admin-panel.open {
             right: 0;
         }
-
         .admin-header {
             background: rgba(139, 92, 246, 0.2);
             color: var(--light);
@@ -606,13 +530,11 @@
             align-items: center;
             border-bottom: 1px solid var(--primary);
         }
-
         .admin-header h2 {
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
             color: var(--gold);
         }
-
         .close-admin {
             background: none;
             border: none;
@@ -627,16 +549,13 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-
         .close-admin:hover {
             background: rgba(236, 72, 153, 0.2);
             transform: rotate(90deg);
         }
-
         .admin-content {
             padding: 20px;
         }
-
         .admin-section {
             margin-bottom: 30px;
             background: rgba(30, 27, 75, 0.3);
@@ -644,25 +563,21 @@
             padding: 20px;
             border: 1px solid rgba(139, 92, 246, 0.2);
         }
-
         .admin-section h3 {
             margin-bottom: 20px;
             color: var(--gold);
             font-family: 'Cinzel', serif;
             font-size: 1.3rem;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             color: var(--light);
         }
-
         .form-group input,
         .form-group textarea,
         .form-group select {
@@ -674,19 +589,16 @@
             color: var(--light);
             font-family: 'Inter', sans-serif;
         }
-
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
         }
-
         .image-preview {
             max-width: 100px;
             max-height: 100px;
             margin-top: 10px;
             border-radius: 8px;
         }
-
         .admin-toggle {
             position: fixed;
             top: 20px;
@@ -704,16 +616,13 @@
             transition: all 0.3s ease;
             display: none; /* Скрыто для обычных пользователей */
         }
-
         .admin-toggle.show {
             display: block;
         }
-
         .admin-toggle:hover {
             transform: scale(1.1) rotate(90deg);
             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
         }
-
         /* Overlay */
         .overlay {
             position: fixed;
@@ -725,11 +634,9 @@
             z-index: 999;
             display: none;
         }
-
         .overlay.active {
             display: block;
         }
-
         /* Buttons */
         .btn {
             display: inline-block;
@@ -745,30 +652,25 @@
             font-size: 1rem;
             border: 1px solid rgba(255,255,255,0.1);
         }
-
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
         }
-
         .delete-btn {
             background: linear-gradient(45deg, #ef4444, #dc2626);
             padding: 8px 15px;
             font-size: 0.8rem;
             margin-top: 10px;
         }
-
         .delete-btn:hover {
             background: linear-gradient(45deg, #dc2626, #b91c1c);
             transform: translateY(-1px);
         }
-
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -779,14 +681,12 @@
                 transform: translateY(0);
             }
         }
-
         /* Loading indicators */
         .loading {
             display: none;
             text-align: center;
             padding: 20px;
         }
-
         .spinner {
             border: 3px solid rgba(139, 92, 246, 0.3);
             border-radius: 50%;
@@ -796,7 +696,6 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 10px;
         }
-
         .error-message {
             color: #ef4444;
             background: rgba(239, 68, 68, 0.1);
@@ -806,7 +705,6 @@
             display: none;
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
-
         /* Modal */
         .modal {
             position: fixed;
@@ -821,7 +719,6 @@
             z-index: 1001;
             display: none;
         }
-
         .modal-content {
             background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
             padding: 30px;
@@ -831,22 +728,18 @@
             width: 90%;
             text-align: center;
         }
-
         .modal-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             margin-top: 20px;
         }
-
         .cancel-btn {
             background: linear-gradient(45deg, #6b7280, #4b5563);
         }
-
         .cancel-btn:hover {
             background: linear-gradient(45deg, #4b5563, #374151);
         }
-
         /* Footer */
         .footer {
             text-align: center;
@@ -858,7 +751,6 @@
             opacity: 0;
             animation: fadeIn 1s ease-out 4s forwards;
         }
-
         /* Color Settings */
         .color-setting {
             display: flex;
@@ -866,11 +758,9 @@
             gap: 10px;
             margin-bottom: 10px;
         }
-
         .color-setting label {
             min-width: 120px;
         }
-
         .color-picker {
             width: 50px;
             height: 30px;
@@ -878,32 +768,138 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        /* Comments Section */
+        .comments-section {
+            margin-top: 50px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .comments-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .comment-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .comment-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 14, 36, 0.5);
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .comment-item {
+            background: rgba(30, 27, 75, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .comment-date {
+            color: var(--gray);
+        }
+        .comment-text {
+            color: var(--light);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .comments-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .rating-stars {
+            color: #f59e0b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .rating-stars .star {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .rating-stars .star:hover {
+            transform: scale(1.2);
+        }
+        .like-button {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 5px 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .like-button:hover {
+            background: rgba(139, 92, 246, 0.3);
+        }
+        .like-button.liked {
+            background: rgba(236, 72, 153, 0.2);
+            border-color: var(--secondary);
+        }
+        .comment-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .comment-rating {
+            color: #f59e0b;
+            font-size: 0.9rem;
+        }
+        .login-prompt {
+            text-align: center;
+            color: var(--gray);
+            padding: 20px;
+            font-style: italic;
+        }
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
             .hero-description {
                 font-size: 1.1rem;
             }
-            
             .tabs {
                 flex-direction: column;
                 align-items: center;
             }
-            
             .tab {
                 width: 100%;
                 text-align: center;
             }
-            
             .admin-panel {
                 width: 100%;
                 right: -100%;
             }
-            
             .chapters-menu {
                 width: 100%;
                 left: -100%;
@@ -919,7 +915,6 @@
             <div class="welcome-text">Добро пожаловать на сайт!</div>
         </div>
     </div>
-
     <!-- Chapters Menu -->
     <div class="chapters-menu" id="chaptersMenu">
         <div class="menu-header">
@@ -932,10 +927,8 @@
             </div>
         </div>
     </div>
-
     <!-- Admin Toggle Button (только для админа) -->
     <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()">⚙️</button>
-
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
@@ -948,7 +941,6 @@
                 <p>Загрузка...</p>
             </div>
             <div class="error-message" id="adminError"></div>
-            
             <!-- Color Settings -->
             <div class="admin-section">
                 <h3>Настройки цветов</h3>
@@ -978,7 +970,6 @@
                 </div>
                 <button class="btn" onclick="resetColors()">Сбросить цвета</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Главу</h3>
                 <div class="form-group">
@@ -999,7 +990,6 @@
                 </div>
                 <button class="btn" onclick="addChapter()">Добавить Главу</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Персонажа</h3>
                 <div class="form-group">
@@ -1017,7 +1007,6 @@
                 </div>
                 <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Факт в Википедию</h3>
                 <div class="form-group">
@@ -1030,7 +1019,6 @@
                 </div>
                 <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Книгу в Серии</h3>
                 <div class="form-group">
@@ -1047,7 +1035,6 @@
                 </div>
                 <button class="btn" onclick="addBook()">Добавить Книгу</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Дату Выхода</h3>
                 <div class="form-group">
@@ -1060,11 +1047,9 @@
                 </div>
                 <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
             </div>
-            
             <button class="btn" onclick="logout()" style="background: linear-gradient(45deg, #ef4444, #dc2626); width: 100%;">Выйти</button>
         </div>
     </div>
-
     <!-- Modals -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -1076,10 +1061,8 @@
             </div>
         </div>
     </div>
-
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
-
     <!-- Header -->
     <header>
         <div class="container">
@@ -1089,7 +1072,6 @@
             </div>
         </div>
     </header>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
@@ -1097,7 +1079,6 @@
             <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
         </div>
     </section>
-
     <!-- Navigation Tabs -->
     <div class="container">
         <div class="tabs">
@@ -1108,7 +1089,6 @@
             <div class="tab" onclick="showSection('schedule')">Расписание</div>
         </div>
     </div>
-
     <!-- Main Content Layout -->
     <div class="container">
         <div class="main-layout">
@@ -1125,7 +1105,6 @@
                         <!-- Chapters will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Characters Section -->
                 <section class="section" id="charactersSection">
                     <h2 class="section-title">Персонажи</h2>
@@ -1137,7 +1116,6 @@
                         <!-- Characters will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Wiki Section -->
                 <section class="section" id="wikiSection">
                     <h2 class="section-title">Википедия</h2>
@@ -1149,7 +1127,6 @@
                         <!-- Wiki items will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Books Series Section -->
                 <section class="section" id="booksSection">
                     <h2 class="section-title">Серия книг</h2>
@@ -1161,7 +1138,6 @@
                         <!-- Books will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Release Schedule Section -->
                 <section class="section" id="scheduleSection">
                     <h2 class="section-title">Расписание выхода глав</h2>
@@ -1186,7 +1162,40 @@
             </div>
         </div>
     </div>
-
+    <!-- Comments Section -->
+    <div class="container">
+        <section class="comments-section">
+            <h2 class="comments-title">Комментарии</h2>
+            
+            <!-- Comment Form (только для авторизованных пользователей) -->
+            <div class="comment-form" id="commentForm" style="display: none;">
+                <div class="rating-stars" id="ratingStars">
+                    <span class="star" onclick="setRating(1)">☆</span>
+                    <span class="star" onclick="setRating(2)">☆</span>
+                    <span class="star" onclick="setRating(3)">☆</span>
+                    <span class="star" onclick="setRating(4)">☆</span>
+                    <span class="star" onclick="setRating(5)">☆</span>
+                </div>
+                <textarea class="comment-input" id="commentText" placeholder="Оставьте свой комментарий..."></textarea>
+                <button class="btn" onclick="addCommentWithRating()">Отправить</button>
+            </div>
+            
+            <!-- Login prompt for non-authenticated users -->
+            <div class="login-prompt" id="loginPrompt">
+                <p>Пожалуйста, <a href="#" onclick="login()" style="color: var(--primary);">войдите</a> чтобы оставлять комментарии.</p>
+            </div>
+            
+            <!-- Comments List -->
+            <div class="comments-list" id="commentsList">
+                <!-- Comments will be loaded here -->
+            </div>
+            
+            <div class="loading" id="commentsLoading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Загрузка комментариев...</p>
+            </div>
+        </section>
+    </div>
     <!-- Footer -->
     <div class="container">
         <div class="footer">
@@ -1194,7 +1203,6 @@
             <p>@WhiteX author: WhiteMeovv</p>
         </div>
     </div>
-
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -1205,22 +1213,19 @@
             messagingSenderId: "296902937897",
             appId: "1:296902937897:web:11de57e0de55eb84a63b38"
         };
-
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
         const storage = firebase.storage();
-
         // Check if user is admin
         let isAdmin = false;
         let deleteCallback = null;
-
+        let currentRating = 0;
         // Create stars for welcome screen
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const starCount = 100;
-            
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -1233,39 +1238,31 @@
                 starsContainer.appendChild(star);
             }
         }
-
         // Toggle Chapters Menu
         function toggleChaptersMenu() {
             const menu = document.getElementById('chaptersMenu');
             const overlay = document.getElementById('overlay');
-            
             menu.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
         // Toggle Admin Panel
         function toggleAdminPanel() {
             if (!isAdmin) return;
-            
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
-            
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
         // Close all panels
         function closeAllPanels() {
             document.getElementById('chaptersMenu').classList.remove('open');
             document.getElementById('adminPanel').classList.remove('open');
             document.getElementById('overlay').classList.remove('active');
         }
-
         // Update color
         function updateColor(variable, value) {
             document.documentElement.style.setProperty(variable, value);
         }
-
         // Reset colors
         function resetColors() {
             updateColor('--primary', '#8B5CF6');
@@ -1274,7 +1271,6 @@
             updateColor('--gold', '#f59e0b');
             updateColor('--dark', '#1e1b4b');
             updateColor('--darker', '#0f0e24');
-            
             document.getElementById('primaryColor').value = '#8B5CF6';
             document.getElementById('primaryDarkColor').value = '#7C3AED';
             document.getElementById('secondaryColor').value = '#EC4899';
@@ -1282,7 +1278,6 @@
             document.getElementById('darkColor').value = '#1e1b4b';
             document.getElementById('darkerColor').value = '#0f0e24';
         }
-
         // Authentication Functions
         function checkAdminStatus() {
             auth.onAuthStateChanged(user => {
@@ -1293,13 +1288,15 @@
                     isAdmin = false;
                     document.getElementById('adminToggle').classList.remove('show');
                 }
+                // Update comment form visibility
+                updateCommentFormVisibility();
+                // Load comments when auth state changes
+                loadComments();
             });
         }
-
         function login() {
             const email = prompt('Введите email администратора:');
             const password = prompt('Введите пароль:');
-            
             if (email && password) {
                 auth.signInWithEmailAndPassword(email, password)
                     .then(() => {
@@ -1310,13 +1307,11 @@
                     });
             }
         }
-
         function logout() {
             auth.signOut();
             toggleAdminPanel();
             alert('Вы вышли из системы');
         }
-
         // Navigation Functions - ИСПРАВЛЕНА ОШИБКА
         function showSection(sectionId) {
             // Hide all sections
@@ -1324,25 +1319,21 @@
             sections.forEach(section => {
                 section.classList.remove('active');
             });
-            
             // Remove active class from all tabs
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.classList.remove('active');
             });
-            
             // Show selected section
             const targetSection = document.getElementById(sectionId + 'Section');
             if (targetSection) {
                 targetSection.classList.add('active');
             }
-            
             // Add active class to clicked tab (if event exists)
             if (event && event.target) {
                 event.target.classList.add('active');
             }
         }
-
         // Show loading indicator
         function showLoading(section) {
             const loadingElement = document.getElementById(`${section}Loading`);
@@ -1350,7 +1341,6 @@
                 loadingElement.style.display = 'block';
             }
         }
-
         // Hide loading indicator
         function hideLoading(section) {
             const loadingElement = document.getElementById(`${section}Loading`);
@@ -1358,7 +1348,6 @@
                 loadingElement.style.display = 'none';
             }
         }
-
         // Show error message
         function showError(section, message) {
             const errorElement = document.getElementById(`${section}Error`) || 
@@ -1371,7 +1360,6 @@
                 }, 5000);
             }
         }
-
         // Modal functions
         function openDeleteModal(message, callback) {
             deleteCallback = callback;
@@ -1384,7 +1372,6 @@
                 modalElement.style.display = 'flex';
             }
         }
-        
         function closeDeleteModal() {
             const modalElement = document.getElementById('deleteModal');
             if (modalElement) {
@@ -1392,14 +1379,12 @@
             }
             deleteCallback = null;
         }
-        
         function confirmDelete() {
             if (deleteCallback) {
                 deleteCallback();
             }
             closeDeleteModal();
         }
-
         // Image preview
         document.addEventListener('DOMContentLoaded', function() {
             const characterImage = document.getElementById('characterImage');
@@ -1420,47 +1405,38 @@
                 });
             }
         });
-
         // CRUD Functions for Chapters
         async function addChapter() {
             if (!isAdmin) return;
-            
             const chapterInput = document.getElementById('chapterNumber');
             const titleInput = document.getElementById('chapterTitle');
             const descriptionInput = document.getElementById('chapterDescription');
             const contentInput = document.getElementById('chapterContent');
-
             if (!chapterInput || !titleInput || !descriptionInput || !contentInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
-
             const chapterInputValue = chapterInput.value;
             const title = titleInput.value;
             const description = descriptionInput.value;
             const content = contentInput.value;
-
             if (!chapterInputValue || !title || !content) {
                 showError('admin', 'Пожалуйста, заполните все обязательные поля');
                 return;
             }
-
             try {
                 showLoading('admin');
-                
                 const chapterData = {
                     title: title,
                     description: description,
                     content: content,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
-
                 if (chapterInputValue.includes('.')) {
                     chapterData.chapterCode = chapterInputValue;
                 } else {
                     chapterData.number = parseInt(chapterInputValue);
                 }
-
                 await db.collection('chapters').add(chapterData);
                 await loadChapters();
                 clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
@@ -1470,7 +1446,6 @@
                 showError('admin', 'Ошибка при добавлении главы: ' + error.message);
             }
         }
-
         async function loadChapters() {
             try {
                 showLoading('chapters');
@@ -1487,13 +1462,10 @@
                 showError('chapters', 'Ошибка при загрузке глав: ' + error.message);
             }
         }
-
         function renderChapters(chapters) {
             const container = document.getElementById('chaptersGrid');
             if (!container) return;
-            
             container.innerHTML = '';
-
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1501,16 +1473,13 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
-                
                 if (numA === numB) {
                     return a.id.localeCompare(b.id);
                 }
                 return numA - numB;
             });
-
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
-                
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
                 chapterCard.onclick = () => showChapter(chapter.id);
@@ -1523,13 +1492,10 @@
                 container.appendChild(chapterCard);
             });
         }
-
         function renderMenuChapters(chapters) {
             const container = document.getElementById('menuChaptersList');
             if (!container) return;
-            
             container.innerHTML = '';
-
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1537,13 +1503,10 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
-                
                 return numA - numB;
             });
-
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
-                
                 const chapterItem = document.createElement('div');
                 chapterItem.className = 'chapter-item';
                 chapterItem.innerHTML = `
@@ -1560,14 +1523,11 @@
                 container.appendChild(chapterItem);
             });
         }
-
         function showChapter(id) {
             window.location.href = `chapter.html?id=${id}`;
         }
-
         async function deleteChapter(chapterId, chapterTitle) {
             if (!isAdmin) return;
-            
             openDeleteModal(`Вы уверены, что хотите удалить главу "${chapterTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1581,38 +1541,30 @@
                 }
             });
         }
-
         // CRUD Functions for Characters
         async function addCharacter() {
             if (!isAdmin) return;
-            
             const nameInput = document.getElementById('characterName');
             const descriptionInput = document.getElementById('characterDescription');
             const imageInput = document.getElementById('characterImage');
-
             if (!nameInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
-
             const name = nameInput.value;
             const description = descriptionInput.value;
             const imageFile = imageInput ? imageInput.files[0] : null;
-
             if (!name || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
-
             try {
                 showLoading('admin');
-                
                 const characterData = {
                     name: name,
                     description: description,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
-
                 // Upload image if provided
                 if (imageFile) {
                     try {
@@ -1626,7 +1578,6 @@
                         // Продолжаем без изображения
                     }
                 }
-
                 await db.collection('characters').add(characterData);
                 await loadCharacters();
                 clearForm(['characterName', 'characterDescription']);
@@ -1639,7 +1590,6 @@
                 showError('admin', 'Ошибка при добавлении персонажа: ' + error.message);
             }
         }
-
         async function loadCharacters() {
             try {
                 showLoading('characters');
@@ -1655,17 +1605,13 @@
                 showError('characters', 'Ошибка при загрузке персонажей: ' + error.message);
             }
         }
-
         function renderCharacters(characters) {
             const container = document.getElementById('charactersGrid');
             if (!container) return;
-            
             container.innerHTML = '';
-
             characters.forEach(character => {
                 const characterElement = document.createElement('div');
                 characterElement.className = 'character-card';
-                
                 let imageHtml = '';
                 if (character.imageUrl) {
                     imageHtml = `<img src="${character.imageUrl}" alt="${character.name || 'Персонаж'}" class="character-image" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
@@ -1673,7 +1619,6 @@
                 } else {
                     imageHtml = `<div class="character-avatar">${(character.name || '?').charAt(0)}</div>`;
                 }
-                
                 characterElement.innerHTML = `
                     ${imageHtml}
                     <h3 class="character-name">${character.name || 'Без имени'}</h3>
@@ -1683,10 +1628,8 @@
                 container.appendChild(characterElement);
             });
         }
-
         async function deleteCharacter(characterId, characterName) {
             if (!isAdmin) return;
-            
             openDeleteModal(`Вы уверены, что хотите удалить персонажа "${characterName}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1700,27 +1643,21 @@
                 }
             });
         }
-
         // CRUD Functions for Wiki
         async function addWikiItem() {
             if (!isAdmin) return;
-            
             const titleInput = document.getElementById('wikiTitle');
             const contentInput = document.getElementById('wikiContent');
-
             if (!titleInput || !contentInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
-
             const title = titleInput.value;
             const content = contentInput.value;
-
             if (!title || !content) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
-
             try {
                 showLoading('admin');
                 await db.collection('wiki').add({
@@ -1736,7 +1673,6 @@
                 showError('admin', 'Ошибка при добавлении факта: ' + error.message);
             }
         }
-
         async function loadWiki() {
             try {
                 showLoading('wiki');
@@ -1752,13 +1688,10 @@
                 showError('wiki', 'Ошибка при загрузке википедии: ' + error.message);
             }
         }
-
         function renderWiki(wikiItems) {
             const container = document.getElementById('wikiContent');
             if (!container) return;
-            
             container.innerHTML = '';
-
             wikiItems.forEach(item => {
                 const wikiItem = document.createElement('div');
                 wikiItem.className = 'wiki-item';
@@ -1770,10 +1703,8 @@
                 container.appendChild(wikiItem);
             });
         }
-
         async function deleteWikiItem(wikiId, wikiTitle) {
             if (!isAdmin) return;
-            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${wikiTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1787,29 +1718,23 @@
                 }
             });
         }
-
         // CRUD Functions for Books
         async function addBook() {
             if (!isAdmin) return;
-            
             const numberInput = document.getElementById('bookNumber');
             const titleInput = document.getElementById('bookTitle');
             const descriptionInput = document.getElementById('bookDescription');
-
             if (!numberInput || !titleInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
-
             const number = numberInput.value;
             const title = titleInput.value;
             const description = descriptionInput.value;
-
             if (!number || !title) {
                 showError('admin', 'Пожалуйста, заполните обязательные поля');
                 return;
             }
-
             try {
                 showLoading('admin');
                 await db.collection('books').add({
@@ -1826,7 +1751,6 @@
                 showError('admin', 'Ошибка при добавлении книги: ' + error.message);
             }
         }
-
         async function loadBooks() {
             try {
                 showLoading('books');
@@ -1842,13 +1766,10 @@
                 showError('books', 'Ошибка при загрузке книг: ' + error.message);
             }
         }
-
         function renderBooks(books) {
             const container = document.getElementById('booksList');
             if (!container) return;
-            
             container.innerHTML = '';
-
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
@@ -1861,10 +1782,8 @@
                 container.appendChild(bookCard);
             });
         }
-
         async function deleteBook(bookId, bookTitle) {
             if (!isAdmin) return;
-            
             openDeleteModal(`Вы уверены, что хотите удалить книгу "${bookTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1878,27 +1797,21 @@
                 }
             });
         }
-
         // CRUD Functions for Schedule
         async function addReleaseDate() {
             if (!isAdmin) return;
-            
             const dateInput = document.getElementById('releaseDate');
             const descriptionInput = document.getElementById('releaseDescription');
-
             if (!dateInput || !descriptionInput) {
                 showError('admin', 'Ошибка: не найдены поля формы');
                 return;
             }
-
             const date = dateInput.value;
             const description = descriptionInput.value;
-
             if (!date || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
-
             try {
                 showLoading('admin');
                 await db.collection('schedule').add({
@@ -1914,7 +1827,6 @@
                 showError('admin', 'Ошибка при добавлении даты: ' + error.message);
             }
         }
-
         async function loadSchedule() {
             try {
                 showLoading('schedule');
@@ -1930,13 +1842,10 @@
                 showError('schedule', 'Ошибка при загрузке расписания: ' + error.message);
             }
         }
-
         function renderSchedule(schedule) {
             const container = document.getElementById('scheduleTable');
             if (!container) return;
-            
             container.innerHTML = '';
-
             schedule.forEach(date => {
                 const row = document.createElement('tr');
                 const dateStr = date.date instanceof Date ? 
@@ -1950,10 +1859,8 @@
                 container.appendChild(row);
             });
         }
-
         async function deleteScheduleItem(scheduleId, scheduleDescription) {
             if (!isAdmin) return;
-            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${scheduleDescription}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1967,7 +1874,6 @@
                 }
             });
         }
-
         // Clear form fields
         function clearForm(fields) {
             fields.forEach(fieldId => {
@@ -1977,7 +1883,6 @@
                 }
             });
         }
-
         // Load all data
         async function loadAllData() {
             await Promise.all([
@@ -1988,11 +1893,167 @@
                 loadSchedule()
             ]);
         }
-
+        // Comments Functions
+        function updateCommentFormVisibility() {
+            const user = auth.currentUser;
+            const commentForm = document.getElementById('commentForm');
+            const loginPrompt = document.getElementById('loginPrompt');
+            
+            if (user) {
+                commentForm.style.display = 'block';
+                loginPrompt.style.display = 'none';
+            } else {
+                commentForm.style.display = 'none';
+                loginPrompt.style.display = 'block';
+            }
+        }
+        function setRating(rating) {
+            currentRating = rating;
+            updateRatingDisplay();
+        }
+        function updateRatingDisplay() {
+            const stars = document.querySelectorAll('#ratingStars .star');
+            stars.forEach((star, index) => {
+                star.textContent = index < currentRating ? '★' : '☆';
+            });
+        }
+        function resetRatingStars() {
+            currentRating = 0;
+            updateRatingDisplay();
+        }
+        async function addCommentWithRating() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Пожалуйста, войдите для добавления комментариев');
+                return;
+            }
+            
+            const commentText = document.getElementById('commentText').value.trim();
+            if (!commentText) {
+                alert('Пожалуйста, введите текст комментария');
+                return;
+            }
+            
+            try {
+                const commentData = {
+                    text: commentText,
+                    rating: currentRating,
+                    likes: 0,
+                    likedBy: [],
+                    author: user.email.split('@')[0],
+                    authorId: user.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('comments').add(commentData);
+                document.getElementById('commentText').value = '';
+                resetRatingStars();
+                await loadComments();
+            } catch (error) {
+                console.error('Error adding comment:', error);
+                alert('Ошибка при добавлении комментария: ' + error.message);
+            }
+        }
+        async function likeComment(commentId, currentUserId) {
+            try {
+                const commentRef = db.collection('comments').doc(commentId);
+                const doc = await commentRef.get();
+                
+                if (doc.exists) {
+                    const comment = doc.data();
+                    let likedBy = comment.likedBy || [];
+                    let likes = comment.likes || 0;
+                    
+                    const userIndex = likedBy.indexOf(currentUserId);
+                    if (userIndex === -1) {
+                        // User hasn't liked yet
+                        likedBy.push(currentUserId);
+                        likes++;
+                    } else {
+                        // User already liked, remove like
+                        likedBy.splice(userIndex, 1);
+                        likes--;
+                    }
+                    
+                    await commentRef.update({
+                        likes: likes,
+                        likedBy: likedBy
+                    });
+                    
+                    // Reload comments to update UI
+                    await loadComments();
+                }
+            } catch (error) {
+                console.error('Error liking comment:', error);
+            }
+        }
+        async function loadComments() {
+            try {
+                showLoading('comments');
+                
+                const snapshot = await db.collection('comments')
+                    .orderBy('createdAt', 'desc')
+                    .limit(50)
+                    .get();
+                
+                const comments = [];
+                snapshot.forEach(doc => {
+                    comments.push({ id: doc.id, ...doc.data() });
+                });
+                
+                renderComments(comments);
+                hideLoading('comments');
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                hideLoading('comments');
+            }
+        }
+        function renderComments(comments) {
+            const container = document.getElementById('commentsList');
+            const user = auth.currentUser;
+            container.innerHTML = '';
+            
+            if (comments.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray);">Пока нет комментариев. Будьте первым!</p>';
+                return;
+            }
+            
+            comments.forEach(comment => {
+                const date = comment.createdAt ? 
+                    new Date(comment.createdAt.seconds * 1000).toLocaleString('ru-RU') : 
+                    'Только что';
+                
+                // Render stars based on rating
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    starsHtml += `<span style="color: #f59e0b;">${i <= comment.rating ? '★' : '☆'}</span>`;
+                }
+                
+                // Check if current user has liked this comment
+                const hasLiked = user && comment.likedBy && comment.likedBy.includes(user.uid);
+                const likeButtonClass = hasLiked ? 'like-button liked' : 'like-button';
+                
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-item';
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.author || 'Аноним'}</span>
+                        <span class="comment-date">${date}</span>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                    <div class="comment-rating">${starsHtml} (${comment.rating}/5)</div>
+                    <div class="comment-actions">
+                        <button class="${likeButtonClass}" onclick="likeComment('${comment.id}', '${user ? user.uid : ''}')">
+                            ❤️ ${comment.likes || 0}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(commentElement);
+            });
+        }
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
-            
             // Hide loading overlay after 3 seconds
             setTimeout(() => {
                 const overlay = document.getElementById('loadingOverlay');
@@ -2000,15 +2061,14 @@
                     overlay.style.display = 'none';
                 }
             }, 3000);
-            
             // Check admin status
             checkAdminStatus();
-            
             // Load all data
             loadAllData();
-            
             // Show initial section
             showSection('chapters');
+            // Load comments
+            loadComments();
         });
     </script>
 </body>
