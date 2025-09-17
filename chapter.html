@@ -160,29 +160,23 @@
                 console.log("Document exists:", doc.exists);
                 console.log("Document data:", doc.data());
                 
-                if (doc.exists) {
-                    var chapter = doc.data();
-                    console.log("Chapter data:", chapter);
-                    
-                    // Проверим наличие всех необходимых полей
-                    if (chapter.number !== undefined && chapter.title && chapter.content) {
-                        document.getElementById("chapterTitle").textContent = "Глава " + chapter.chapterCode + ": " + chapter.title;
-                        document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
-                        document.getElementById("loading").style.display = "none";
-                        document.getElementById("chapterContent").style.display = "block";
-                        console.log("Chapter displayed successfully");
-                    } else {
-                        hideLoading("Неполные данные главы. Проверьте поля: number, title, content");
-                        console.log("Missing fields in chapter data");
-                    }
-                } else {
-                    hideLoading("Глава не найдена в базе данных");
-                }
-            } catch (error) {
-                console.error("Error loading chapter:", error);
-                hideLoading("Ошибка загрузки главы: " + error.message);
-            }
-        }
+                // В функции loadChapter
+if (doc.exists) {
+    const chapter = doc.data();
+    console.log("Chapter ", chapter);
+    
+    // Определение номера главы
+    const chapterNumber = chapter.chapterCode || chapter.number;
+    
+    if (chapterNumber !== undefined && chapter.title && chapter.content) {
+        document.getElementById("chapterTitle").textContent = "Глава " + chapterNumber + ": " + chapter.title;
+        document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("chapterContent").style.display = "block";
+    } else {
+        document.getElementById("loading").innerHTML = "<p>Неполные данные главы</p>";
+    }
+}
 
         function hideLoading(message) {
             console.log("Displaying message:", message);
@@ -191,4 +185,5 @@
     </script>
 </body>
 </html>
+
 
