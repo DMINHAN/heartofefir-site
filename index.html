@@ -26,6 +26,8 @@
             --gray: #94a3b8;
             --border: #334155;
             --gold: #f59e0b;
+            --cyber-green: #00ff41;
+            --cyber-red: #ff0033;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -768,6 +770,119 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        /* Maintenance Mode */
+        .maintenance-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: var(--cyber-green);
+            font-family: 'Courier New', monospace;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .maintenance-mode.active {
+            display: flex;
+        }
+        .terminal-header {
+            background: rgba(0, 255, 65, 0.1);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--cyber-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .terminal-title {
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--cyber-green);
+        }
+        .terminal-close {
+            background: none;
+            border: 1px solid var(--cyber-green);
+            color: var(--cyber-green);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .terminal-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .terminal-line {
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .terminal-prompt {
+            color: var(--cyber-green);
+            margin-right: 10px;
+        }
+        .terminal-command {
+            color: #fff;
+        }
+        .terminal-output {
+            color: #aaa;
+        }
+        .terminal-error {
+            color: var(--cyber-red);
+        }
+        .terminal-warning {
+            color: #ffcc00;
+        }
+        .maintenance-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        .maintenance-title {
+            font-size: 3rem;
+            color: var(--cyber-red);
+            text-shadow: 0 0 20px var(--cyber-red);
+            margin-bottom: 20px;
+            animation: blink 1s infinite;
+        }
+        .maintenance-subtitle {
+            font-size: 1.5rem;
+            color: var(--cyber-green);
+            margin-bottom: 30px;
+        }
+        .maintenance-footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .matrix-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+        .matrix-char {
+            position: absolute;
+            color: var(--cyber-green);
+            font-size: 14px;
+            opacity: 0;
+        }
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -804,6 +919,25 @@
         </div>
     </div>
 
+    <!-- Maintenance Mode -->
+    <div class="maintenance-mode" id="maintenanceMode">
+        <div class="terminal-header">
+            <div class="terminal-title">CYBER_TERMINAL v2.1.5</div>
+            <button class="terminal-close" onclick="exitMaintenanceMode()" id="exitMaintenanceBtn" style="display: none;">EXIT</button>
+        </div>
+        <div class="matrix-effect" id="matrixEffect"></div>
+        <div class="terminal-content" id="terminalContent">
+            <!-- Terminal lines will be added here dynamically -->
+        </div>
+        <div class="maintenance-message">
+            <div class="maintenance-title">САЙТ ПРИОСТАНОВЛЕН</div>
+            <div class="maintenance-subtitle">Ведутся Технические работы</div>
+        </div>
+        <div class="maintenance-footer">
+            SYSTEM STATUS: MAINTENANCE MODE ACTIVE | ACCESS RESTRICTED
+        </div>
+    </div>
+
     <!-- Chapters Menu -->
     <div class="chapters-menu" id="chaptersMenu">
         <div class="menu-header">
@@ -833,6 +967,15 @@
             </div>
             <div class="error-message" id="adminError"></div>
             
+            <!-- Maintenance Mode Toggle -->
+            <div class="admin-section">
+                <h3>Режим технических работ</h3>
+                <button class="btn" onclick="toggleMaintenanceMode()" id="maintenanceToggleBtn">Включить тех. работы</button>
+                <p style="margin-top: 10px; color: var(--gray); font-size: 0.9rem;">
+                    При включении режима технических работ сайт будет недоступен для посетителей.
+                </p>
+            </div>
+
             <!-- Color Settings -->
             <div class="admin-section">
                 <h3>Настройки цветов</h3>
@@ -1099,6 +1242,7 @@
         // Check if user is admin
         let isAdmin = false;
         let deleteCallback = null;
+        let isMaintenanceMode = false;
 
         // Create stars for welcome screen
         function createStars() {
@@ -1167,14 +1311,13 @@
             document.getElementById('darkerColor').value = '#0f0e24';
         }
 
-        // Authentication Functions - ИСПРАВЛЕНА ОШИБКА
+        // Authentication Functions
         function checkAdminStatus() {
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    // Проверяем, является ли пользователь админом
-                    // В реальной системе это можно сделать через Firestore
                     isAdmin = true;
                     document.getElementById('adminToggle').classList.add('show');
+                    checkMaintenanceMode(); // Проверяем режим тех. работ при входе админа
                 } else {
                     isAdmin = false;
                     document.getElementById('adminToggle').classList.remove('show');
@@ -1201,6 +1344,193 @@
             auth.signOut();
             toggleAdminPanel();
             alert('Вы вышли из системы');
+        }
+
+        // Maintenance Mode Functions
+        async function checkMaintenanceMode() {
+            try {
+                const doc = await db.collection('settings').doc('maintenance').get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    isMaintenanceMode = data.enabled || false;
+                    updateMaintenanceToggleButton();
+                    
+                    // Если админ вошел, не показываем режим тех. работ
+                    if (!isAdmin) {
+                        if (isMaintenanceMode) {
+                            showMaintenanceMode();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('Ошибка проверки режима тех. работ:', error);
+            }
+        }
+
+        function updateMaintenanceToggleButton() {
+            const button = document.getElementById('maintenanceToggleBtn');
+            if (button) {
+                button.textContent = isMaintenanceMode ? 'Выключить тех. работы' : 'Включить тех. работы';
+                button.style.background = isMaintenanceMode ? 
+                    'linear-gradient(45deg, #ef4444, #dc2626)' : 
+                    'linear-gradient(45deg, var(--primary), var(--secondary))';
+            }
+        }
+
+        async function toggleMaintenanceMode() {
+            if (!isAdmin) return;
+            
+            try {
+                isMaintenanceMode = !isMaintenanceMode;
+                
+                // Сохраняем состояние в Firestore
+                await db.collection('settings').doc('maintenance').set({
+                    enabled: isMaintenanceMode,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: auth.currentUser ? auth.currentUser.uid : null
+                }, { merge: true });
+                
+                updateMaintenanceToggleButton();
+                
+                if (isMaintenanceMode) {
+                    alert('Режим технических работ включен!');
+                } else {
+                    alert('Режим технических работ выключен!');
+                }
+            } catch (error) {
+                console.error('Ошибка переключения режима тех. работ:', error);
+                alert('Ошибка: ' + error.message);
+                // Возвращаем предыдущее состояние
+                isMaintenanceMode = !isMaintenanceMode;
+                updateMaintenanceToggleButton();
+            }
+        }
+
+        function showMaintenanceMode() {
+            const maintenanceMode = document.getElementById('maintenanceMode');
+            if (maintenanceMode) {
+                maintenanceMode.classList.add('active');
+                startTerminalSimulation();
+                createMatrixEffect();
+            }
+        }
+
+        function exitMaintenanceMode() {
+            if (!isAdmin) return;
+            
+            const maintenanceMode = document.getElementById('maintenanceMode');
+            if (maintenanceMode) {
+                maintenanceMode.classList.remove('active');
+            }
+            
+            // Показываем кнопку выхода для админа
+            const exitBtn = document.getElementById('exitMaintenanceBtn');
+            if (exitBtn) {
+                exitBtn.style.display = 'block';
+            }
+        }
+
+        function startTerminalSimulation() {
+            const terminalContent = document.getElementById('terminalContent');
+            if (!terminalContent) return;
+            
+            terminalContent.innerHTML = '';
+            
+            // Начальные строки терминала
+            const initialLines = [
+                '> Initializing CYBER_TERMINAL v2.1.5...',
+                '> System boot sequence initiated',
+                '> Loading kernel modules...',
+                '> Establishing secure connection...',
+                '> Authentication successful',
+                '> Welcome, SYSTEM_ADMIN',
+                '',
+                '> SYSTEM STATUS: MAINTENANCE MODE',
+                '> ACCESS TO PUBLIC CONTENT RESTRICTED',
+                '> All services temporarily unavailable',
+                '',
+                '> INITIATING SYSTEM DIAGNOSTICS...',
+                ''
+            ];
+            
+            initialLines.forEach(line => {
+                const lineElement = document.createElement('div');
+                lineElement.className = 'terminal-line';
+                lineElement.textContent = line;
+                terminalContent.appendChild(lineElement);
+            });
+            
+            // Симуляция активности терминала
+            setInterval(() => {
+                const activities = [
+                    '[INFO] Running system checks...',
+                    '[INFO] Scanning for corrupted files...',
+                    '[INFO] Updating security protocols...',
+                    '[WARNING] Memory usage at 87%',
+                    '[INFO] Firewall status: ACTIVE',
+                    '[INFO] Database backup in progress...',
+                    '[DEBUG] Module core.dll loaded',
+                    '[INFO] Network connectivity stable',
+                    '[INFO] Encryption protocols updated',
+                    '[DEBUG] Cache cleared successfully',
+                    '[INFO] System optimization complete',
+                    '[WARNING] Disk space low (15% remaining)',
+                    '[INFO] Log files archived',
+                    '[DEBUG] API endpoints secured',
+                    '[INFO] SSL certificates renewed'
+                ];
+                
+                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                const lineElement = document.createElement('div');
+                lineElement.className = 'terminal-line';
+                lineElement.textContent = '> ' + randomActivity;
+                terminalContent.appendChild(lineElement);
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+            }, 2000);
+        }
+
+        function createMatrixEffect() {
+            const matrixEffect = document.getElementById('matrixEffect');
+            if (!matrixEffect) return;
+            
+            matrixEffect.innerHTML = '';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
+            const fontSize = 14;
+            const columns = Math.floor(window.innerWidth / fontSize);
+            
+            for (let i = 0; i < 100; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = `${Math.random() * 100}%`;
+                char.style.top = `${Math.random() * 100}%`;
+                char.style.fontSize = `${Math.random() * 10 + 10}px`;
+                char.style.opacity = Math.random() * 0.5;
+                matrixEffect.appendChild(char);
+                
+                // Анимация падения
+                animateMatrixChar(char);
+            }
+        }
+
+        function animateMatrixChar(char) {
+            let posY = -20;
+            const speed = Math.random() * 2 + 1;
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
+            
+            function fall() {
+                posY += speed;
+                char.style.top = `${posY}%`;
+                
+                if (posY > 100) {
+                    posY = -20;
+                    char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                }
+                
+                requestAnimationFrame(fall);
+            }
+            
+            fall();
         }
 
         // Navigation Functions
@@ -1348,7 +1678,6 @@
             const container = document.getElementById('chaptersGrid');
             container.innerHTML = '';
 
-            // Сортировка с поддержкой обеих структур
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1383,7 +1712,6 @@
             const container = document.getElementById('menuChaptersList');
             container.innerHTML = '';
 
-            // Сортировка
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1510,17 +1838,17 @@
                 
                 let imageHtml = '';
                 if (character.imageUrl) {
-                    imageHtml = `<img src="${character.imageUrl}" alt="${character.name}" class="character-image" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
-                    imageHtml += `<div class="character-avatar" style="display:none;">${character.name.charAt(0)}</div>`;
+                    imageHtml = `<img src="${character.imageUrl}" alt="${character.name || 'Персонаж'}" class="character-image" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
+                    imageHtml += `<div class="character-avatar" style="display:none;">${(character.name || '?').charAt(0)}</div>`;
                 } else {
-                    imageHtml = `<div class="character-avatar">${character.name.charAt(0)}</div>`;
+                    imageHtml = `<div class="character-avatar">${(character.name || '?').charAt(0)}</div>`;
                 }
                 
                 characterCard.innerHTML = `
                     ${imageHtml}
                     <h3 class="character-name">${character.name || 'Без имени'}</h3>
                     <p class="character-description">${character.description || ''}</p>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteCharacter('${character.id}', '${character.name}')">Удалить</button>` : ''}
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteCharacter('${character.id}', '${character.name || 'Без имени'}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(characterCard);
             });
@@ -1674,7 +2002,7 @@
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
                 bookCard.innerHTML = `
-                    <div class="book-number">${book.number}</div>
+                    <div class="book-number">${book.number || '?'}</div>
                     <h3 class="book-title">${book.title || 'Без названия'}</h3>
                     <p class="book-description">${book.description || ''}</p>
                     ${isAdmin ? `<button class="btn delete-btn" onclick="deleteBook('${book.id}', '${book.title || 'Без названия'}')">Удалить</button>` : ''}
@@ -1781,11 +2109,8 @@
 
         // Clear form fields
         function clearForm(fields) {
-            fields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.value = '';
-                }
+            fields.forEach(field => {
+                document.getElementById(field).value = '';
             });
         }
 
@@ -1811,6 +2136,9 @@
             
             // Check admin status
             checkAdminStatus();
+            
+            // Check maintenance mode
+            checkMaintenanceMode();
             
             // Load all data
             loadAllData();
