@@ -927,7 +927,142 @@
         .neon-grid::after {
             transform: rotate(90deg);
         }
-        /* Responsive */
+
+        /* Chat Widget Styles */
+        .chat-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 998;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-toggle-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+            background: var(--primary-dark);
+        }
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 997;
+            display: none;
+            flex-direction: column;
+            border: 1px solid var(--primary);
+            backdrop-filter: blur(10px);
+        }
+        .chat-widget.open {
+            display: flex;
+            animation: fadeInUp 0.3s ease-out;
+        }
+        .chat-header {
+            background: rgba(139, 92, 246, 0.2);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--primary);
+        }
+        .chat-header h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin: 0;
+        }
+        .close-chat {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .close-chat:hover {
+            background: rgba(236, 72, 153, 0.2);
+            transform: rotate(90deg);
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-message {
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 10px;
+            padding: 12px 15px;
+            max-width: 85%;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            position: relative;
+        }
+        .chat-message.own {
+            align-self: flex-end;
+            background: rgba(139, 92, 246, 0.3);
+            border-color: var(--primary);
+        }
+        .chat-message-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        .chat-message-username {
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .chat-message-time {
+            opacity: 0.7;
+        }
+        .chat-message-text {
+            line-height: 1.5;
+        }
+        .chat-input-area {
+            padding: 15px;
+            background: rgba(15, 14, 36, 0.5);
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 14, 36, 0.5);
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+        }
+        .send-btn {
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
+        /* Медиа-запрос для мобильных устройств */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -951,6 +1086,12 @@
                 width: 100%;
                 left: -100%;
             }
+            .chat-widget {
+                width: 90%;
+                height: 70vh;
+                bottom: 80px;
+                right: 5%;
+            }
         }
     </style>
 </head>
@@ -962,7 +1103,6 @@
             <div class="welcome-text">Добро пожаловать на сайт!</div>
         </div>
     </div>
-
     <!-- Maintenance Mode -->
     <div class="maintenance-mode" id="maintenanceMode">
         <div class="terminal-header">
@@ -982,7 +1122,6 @@
             > SYSTEM STATUS: MAINTENANCE MODE ACTIVE | ACCESS RESTRICTED
         </div>
     </div>
-
     <!-- Chapters Menu -->
     <div class="chapters-menu" id="chaptersMenu">
         <div class="menu-header">
@@ -995,10 +1134,8 @@
             </div>
         </div>
     </div>
-
     <!-- Admin Toggle Button (только для админа) -->
     <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()">⚙️</button>
-
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
@@ -1011,7 +1148,6 @@
                 <p>Загрузка...</p>
             </div>
             <div class="error-message" id="adminError"></div>
-            
             <!-- Maintenance Mode Toggle -->
             <div class="admin-section">
                 <h3>Режим технических работ</h3>
@@ -1020,7 +1156,6 @@
                     При включении режима технических работ сайт будет недоступен для посетителей.
                 </p>
             </div>
-
             <!-- Color Settings -->
             <div class="admin-section">
                 <h3>Настройки цветов</h3>
@@ -1050,7 +1185,6 @@
                 </div>
                 <button class="btn" onclick="resetColors()">Сбросить цвета</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Главу</h3>
                 <div class="form-group">
@@ -1071,7 +1205,6 @@
                 </div>
                 <button class="btn" onclick="addChapter()">Добавить Главу</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Персонажа</h3>
                 <div class="form-group">
@@ -1089,7 +1222,6 @@
                 </div>
                 <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Факт в Википедию</h3>
                 <div class="form-group">
@@ -1102,7 +1234,6 @@
                 </div>
                 <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Книгу в Серии</h3>
                 <div class="form-group">
@@ -1119,7 +1250,6 @@
                 </div>
                 <button class="btn" onclick="addBook()">Добавить Книгу</button>
             </div>
-
             <div class="admin-section">
                 <h3>Добавить Дату Выхода</h3>
                 <div class="form-group">
@@ -1132,11 +1262,9 @@
                 </div>
                 <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
             </div>
-            
             <button class="btn" onclick="logout()" style="background: linear-gradient(45deg, #ef4444, #dc2626); width: 100%;">Выйти</button>
         </div>
     </div>
-
     <!-- Modals -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -1148,9 +1276,29 @@
             </div>
         </div>
     </div>
-
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
+
+    <!-- Chat Widget Button -->
+    <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChatWidget()">💬</button>
+    <!-- Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h3>Чат сообщества</h3>
+            <button class="close-chat" onclick="toggleChatWidget()">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Сообщения будут загружаться сюда динамически -->
+            <div class="loading" id="chatLoading">
+                <div class="spinner"></div>
+                <p>Загрузка сообщений...</p>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatMessageInput" placeholder="Введите сообщение..." onkeypress="handleChatKeypress(event)">
+            <button class="btn send-btn" onclick="sendChatMessage()">Отправить</button>
+        </div>
+    </div>
 
     <!-- Header -->
     <header>
@@ -1161,7 +1309,6 @@
             </div>
         </div>
     </header>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
@@ -1169,7 +1316,6 @@
             <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
         </div>
     </section>
-
     <!-- Navigation Tabs -->
     <div class="container">
         <div class="tabs">
@@ -1180,7 +1326,6 @@
             <div class="tab" onclick="showSection('schedule')">Расписание</div>
         </div>
     </div>
-
     <!-- Main Content Layout -->
     <div class="container">
         <div class="main-layout">
@@ -1197,7 +1342,6 @@
                         <!-- Chapters will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Characters Section -->
                 <section class="section" id="charactersSection">
                     <h2 class="section-title">Персонажи</h2>
@@ -1209,7 +1353,6 @@
                         <!-- Characters will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Wiki Section -->
                 <section class="section" id="wikiSection">
                     <h2 class="section-title">Википедия</h2>
@@ -1221,7 +1364,6 @@
                         <!-- Wiki items will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Books Series Section -->
                 <section class="section" id="booksSection">
                     <h2 class="section-title">Серия книг</h2>
@@ -1233,7 +1375,6 @@
                         <!-- Books will be added here dynamically -->
                     </div>
                 </section>
-
                 <!-- Release Schedule Section -->
                 <section class="section" id="scheduleSection">
                     <h2 class="section-title">Расписание выхода глав</h2>
@@ -1258,7 +1399,6 @@
             </div>
         </div>
     </div>
-
     <!-- Footer -->
     <div class="container">
         <div class="footer">
@@ -1266,7 +1406,6 @@
             <p>@WhiteX author: WhiteMeovv</p>
         </div>
     </div>
-
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -1277,13 +1416,11 @@
             messagingSenderId: "296902937897",
             appId: "1:296902937897:web:11de57e0de55eb84a63b38"
         };
-
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
         const storage = firebase.storage();
-
         // Check if user is admin
         let isAdmin = false;
         let deleteCallback = null;
@@ -1293,7 +1430,6 @@
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const starCount = 100;
-            
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -1311,7 +1447,6 @@
         function toggleChaptersMenu() {
             const menu = document.getElementById('chaptersMenu');
             const overlay = document.getElementById('overlay');
-            
             menu.classList.toggle('open');
             overlay.classList.toggle('active');
         }
@@ -1319,10 +1454,8 @@
         // Toggle Admin Panel
         function toggleAdminPanel() {
             if (!isAdmin) return; // Только админ может открыть панель
-            
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
-            
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
@@ -1347,7 +1480,6 @@
             updateColor('--gold', '#f59e0b');
             updateColor('--dark', '#1e1b4b');
             updateColor('--darker', '#0f0e24');
-            
             document.getElementById('primaryColor').value = '#8B5CF6';
             document.getElementById('primaryDarkColor').value = '#7C3AED';
             document.getElementById('secondaryColor').value = '#EC4899';
@@ -1373,7 +1505,6 @@
         function login() {
             const email = prompt('Введите email администратора:');
             const password = prompt('Введите пароль:');
-            
             if (email && password) {
                 auth.signInWithEmailAndPassword(email, password)
                     .then(() => {
@@ -1399,7 +1530,6 @@
                     const data = doc.data();
                     isMaintenanceMode = data.enabled || false;
                     updateMaintenanceToggleButton();
-                    
                     // Если админ вошел, не показываем режим тех. работ
                     if (!isAdmin) {
                         if (isMaintenanceMode) {
@@ -1424,19 +1554,15 @@
 
         async function toggleMaintenanceMode() {
             if (!isAdmin) return;
-            
             try {
                 isMaintenanceMode = !isMaintenanceMode;
-                
                 // Сохраняем состояние в Firestore
                 await db.collection('settings').doc('maintenance').set({
                     enabled: isMaintenanceMode,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedBy: auth.currentUser ? auth.currentUser.uid : null
                 }, { merge: true });
-                
                 updateMaintenanceToggleButton();
-                
                 if (isMaintenanceMode) {
                     alert('Режим технических работ включен!');
                     showMaintenanceMode();
@@ -1472,12 +1598,10 @@
 
         function exitMaintenanceMode() {
             if (!isAdmin) return;
-            
             const maintenanceMode = document.getElementById('maintenanceMode');
             if (maintenanceMode) {
                 maintenanceMode.classList.remove('active');
             }
-            
             // Показываем кнопку выхода для админа
             const exitBtn = document.getElementById('exitMaintenanceBtn');
             if (exitBtn) {
@@ -1488,9 +1612,7 @@
         function startTerminalSimulation() {
             const terminalContent = document.getElementById('terminalContent');
             if (!terminalContent) return;
-            
             terminalContent.innerHTML = '';
-            
             // Начальные строки терминала
             const initialLines = [
                 '> Initializing CYBER_TERMINAL v2.1.5...',
@@ -1507,14 +1629,12 @@
                 '> INITIATING SYSTEM DIAGNOSTICS...',
                 ''
             ];
-            
             initialLines.forEach(line => {
                 const lineElement = document.createElement('div');
                 lineElement.className = 'terminal-line';
                 lineElement.textContent = line;
                 terminalContent.appendChild(lineElement);
             });
-            
             // Симуляция активности терминала
             setInterval(() => {
                 const activities = [
@@ -1539,7 +1659,6 @@
                     '[INFO] System diagnostics complete',
                     '[INFO] System ready for maintenance'
                 ];
-                
                 const randomActivity = activities[Math.floor(Math.random() * activities.length)];
                 const lineElement = document.createElement('div');
                 lineElement.className = 'terminal-line';
@@ -1552,12 +1671,10 @@
         function createMatrixEffect() {
             const matrixEffect = document.getElementById('matrixEffect');
             if (!matrixEffect) return;
-            
             matrixEffect.innerHTML = '';
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
             const fontSize = 14;
             const columns = Math.floor(window.innerWidth / fontSize);
-            
             for (let i = 0; i < 100; i++) {
                 const char = document.createElement('div');
                 char.className = 'matrix-char';
@@ -1567,7 +1684,6 @@
                 char.style.fontSize = `${Math.random() * 10 + 10}px`;
                 char.style.opacity = Math.random() * 0.5;
                 matrixEffect.appendChild(char);
-                
                 // Анимация падения
                 animateMatrixChar(char);
             }
@@ -1576,14 +1692,12 @@
         function createNeonGrid() {
             const neonGrid = document.querySelector('.neon-grid');
             if (!neonGrid) return;
-            
             // Создаем анимацию сетки
             const interval = setInterval(() => {
                 const currentOpacity = parseFloat(getComputedStyle(neonGrid).opacity);
                 const newOpacity = currentOpacity === 0.1 ? 0.2 : 0.1;
                 neonGrid.style.opacity = newOpacity;
             }, 1000);
-            
             // Очищаем интервал при уничтожении элемента
             neonGrid.addEventListener('remove', () => clearInterval(interval));
         }
@@ -1592,19 +1706,15 @@
             let posY = -20;
             const speed = Math.random() * 2 + 1;
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
-            
             function fall() {
                 posY += speed;
                 char.style.top = `${posY}%`;
-                
                 if (posY > 100) {
                     posY = -20;
                     char.textContent = chars[Math.floor(Math.random() * chars.length)];
                 }
-                
                 requestAnimationFrame(fall);
             }
-            
             fall();
         }
 
@@ -1615,19 +1725,16 @@
             sections.forEach(section => {
                 section.classList.remove('active');
             });
-            
             // Remove active class from all tabs
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.classList.remove('active');
             });
-            
             // Show selected section
             const targetSection = document.getElementById(sectionId + 'Section');
             if (targetSection) {
                 targetSection.classList.add('active');
             }
-            
             // Add active class to clicked tab (if event exists)
             if (event && event.target) {
                 event.target.classList.add('active');
@@ -1675,7 +1782,7 @@
                 modalElement.style.display = 'flex';
             }
         }
-        
+
         function closeDeleteModal() {
             const modalElement = document.getElementById('deleteModal');
             if (modalElement) {
@@ -1683,7 +1790,7 @@
             }
             deleteCallback = null;
         }
-        
+
         function confirmDelete() {
             if (deleteCallback) {
                 deleteCallback();
@@ -1715,7 +1822,6 @@
         // CRUD Functions for Chapters
         async function addChapter() {
             if (!isAdmin) return;
-            
             const chapterInput = document.getElementById('chapterNumber');
             const titleInput = document.getElementById('chapterTitle');
             const descriptionInput = document.getElementById('chapterDescription');
@@ -2225,10 +2331,138 @@
             ]);
         }
 
+        // Chat Widget Functions
+        let currentUser = null; // Будет хранить информацию о текущем пользователе (если авторизован)
+        let chatUnsubscribe = null; // Для отписки от обновлений чата
+
+        // Инициализация чата
+        async function initChat() {
+            // Проверяем, авторизован ли пользователь
+            auth.onAuthStateChanged(user => {
+                currentUser = user;
+            });
+
+            // Загружаем сообщения
+            loadChatMessages();
+        }
+
+        // Переключение видимости виджета чата
+        function toggleChatWidget() {
+            const widget = document.getElementById('chatWidget');
+            const overlay = document.getElementById('overlay');
+            widget.classList.toggle('open');
+            if (widget.classList.contains('open')) {
+                overlay.classList.add('active');
+                // Прокручиваем чат вниз
+                const messagesContainer = document.getElementById('chatMessages');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Отправка сообщения
+        async function sendChatMessage() {
+            const messageInput = document.getElementById('chatMessageInput');
+            const messageText = messageInput.value.trim();
+
+            if (!messageText) return;
+
+            try {
+                const messageData = {
+                    text: messageText,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: currentUser ? currentUser.uid : 'anonymous',
+                    username: currentUser ? (currentUser.displayName || currentUser.email || 'User') : 'Аноним'
+                };
+
+                await db.collection('chatMessages').add(messageData);
+                messageInput.value = ''; // Очищаем поле ввода
+            } catch (error) {
+                console.error("Ошибка отправки сообщения: ", error);
+                alert('Не удалось отправить сообщение. Попробуйте позже.');
+            }
+        }
+
+        // Обработка нажатия Enter в поле ввода чата
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Загрузка и отображение сообщений
+        async function loadChatMessages() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const loadingElement = document.getElementById('chatLoading');
+
+            try {
+                loadingElement.style.display = 'block';
+
+                // Отписываемся от предыдущей подписки, если она есть
+                if (chatUnsubscribe) {
+                    chatUnsubscribe();
+                }
+
+                // Подписываемся на обновления в реальном времени
+                chatUnsubscribe = db.collection('chatMessages')
+                    .orderBy('createdAt', 'asc')
+                    .onSnapshot(snapshot => {
+                        messagesContainer.innerHTML = ''; // Очищаем контейнер
+
+                        snapshot.forEach(doc => {
+                            const message = doc.data();
+                            const messageElement = createMessageElement(message, doc.id);
+                            messagesContainer.appendChild(messageElement);
+                        });
+
+                        // Прокручиваем вниз
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        loadingElement.style.display = 'none';
+                    }, error => {
+                        console.error("Ошибка загрузки сообщений: ", error);
+                        loadingElement.style.display = 'none';
+                        messagesContainer.innerHTML = '<p style="color: var(--secondary);">Ошибка загрузки чата.</p>';
+                    });
+
+            } catch (error) {
+                console.error("Ошибка при инициализации чата: ", error);
+                loadingElement.style.display = 'none';
+                messagesContainer.innerHTML = '<p style="color: var(--secondary);">Ошибка инициализации чата.</p>';
+            }
+        }
+
+        // Создание HTML-элемента для одного сообщения
+        function createMessageElement(message, messageId) {
+            const isOwnMessage = currentUser && message.userId === currentUser.uid;
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isOwnMessage ? 'own' : ''}`;
+
+            const date = message.createdAt?.toDate ? message.createdAt.toDate() : new Date();
+            const timeString = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+            messageDiv.innerHTML = `
+                <div class="chat-message-info">
+                    <span class="chat-message-username">${escapeHtml(message.username)}</span>
+                    <span class="chat-message-time">${timeString}</span>
+                </div>
+                <div class="chat-message-text">${escapeHtml(message.text)}</div>
+            `;
+
+            return messageDiv;
+        }
+
+        // Функция для экранирования HTML, чтобы предотвратить XSS-атаки
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
-            
             // Hide loading overlay after 3 seconds
             setTimeout(() => {
                 const overlay = document.getElementById('loadingOverlay');
@@ -2236,16 +2470,14 @@
                     overlay.style.display = 'none';
                 }
             }, 3000);
-            
             // Check admin status
             checkAdminStatus();
-            
             // Check maintenance mode
             checkMaintenanceMode();
-            
             // Load all data
             loadAllData();
-            
+            // Initialize chat
+            initChat();
             // Show initial section
             showSection('chapters');
         });
