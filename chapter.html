@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Глава - Сердце Эфира</title>
+    <title>Глава - Сердце Эфира: Селлестиал</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,16 +15,37 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --dark: #1e293b;
-            --light: #f8fafc;
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1e1b4b;
+            --darker: #0f0e24;
+            --light: #f0f9ff;
+            --gray: #94a3b8;
+            --border: #334155;
+            --gold: #f59e0b;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
             line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
+            z-index: -1;
         }
 
         .container {
@@ -34,11 +55,13 @@
         }
 
         header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(30, 27, 75, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
         }
 
         .header-content {
@@ -49,50 +72,93 @@
         }
 
         .logo {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinzel', serif;
             font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
+            font-weight: 900;
+            color: var(--gold);
             text-decoration: none;
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
         }
 
         .back-link {
             text-decoration: none;
-            color: var(--primary);
+            color: var(--light);
             font-weight: 500;
+            padding: 10px 20px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
         }
 
         .chapter-content {
-            background: white;
-            border-radius: 12px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
             padding: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             margin-top: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .chapter-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinzel', serif;
             font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--dark);
+            margin-bottom: 30px;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        .chapter-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 15px auto;
         }
 
         .chapter-text {
             font-size: 1.1rem;
             margin-bottom: 20px;
+            line-height: 1.8;
+            color: var(--light);
+        }
+
+        .chapter-text p {
+            margin-bottom: 20px;
+            text-align: justify;
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
+            padding: 100px 50px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
+            border: 4px solid rgba(139, 92, 246, 0.3);
             border-radius: 50%;
             border-top: 4px solid var(--primary);
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
@@ -101,13 +167,82 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Chapter navigation */
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: rgba(139, 92, 246, 0.2);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-button.prev {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+        }
+
+        .nav-button.next {
+            background: linear-gradient(45deg, var(--secondary), #db2777);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .chapter-title {
+                font-size: 2rem;
+            }
+            
+            .chapter-navigation {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">Сердце Эфира</a>
+                <a href="index.html" class="logo">Сердце Эфира: Селлестиал</a>
                 <a href="index.html" class="back-link">← Назад к главам</a>
             </div>
         </div>
@@ -121,6 +256,20 @@
         <div class="chapter-content" id="chapterContent" style="display: none;">
             <h1 class="chapter-title" id="chapterTitle"></h1>
             <div class="chapter-text" id="chapterText"></div>
+            
+            <!-- Chapter Navigation -->
+            <div class="chapter-navigation">
+                <button class="nav-button prev" id="prevChapter" onclick="goToPrevChapter()" disabled>← Предыдущая</button>
+                <button class="nav-button next" id="nextChapter" onclick="goToNextChapter()" disabled>Следующая →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container">
+        <div class="footer">
+            <p>© 2024 Сердце Эфира: Селлестиал</p>
+            <p>@WhiteX author: WhiteMeovv</p>
         </div>
     </div>
 
@@ -139,6 +288,10 @@
         firebase.initializeApp(firebaseConfig);
         var db = firebase.firestore();
 
+        // Global variables
+        var currentChapterId = null;
+        var allChapters = [];
+
         // Get chapter ID from URL
         var urlParams = new URLSearchParams(window.location.search);
         var chapterId = urlParams.get("id");
@@ -146,9 +299,35 @@
         console.log("Chapter ID from URL:", chapterId);
 
         if (chapterId) {
-            loadChapter(chapterId);
+            loadAllChapters().then(() => {
+                loadChapter(chapterId);
+            });
         } else {
             hideLoading("Глава не указана в URL");
+        }
+
+        // Load all chapters for navigation
+        async function loadAllChapters() {
+            try {
+                const snapshot = await db.collection("chapters").get();
+                allChapters = [];
+                snapshot.forEach(doc => {
+                    allChapters.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Sort chapters
+                allChapters.sort((a, b) => {
+                    const numA = a.chapterCode !== undefined ? 
+                        (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
+                        a.number;
+                    const numB = b.chapterCode !== undefined ? 
+                        (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
+                        b.number;
+                    return numA - numB;
+                });
+            } catch (error) {
+                console.error("Error loading chapters:", error);
+            }
         }
 
         async function loadChapter(id) {
@@ -162,6 +341,7 @@
                 
                 if (doc.exists) {
                     const chapter = doc.data();
+                    currentChapterId = id;
                     console.log("Chapter data:", chapter);
                     
                     // Определение номера главы (поддержка обеих структур)
@@ -169,9 +349,12 @@
                     
                     if (chapterNumber !== undefined && chapter.title && chapter.content) {
                         document.getElementById("chapterTitle").textContent = "Глава " + chapterNumber + ": " + chapter.title;
-                        document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
+                        document.getElementById("chapterText").innerHTML = formatChapterContent(chapter.content);
                         document.getElementById("loading").style.display = "none";
                         document.getElementById("chapterContent").style.display = "block";
+                        
+                        // Update navigation buttons
+                        updateNavigation();
                     } else {
                         hideLoading("Неполные данные главы. Проверьте поля: number/chapterCode, title, content");
                     }
@@ -184,11 +367,79 @@
             }
         }
 
+        function formatChapterContent(content) {
+            // Split content by double newlines to create paragraphs
+            return content
+                .split('\n\n')
+                .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+                .join('');
+        }
+
         function hideLoading(message) {
             console.log("Displaying message:", message);
             document.getElementById("loading").innerHTML = "<p>" + message + "</p>";
         }
+
+        // Navigation functions
+        function updateNavigation() {
+            if (!currentChapterId || allChapters.length === 0) return;
+            
+            const currentIndex = allChapters.findIndex(chapter => chapter.id === currentChapterId);
+            
+            const prevButton = document.getElementById("prevChapter");
+            const nextButton = document.getElementById("nextChapter");
+            
+            if (prevButton && nextButton) {
+                // Previous chapter
+                if (currentIndex > 0) {
+                    prevButton.disabled = false;
+                    prevButton.onclick = () => goToChapter(allChapters[currentIndex - 1].id);
+                } else {
+                    prevButton.disabled = true;
+                }
+                
+                // Next chapter
+                if (currentIndex < allChapters.length - 1) {
+                    nextButton.disabled = false;
+                    nextButton.onclick = () => goToChapter(allChapters[currentIndex + 1].id);
+                } else {
+                    nextButton.disabled = true;
+                }
+            }
+        }
+
+        function goToChapter(chapterId) {
+            // Update URL without reloading the page
+            const url = new URL(window.location);
+            url.searchParams.set('id', chapterId);
+            window.history.pushState({}, '', url);
+            
+            // Load new chapter
+            loadChapter(chapterId);
+        }
+
+        function goToPrevChapter() {
+            const currentIndex = allChapters.findIndex(chapter => chapter.id === currentChapterId);
+            if (currentIndex > 0) {
+                goToChapter(allChapters[currentIndex - 1].id);
+            }
+        }
+
+        function goToNextChapter() {
+            const currentIndex = allChapters.findIndex(chapter => chapter.id === currentChapterId);
+            if (currentIndex < allChapters.length - 1) {
+                goToChapter(allChapters[currentIndex + 1].id);
+            }
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const newChapterId = urlParams.get("id");
+            if (newChapterId && newChapterId !== currentChapterId) {
+                loadChapter(newChapterId);
+            }
+        });
     </script>
 </body>
 </html>
-
