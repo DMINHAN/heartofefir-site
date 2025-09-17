@@ -895,21 +895,34 @@
         }
 
         function renderChapters(chapters) {
-            const container = document.getElementById('chaptersGrid');
-            container.innerHTML = '';
+    const container = document.getElementById('chaptersGrid');
+    container.innerHTML = '';
 
-            chapters.forEach(chapter => {
-                const chapterCard = document.createElement('div');
-                chapterCard.className = 'chapter-card';
-                chapterCard.innerHTML = `
-                    <div class="chapter-number">Глава ${chapter.number}</div>
-                    <h3 class="chapter-title">${chapter.title}</h3>
-                    <p class="chapter-description">${chapter.description}</p>
-                    <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
-                `;
-                container.appendChild(chapterCard);
-            });
+    // Сортировка по chapterCode
+    chapters.sort((a, b) => {
+        const aParts = a.chapterCode.split('.').map(Number);
+        const bParts = b.chapterCode.split('.').map(Number);
+        
+        // Сравниваем основные номера
+        if (aParts[0] !== bParts[0]) {
+            return aParts[0] - bParts[0];
         }
+        // Если основные номера равны, сравниваем подглавы
+        return (aParts[1] || 0) - (bParts[1] || 0);
+    });
+
+    chapters.forEach(chapter => {
+        const chapterCard = document.createElement('div');
+        chapterCard.className = 'chapter-card';
+        chapterCard.innerHTML = `
+            <div class="chapter-number">Глава ${chapter.chapterCode}</div>
+            <h3 class="chapter-title">${chapter.title}</h3>
+            <p class="chapter-description">${chapter.description}</p>
+            <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
+        `;
+        container.appendChild(chapterCard);
+    });
+}
 
         function showChapter(id) {
             // В реальной реализации это будет загружать главу с сервера
