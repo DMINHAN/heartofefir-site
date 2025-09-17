@@ -166,7 +166,7 @@
                     
                     // Проверим наличие всех необходимых полей
                     if (chapter.number !== undefined && chapter.title && chapter.content) {
-                        document.getElementById("chapterTitle").textContent = "Глава " + chapter.number + ": " + chapter.title;
+                        document.getElementById("chapterTitle").textContent = "Глава " + chapter.chapterCode + ": " + chapter.title;
                         document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
                         document.getElementById("loading").style.display = "none";
                         document.getElementById("chapterContent").style.display = "block";
@@ -191,3 +191,4 @@
     </script>
 </body>
 </html>
+
