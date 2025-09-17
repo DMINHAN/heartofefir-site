@@ -1,157 +1,62 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Глава - Моя книга</title>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<script>
+    // Firebase Configuration (замените на вашу конфигурацию)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCLuEVA6AYJereNnGnxDC8lqjCDmvGfqwc",
+        authDomain: "heart-of-efir.firebaseapp.com",
+        projectId: "heart-of-efir",
+        storageBucket: heart-of-efir.firebasestorage.app",
+        messagingSenderId: "296902937897",
+        appId: "1:296902937897:web:11de57e0de55eb84a63b38"
+    };
 
-        :root {
-            --primary: #6366f1;
-            --dark: #1e293b;
-            --light: #f8fafc;
-        }
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.8;
-        }
+    // Enable offline persistence
+    db.enablePersistence({ synchronizeTabs: true })
+        .catch((err) => {
+            if (err.code == 'failed-precondition') {
+                console.log('Multiple tabs open, persistence can only be enabled in one tab at a a time.');
+            } else if (err.code == 'unimplemented') {
+                console.log('The current browser does not support all of the features required to enable persistence');
+            }
+        });
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    // Get chapter ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const chapterId = urlParams.get('id');
 
-        header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    if (chapterId) {
+        loadChapter(chapterId);
+    } else {
+        hideLoading('Глава не найдена');
+    }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .back-link {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .chapter-content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-top: 30px;
-        }
-
-        .chapter-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-
-        .chapter-text {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">Моя Книга</a>
-                <a href="index.html" class="back-link">← Назад к главам</a>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Загрузка главы...</p>
-        </div>
-        <div class="chapter-content" id="chapterContent" style="display: none;">
-            <h1 class="chapter-title" id="chapterTitle"></h1>
-            <div class="chapter-text" id="chapterText"></div>
-        </div>
-    </div>
-
-    <script>
-        // Firebase Configuration (замените на вашу конфигурацию)
-        const firebaseConfig = {
-            apiKey: "ВАШ_API_KEY",
-            authDomain: "ВАШ_PROJECT_ID.firebaseapp.com",
-            projectId: "ВАШ_PROJECT_ID",
-            storageBucket: "ВАШ_PROJECT_ID.appspot.com",
-            messagingSenderId: "ВАШ_SENDER_ID",
-            appId: "ВАШ_APP_ID"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Get chapter ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const chapterId = urlParams.get('id');
-
-        if (chapterId) {
-            loadChapter(chapterId);
-        } else {
-            document.getElementById('loading').innerHTML = '<p>Глава не найдена</p>';
-        }
-
-        async function loadChapter(id) {
+    async function loadChapter(id) {
+        try {
+            console.log('Loading chapter with ID:', id);
+            
+            // Попробуем сначала загрузить из кэша, затем из сети
+            const doc = await db.collection('chapters').doc(id).get({ source: 'server' });
+            
+            if (doc.exists) {
+                const chapter = doc.data();
+                console.log('Chapter data:', chapter);
+                
+                document.getElementById('chapterTitle').textContent = `Глава ${chapter.number}: ${chapter.title}`;
+                document.getElementById('chapterText').innerHTML = chapter.content.replace(/\n/g, '<br>');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('chapterContent').style.display = 'block';
+            } else {
+                hideLoading('Глава не найдена в базе данных');
+            }
+        } catch (error) {
+            console.error('Error loading chapter:', error);
+            
+            // Попробуем загрузить из кэша
             try {
-                const doc = await db.collection('chapters').doc(id).get();
+                const doc = await db.collection('chapters').doc(id).get({ source: 'cache' });
                 if (doc.exists) {
                     const chapter = doc.data();
                     document.getElementById('chapterTitle').textContent = `Глава ${chapter.number}: ${chapter.title}`;
@@ -159,13 +64,15 @@
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('chapterContent').style.display = 'block';
                 } else {
-                    document.getElementById('loading').innerHTML = '<p>Глава не найдена</p>';
+                    hideLoading('Ошибка загрузки главы. Проверьте подключение к интернету.');
                 }
-            } catch (error) {
-                document.getElementById('loading').innerHTML = '<p>Ошибка загрузки главы</p>';
-                console.error('Error loading chapter:', error);
+            } catch (cacheError) {
+                hideLoading('Ошибка загрузки главы. Проверьте подключение к интернету.');
             }
         }
-    </script>
-</body>
-</html>
+    }
+
+    function hideLoading(message) {
+        document.getElementById('loading').innerHTML = `<p>${message}</p>`;
+    }
+</script>
