@@ -1,8 +1,1184 @@
-const firebaseConfig = {
-    apiKey: "ВАШ_API_KEY",
-    authDomain: "ВАШ_PROJECT_ID.firebaseapp.com",
-    projectId: "ВАШ_PROJECT_ID",
-    storageBucket: "ВАШ_PROJECT_ID.appspot.com",
-    messagingSenderId: "ВАШ_SENDER_ID",
-    appId: "ВАШ_APP_ID"
-};
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книга - Современный сайт</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6fffa 100%);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+
+        /* Characters Section */
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .character-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .character-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .character-name {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .character-description {
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* Wiki Section */
+        .wiki-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .wiki-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .wiki-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .wiki-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        /* Books List */
+        .books-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .book-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Release Schedule */
+        .schedule-table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .schedule-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Chapter List */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .chapter-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .chapter-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .chapter-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .chapter-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* Chapter Content */
+        .chapter-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            line-height: 1.8;
+        }
+
+        .chapter-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .chapter-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.open {
+            right: 0;
+        }
+
+        .admin-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-admin {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .admin-content {
+            padding: 20px;
+        }
+
+        .admin-section {
+            margin-bottom: 30px;
+        }
+
+        .admin-section h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section {
+                padding: 50px 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .admin-panel {
+                width: 300px;
+                right: -300px;
+            }
+        }
+
+        /* Loading indicator */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ef4444;
+            background: #fee2e2;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        /* Login Form */
+        .login-form {
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form (Hidden by default) -->
+    <div id="loginContainer" style="display: none;">
+        <div class="login-form">
+            <h2>Вход в админ-панель</h2>
+            <div class="error-message" id="loginError"></div>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Пароль">
+            <button class="btn" onclick="login()">Войти</button>
+            <button class="btn" onclick="showRegister()" style="background: var(--secondary); margin-left: 10px;">Регистрация</button>
+        </div>
+    </div>
+
+    <!-- Register Form (Hidden by default) -->
+    <div id="registerContainer" style="display: none;">
+        <div class="login-form">
+            <h2>Регистрация</h2>
+            <div class="error-message" id="registerError"></div>
+            <input type="email" id="registerEmail" placeholder="Email">
+            <input type="password" id="registerPassword" placeholder="Пароль">
+            <button class="btn" onclick="register()">Зарегистрироваться</button>
+            <button class="btn" onclick="showLogin()" style="background: var(--gray); margin-left: 10px;">Назад</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+        <!-- Admin Toggle Button -->
+        <button class="admin-toggle" onclick="toggleAdminPanel()">⚙️</button>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <h2>Админ Панель</h2>
+                <button class="close-admin" onclick="toggleAdminPanel()">×</button>
+            </div>
+            <div class="admin-content">
+                <div class="loading" id="adminLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка...</p>
+                </div>
+                <div class="error-message" id="adminError"></div>
+                
+                <div class="admin-section">
+                    <h3>Добавить Главу</h3>
+                    <div class="form-group">
+                        <label>Номер главы:</label>
+                        <input type="number" id="chapterNumber" placeholder="Введите номер">
+                    </div>
+                    <div class="form-group">
+                        <label>Название главы:</label>
+                        <input type="text" id="chapterTitle" placeholder="Введите название">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание главы:</label>
+                        <textarea id="chapterDescription" placeholder="Введите описание"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Текст главы:</label>
+                        <textarea id="chapterContent" placeholder="Введите текст главы"></textarea>
+                    </div>
+                    <button class="btn" onclick="addChapter()">Добавить Главу</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Добавить Персонажа</h3>
+                    <div class="form-group">
+                        <label>Имя персонажа:</label>
+                        <input type="text" id="characterName" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание персонажа:</label>
+                        <textarea id="characterDescription" placeholder="Введите описание"></textarea>
+                    </div>
+                    <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Добавить Факт в Википедию</h3>
+                    <div class="form-group">
+                        <label>Заголовок:</label>
+                        <input type="text" id="wikiTitle" placeholder="Введите заголовок">
+                    </div>
+                    <div class="form-group">
+                        <label>Содержание:</label>
+                        <textarea id="wikiContent" placeholder="Введите содержание"></textarea>
+                    </div>
+                    <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Добавить Книгу в Серии</h3>
+                    <div class="form-group">
+                        <label>Номер в серии:</label>
+                        <input type="number" id="bookNumber" placeholder="Введите номер">
+                    </div>
+                    <div class="form-group">
+                        <label>Название книги:</label>
+                        <input type="text" id="bookTitle" placeholder="Введите название">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание книги:</label>
+                        <textarea id="bookDescription" placeholder="Введите описание"></textarea>
+                    </div>
+                    <button class="btn" onclick="addBook()">Добавить Книгу</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Добавить Дату Выхода</h3>
+                    <div class="form-group">
+                        <label>Дата:</label>
+                        <input type="date" id="releaseDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <input type="text" id="releaseDescription" placeholder="Введите описание">
+                    </div>
+                    <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
+                </div>
+                
+                <button class="btn" onclick="logout()" style="background: #ef4444; width: 100%;">Выйти</button>
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay" onclick="toggleAdminPanel()"></div>
+
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <a href="#" class="logo">Моя Книга</a>
+                    <div class="nav-links">
+                        <a href="#home">Главная</a>
+                        <a href="#characters">Персонажи</a>
+                        <a href="#wiki">Википедия</a>
+                        <a href="#books">Серия книг</a>
+                        <a href="#schedule">Расписание</a>
+                        <a href="#chapters">Главы</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Добро пожаловать в мир моей книги</h1>
+                <p>Здесь вы найдете все о моем литературном произведении, персонажах, мире и многом другом.</p>
+                <a href="#chapters" class="btn">Читать главы</a>
+            </div>
+        </section>
+
+        <!-- Characters Section -->
+        <section class="section" id="characters">
+            <div class="container">
+                <h2 class="section-title">Персонажи</h2>
+                <div class="loading" id="charactersLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка персонажей...</p>
+                </div>
+                <div class="characters-grid" id="charactersGrid">
+                    <!-- Characters will be added here dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Wiki Section -->
+        <section class="section" id="wiki">
+            <div class="container">
+                <h2 class="section-title">Википедия</h2>
+                <div class="loading" id="wikiLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка википедии...</p>
+                </div>
+                <div class="wiki-content" id="wikiContent">
+                    <!-- Wiki items will be added here dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Series Section -->
+        <section class="section" id="books">
+            <div class="container">
+                <h2 class="section-title">Серия книг</h2>
+                <div class="loading" id="booksLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка книг...</p>
+                </div>
+                <div class="books-list" id="booksList">
+                    <!-- Books will be added here dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Release Schedule Section -->
+        <section class="section" id="schedule">
+            <div class="container">
+                <h2 class="section-title">Расписание выхода глав</h2>
+                <div class="loading" id="scheduleLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка расписания...</p>
+                </div>
+                <div class="schedule-table-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Описание</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTable">
+                            <!-- Schedule items will be added here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapters Section -->
+        <section class="section" id="chapters">
+            <div class="container">
+                <h2 class="section-title">Главы книги</h2>
+                <div class="loading" id="chaptersLoading">
+                    <div class="spinner"></div>
+                    <p>Загрузка глав...</p>
+                </div>
+                <div class="chapters-grid" id="chaptersGrid">
+                    <!-- Chapters will be added here dynamically -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLuEVA6AYJereNnGnxDC8lqjCDmvGfqwc",
+            authDomain: "heart-of-efir.firebaseapp.com",
+            projectId: "heart-of-efir",
+            storageBucket: "heart-of-efir.firebasestorage.app",
+            messagingSenderId: "296902937897",
+            appId: "1:296902937897:web:11de57e0de55eb84a63b38"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Toggle Admin Panel
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const overlay = document.getElementById('overlay');
+            
+            panel.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        function hideAuthForms() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                hideAuthForms();
+                loadAllData();
+            } catch (error) {
+                document.getElementById('loginError').textContent = error.message;
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        async function register() {
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                hideAuthForms();
+                loadAllData();
+            } catch (error) {
+                document.getElementById('registerError').textContent = error.message;
+                document.getElementById('registerError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            auth.signOut();
+            showLogin();
+        }
+
+        // Show loading indicator
+        function showLoading(section) {
+            document.getElementById(`${section}Loading`).style.display = 'block';
+        }
+
+        // Hide loading indicator
+        function hideLoading(section) {
+            document.getElementById(`${section}Loading`).style.display = 'none';
+        }
+
+        // Show error message
+        function showError(section, message) {
+            const errorElement = document.getElementById(`${section}Error`) || 
+                               document.getElementById('adminError') ||
+                               document.getElementById('loginError') ||
+                               document.getElementById('registerError');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // CRUD Functions for Chapters
+        async function addChapter() {
+            const number = document.getElementById('chapterNumber').value;
+            const title = document.getElementById('chapterTitle').value;
+            const description = document.getElementById('chapterDescription').value;
+            const content = document.getElementById('chapterContent').value;
+
+            if (!number || !title || !content) {
+                showError('admin', 'Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            try {
+                showLoading('admin');
+                await db.collection('chapters').add({
+                    number: parseInt(number),
+                    title: title,
+                    description: description,
+                    content: content,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadChapters();
+                clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении главы: ' + error.message);
+            }
+        }
+
+        async function loadChapters() {
+            try {
+                showLoading('chapters');
+                const snapshot = await db.collection('chapters').orderBy('number').get();
+                const chapters = [];
+                snapshot.forEach(doc => {
+                    chapters.push({ id: doc.id, ...doc.data() });
+                });
+                renderChapters(chapters);
+                hideLoading('chapters');
+            } catch (error) {
+                hideLoading('chapters');
+                showError('chapters', 'Ошибка при загрузке глав: ' + error.message);
+            }
+        }
+
+        function renderChapters(chapters) {
+            const container = document.getElementById('chaptersGrid');
+            container.innerHTML = '';
+
+            chapters.forEach(chapter => {
+                const chapterCard = document.createElement('div');
+                chapterCard.className = 'chapter-card';
+                chapterCard.innerHTML = `
+                    <div class="chapter-number">Глава ${chapter.number}</div>
+                    <h3 class="chapter-title">${chapter.title}</h3>
+                    <p class="chapter-description">${chapter.description}</p>
+                    <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
+                `;
+                container.appendChild(chapterCard);
+            });
+        }
+
+        function showChapter(id) {
+            // В реальной реализации это будет загружать главу с сервера
+            window.location.href = `chapter.html?id=${id}`;
+        }
+
+        // CRUD Functions for Characters
+        async function addCharacter() {
+            const name = document.getElementById('characterName').value;
+            const description = document.getElementById('characterDescription').value;
+
+            if (!name || !description) {
+                showError('admin', 'Пожалуйста, заполните все поля');
+                return;
+            }
+
+            try {
+                showLoading('admin');
+                await db.collection('characters').add({
+                    name: name,
+                    description: description,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadCharacters();
+                clearForm(['characterName', 'characterDescription']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении персонажа: ' + error.message);
+            }
+        }
+
+        async function loadCharacters() {
+            try {
+                showLoading('characters');
+                const snapshot = await db.collection('characters').get();
+                const characters = [];
+                snapshot.forEach(doc => {
+                    characters.push({ id: doc.id, ...doc.data() });
+                });
+                renderCharacters(characters);
+                hideLoading('characters');
+            } catch (error) {
+                hideLoading('characters');
+                showError('characters', 'Ошибка при загрузке персонажей: ' + error.message);
+            }
+        }
+
+        function renderCharacters(characters) {
+            const container = document.getElementById('charactersGrid');
+            container.innerHTML = '';
+
+            characters.forEach(character => {
+                const characterCard = document.createElement('div');
+                characterCard.className = 'character-card';
+                characterCard.innerHTML = `
+                    <div class="character-avatar">${character.name.charAt(0)}</div>
+                    <h3 class="character-name">${character.name}</h3>
+                    <p class="character-description">${character.description}</p>
+                `;
+                container.appendChild(characterCard);
+            });
+        }
+
+        // CRUD Functions for Wiki
+        async function addWikiItem() {
+            const title = document.getElementById('wikiTitle').value;
+            const content = document.getElementById('wikiContent').value;
+
+            if (!title || !content) {
+                showError('admin', 'Пожалуйста, заполните все поля');
+                return;
+            }
+
+            try {
+                showLoading('admin');
+                await db.collection('wiki').add({
+                    title: title,
+                    content: content,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadWiki();
+                clearForm(['wikiTitle', 'wikiContent']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении факта: ' + error.message);
+            }
+        }
+
+        async function loadWiki() {
+            try {
+                showLoading('wiki');
+                const snapshot = await db.collection('wiki').get();
+                const wikiItems = [];
+                snapshot.forEach(doc => {
+                    wikiItems.push({ id: doc.id, ...doc.data() });
+                });
+                renderWiki(wikiItems);
+                hideLoading('wiki');
+            } catch (error) {
+                hideLoading('wiki');
+                showError('wiki', 'Ошибка при загрузке википедии: ' + error.message);
+            }
+        }
+
+        function renderWiki(wikiItems) {
+            const container = document.getElementById('wikiContent');
+            container.innerHTML = '';
+
+            wikiItems.forEach(item => {
+                const wikiItem = document.createElement('div');
+                wikiItem.className = 'wiki-item';
+                wikiItem.innerHTML = `
+                    <h3 class="wiki-title">${item.title}</h3>
+                    <p>${item.content}</p>
+                `;
+                container.appendChild(wikiItem);
+            });
+        }
+
+        // CRUD Functions for Books
+        async function addBook() {
+            const number = document.getElementById('bookNumber').value;
+            const title = document.getElementById('bookTitle').value;
+            const description = document.getElementById('bookDescription').value;
+
+            if (!number || !title) {
+                showError('admin', 'Пожалуйста, заполните обязательные поля');
+                return;
+            }
+
+            try {
+                showLoading('admin');
+                await db.collection('books').add({
+                    number: parseInt(number),
+                    title: title,
+                    description: description,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadBooks();
+                clearForm(['bookNumber', 'bookTitle', 'bookDescription']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении книги: ' + error.message);
+            }
+        }
+
+        async function loadBooks() {
+            try {
+                showLoading('books');
+                const snapshot = await db.collection('books').get();
+                const books = [];
+                snapshot.forEach(doc => {
+                    books.push({ id: doc.id, ...doc.data() });
+                });
+                renderBooks(books);
+                hideLoading('books');
+            } catch (error) {
+                hideLoading('books');
+                showError('books', 'Ошибка при загрузке книг: ' + error.message);
+            }
+        }
+
+        function renderBooks(books) {
+            const container = document.getElementById('booksList');
+            container.innerHTML = '';
+
+            books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <div class="book-number">${book.number}</div>
+                    <h3 class="book-title">${book.title}</h3>
+                    <p>${book.description}</p>
+                `;
+                container.appendChild(bookCard);
+            });
+        }
+
+        // CRUD Functions for Schedule
+        async function addReleaseDate() {
+            const date = document.getElementById('releaseDate').value;
+            const description = document.getElementById('releaseDescription').value;
+
+            if (!date || !description) {
+                showError('admin', 'Пожалуйста, заполните все поля');
+                return;
+            }
+
+            try {
+                showLoading('admin');
+                await db.collection('schedule').add({
+                    date: new Date(date),
+                    description: description,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                await loadSchedule();
+                clearForm(['releaseDate', 'releaseDescription']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении даты: ' + error.message);
+            }
+        }
+
+        async function loadSchedule() {
+            try {
+                showLoading('schedule');
+                const snapshot = await db.collection('schedule').orderBy('date').get();
+                const schedule = [];
+                snapshot.forEach(doc => {
+                    schedule.push({ id: doc.id, ...doc.data() });
+                });
+                renderSchedule(schedule);
+                hideLoading('schedule');
+            } catch (error) {
+                hideLoading('schedule');
+                showError('schedule', 'Ошибка при загрузке расписания: ' + error.message);
+            }
+        }
+
+        function renderSchedule(schedule) {
+            const container = document.getElementById('scheduleTable');
+            container.innerHTML = '';
+
+            schedule.forEach(date => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(date.date.seconds * 1000).toLocaleDateString('ru-RU')}</td>
+                    <td>${date.description}</td>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Clear form fields
+        function clearForm(fields) {
+            fields.forEach(field => {
+                document.getElementById(field).value = '';
+            });
+        }
+
+        // Load all data
+        async function loadAllData() {
+            await Promise.all([
+                loadChapters(),
+                loadCharacters(),
+                loadWiki(),
+                loadBooks(),
+                loadSchedule()
+            ]);
+        }
+
+        // Auth state listener
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                hideAuthForms();
+                loadAllData();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Firebase will handle auth state
+        });
+    </script>
+</body>
+</html>
