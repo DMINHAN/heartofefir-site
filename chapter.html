@@ -125,7 +125,7 @@
     </div>
 
     <script>
-        // Firebase Configuration (замените на вашу конфигурацию)
+        // Firebase Configuration
         var firebaseConfig = {
             apiKey: "AIzaSyCLuEVA6AYJereNnGnxDC8lqjCDmvGfqwc",
             authDomain: "heart-of-efir.firebaseapp.com",
@@ -160,23 +160,29 @@
                 console.log("Document exists:", doc.exists);
                 console.log("Document data:", doc.data());
                 
-                // В функции loadChapter
-if (doc.exists) {
-    const chapter = doc.data();
-    console.log("Chapter ", chapter);
-    
-    // Определение номера главы
-    const chapterNumber = chapter.chapterCode || chapter.number;
-    
-    if (chapterNumber !== undefined && chapter.title && chapter.content) {
-        document.getElementById("chapterTitle").textContent = "Глава " + chapterNumber + ": " + chapter.title;
-        document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("chapterContent").style.display = "block";
-    } else {
-        document.getElementById("loading").innerHTML = "<p>Неполные данные главы</p>";
-    }
-}
+                if (doc.exists) {
+                    const chapter = doc.data();
+                    console.log("Chapter data:", chapter);
+                    
+                    // Определение номера главы (поддержка обеих структур)
+                    const chapterNumber = chapter.chapterCode || chapter.number;
+                    
+                    if (chapterNumber !== undefined && chapter.title && chapter.content) {
+                        document.getElementById("chapterTitle").textContent = "Глава " + chapterNumber + ": " + chapter.title;
+                        document.getElementById("chapterText").innerHTML = chapter.content.replace(/\n/g, "<br>");
+                        document.getElementById("loading").style.display = "none";
+                        document.getElementById("chapterContent").style.display = "block";
+                    } else {
+                        hideLoading("Неполные данные главы. Проверьте поля: number/chapterCode, title, content");
+                    }
+                } else {
+                    hideLoading("Глава не найдена в базе данных");
+                }
+            } catch (error) {
+                console.error("Error loading chapter:", error);
+                hideLoading("Ошибка загрузки главы: " + error.message);
+            }
+        }
 
         function hideLoading(message) {
             console.log("Displaying message:", message);
@@ -185,5 +191,3 @@ if (doc.exists) {
     </script>
 </body>
 </html>
-
-
