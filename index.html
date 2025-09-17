@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сердце - Эфира</title>
-    <!-- Firebase SDK -->
+    <title>Сердце Эфира: Селлестиал</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,20 +16,96 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #10b981;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --border: #e2e8f0;
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1e1b4b;
+            --darker: #0f0e24;
+            --light: #f0f9ff;
+            --gray: #94a3b8;
+            --border: #334155;
+            --gold: #f59e0b;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
             line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease-in-out 2s forwards;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
         }
 
         .container {
@@ -42,11 +116,13 @@
 
         /* Header Styles */
         header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(30, 27, 75, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
         }
 
         .header-content {
@@ -57,106 +133,243 @@
         }
 
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
             text-decoration: none;
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            transition: all 0.3s ease;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
         }
 
         /* Hero Section */
         .hero {
-            padding: 80px 0;
+            padding: 100px 0 60px;
             text-align: center;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e6fffa 100%);
+            position: relative;
         }
 
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            font-weight: 900;
             margin-bottom: 20px;
-            color: var(--dark);
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+            animation: fadeInUp 1s ease-out;
         }
 
-        .hero p {
-            font-size: 1.2rem;
+        .hero-description {
+            font-size: 1.3rem;
             color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto 30px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 1s ease-out 0.2s both;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
+        /* Book Description Input */
+        .book-description-input {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .description-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .description-textarea {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(30, 27, 75, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            resize: vertical;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(139, 92, 246, 0.3);
+        }
+
+        .description-textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .description-textarea::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 4px;
+        }
+
+        .description-textarea::-webkit-scrollbar-thumb {
             background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
+            border-radius: 4px;
         }
 
-        .btn:hover {
+        .description-textarea::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 30px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tab:hover {
+            background: rgba(139, 92, 246, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
         }
 
         /* Sections */
         .section {
-            padding: 80px 0;
+            padding: 60px 0;
+            animation: fadeIn 1s ease-out;
         }
 
         .section-title {
-            text-align: center;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Cinzel', serif;
             font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: var(--dark);
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--gold);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 15px auto;
+        }
+
+        /* Chapters Sidebar */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .content-area {
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chapters-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .chapter-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chapter-item:hover {
+            background: rgba(139, 92, 246, 0.2);
+            transform: translateX(5px);
+        }
+
+        .chapter-number {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .chapter-title {
+            font-size: 0.9rem;
+            color: var(--light);
         }
 
         /* Characters Section */
         .characters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .character-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-            border: 1px solid var(--border);
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
         .character-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+            border-color: var(--primary);
         }
 
         .character-avatar {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             margin: 0 auto 20px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
@@ -164,34 +377,36 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            border: 2px solid var(--gold);
         }
 
         .character-name {
-            text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            color: var(--gold);
         }
 
         .character-description {
-            text-align: center;
             color: var(--gray);
+            font-size: 0.9rem;
         }
 
         /* Wiki Section */
         .wiki-content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .wiki-item {
             margin-bottom: 30px;
             padding-bottom: 30px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .wiki-item:last-child {
@@ -201,10 +416,15 @@
         }
 
         .wiki-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: var(--primary);
+        }
+
+        .wiki-text {
+            color: var(--gray);
+            line-height: 1.7;
         }
 
         /* Books List */
@@ -215,46 +435,60 @@
         }
 
         .book-card {
-            background: white;
-            border-radius: 12px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
             text-align: center;
-            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
         }
 
         .book-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
         }
 
         .book-title {
             font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+
+        .book-description {
+            color: var(--gray);
+            font-size: 0.9rem;
         }
 
         /* Release Schedule */
         .schedule-table {
             width: 100%;
-            background: white;
-            border-radius: 12px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .schedule-table th,
         .schedule-table td {
             padding: 15px 20px;
             text-align: left;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .schedule-table th {
-            background: var(--primary);
-            color: white;
+            background: rgba(139, 92, 246, 0.3);
+            color: var(--light);
             font-weight: 600;
         }
 
@@ -262,77 +496,19 @@
             border-bottom: none;
         }
 
-        /* Chapter List */
-        .chapters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .chapter-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid var(--border);
-            transition: transform 0.3s ease;
-        }
-
-        .chapter-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .chapter-number {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .chapter-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .chapter-description {
-            color: var(--gray);
-            margin-bottom: 20px;
-        }
-
-        /* Chapter Content */
-        .chapter-content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            line-height: 1.8;
-        }
-
-        .chapter-content h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-
-        .chapter-content p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
         /* Admin Panel */
         .admin-panel {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
+            right: -450px;
+            width: 450px;
             height: 100vh;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
-            transition: right 0.3s ease;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: right 0.4s ease;
             z-index: 1000;
             overflow-y: auto;
+            border-left: 1px solid var(--primary);
         }
 
         .admin-panel.open {
@@ -340,20 +516,39 @@
         }
 
         .admin-header {
-            background: var(--primary);
-            color: white;
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--light);
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .admin-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
         }
 
         .close-admin {
             background: none;
             border: none;
-            color: white;
-            font-size: 1.5rem;
+            color: var(--light);
+            font-size: 1.8rem;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-admin:hover {
+            background: rgba(236, 72, 153, 0.2);
+            transform: rotate(90deg);
         }
 
         .admin-content {
@@ -362,11 +557,17 @@
 
         .admin-section {
             margin-bottom: 30px;
+            background: rgba(30, 27, 75, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .admin-section h3 {
-            margin-bottom: 15px;
-            color: var(--dark);
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
         }
 
         .form-group {
@@ -375,8 +576,9 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
+            color: var(--light);
         }
 
         .form-group input,
@@ -384,8 +586,10 @@
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(139, 92, 246, 0.3);
             border-radius: 8px;
+            background: rgba(15, 14, 36, 0.5);
+            color: var(--light);
             font-family: 'Inter', sans-serif;
         }
 
@@ -407,7 +611,18 @@
             cursor: pointer;
             font-size: 1.2rem;
             z-index: 999;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            display: none; /* Скрыто для обычных пользователей */
+        }
+
+        .admin-toggle.show {
+            display: block;
+        }
+
+        .admin-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
         }
 
         /* Overlay */
@@ -417,7 +632,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 999;
             display: none;
         }
@@ -426,38 +641,45 @@
             display: block;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-            }
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-            .nav-links {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-            .section {
-                padding: 50px 0;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .admin-panel {
-                width: 300px;
-                right: -300px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* Loading indicator */
+        /* Loading indicators */
         .loading {
             display: none;
             text-align: center;
@@ -465,285 +687,291 @@
         }
 
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(139, 92, 246, 0.3);
             border-radius: 50%;
-            border-top: 4px solid var(--primary);
-            width: 40px;
-            height: 40px;
+            border-top: 3px solid var(--primary);
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            margin: 0 auto 10px;
         }
 
         .error-message {
             color: #ef4444;
-            background: #fee2e2;
+            background: rgba(239, 68, 68, 0.1);
             padding: 10px;
             border-radius: 5px;
             margin: 10px 0;
             display: none;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Login Form */
-        .login-form {
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            max-width: 400px;
-            margin: 50px auto;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
         }
 
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .admin-panel {
+                width: 100%;
+                right: -100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Login Form (Hidden by default) -->
-    <div id="loginContainer" style="display: none;">
-        <div class="login-form">
-            <h2>Вход в админ-панель</h2>
-            <div class="error-message" id="loginError"></div>
-            <input type="email" id="loginEmail" placeholder="Email">
-            <input type="password" id="loginPassword" placeholder="Пароль">
-            <button class="btn" onclick="login()">Войти</button>
-            <button class="btn" onclick="showRegister()" style="background: var(--secondary); margin-left: 10px;">Регистрация</button>
+    <!-- Loading Animation -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-logo">Сердце Эфира: Селлестиал</div>
+            <div class="loading-spinner"></div>
         </div>
     </div>
 
-    <!-- Register Form (Hidden by default) -->
-    <div id="registerContainer" style="display: none;">
-        <div class="login-form">
-            <h2>Регистрация</h2>
-            <div class="error-message" id="registerError"></div>
-            <input type="email" id="registerEmail" placeholder="Email">
-            <input type="password" id="registerPassword" placeholder="Пароль">
-            <button class="btn" onclick="register()">Зарегистрироваться</button>
-            <button class="btn" onclick="showLogin()" style="background: var(--gray); margin-left: 10px;">Назад</button>
+    <!-- Admin Toggle Button (только для админа) -->
+    <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()">⚙️</button>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2>Панель управления</h2>
+            <button class="close-admin" onclick="toggleAdminPanel()">×</button>
+        </div>
+        <div class="admin-content">
+            <div class="loading" id="adminLoading">
+                <div class="spinner"></div>
+                <p>Загрузка...</p>
+            </div>
+            <div class="error-message" id="adminError"></div>
+            
+            <div class="admin-section">
+                <h3>Добавить Главу</h3>
+                <div class="form-group">
+                    <label>Номер главы (например: 7 или 7.1):</label>
+                    <input type="text" id="chapterNumber" placeholder="Введите номер">
+                </div>
+                <div class="form-group">
+                    <label>Название главы:</label>
+                    <input type="text" id="chapterTitle" placeholder="Введите название">
+                </div>
+                <div class="form-group">
+                    <label>Описание главы:</label>
+                    <textarea id="chapterDescription" placeholder="Введите описание"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Текст главы:</label>
+                    <textarea id="chapterContent" placeholder="Введите текст главы"></textarea>
+                </div>
+                <button class="btn" onclick="addChapter()">Добавить Главу</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>Добавить Персонажа</h3>
+                <div class="form-group">
+                    <label>Имя персонажа:</label>
+                    <input type="text" id="characterName" placeholder="Введите имя">
+                </div>
+                <div class="form-group">
+                    <label>Описание персонажа:</label>
+                    <textarea id="characterDescription" placeholder="Введите описание"></textarea>
+                </div>
+                <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>Добавить Факт в Википедию</h3>
+                <div class="form-group">
+                    <label>Заголовок:</label>
+                    <input type="text" id="wikiTitle" placeholder="Введите заголовок">
+                </div>
+                <div class="form-group">
+                    <label>Содержание:</label>
+                    <textarea id="wikiContent" placeholder="Введите содержание"></textarea>
+                </div>
+                <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>Добавить Книгу в Серии</h3>
+                <div class="form-group">
+                    <label>Номер в серии:</label>
+                    <input type="number" id="bookNumber" placeholder="Введите номер">
+                </div>
+                <div class="form-group">
+                    <label>Название книги:</label>
+                    <input type="text" id="bookTitle" placeholder="Введите название">
+                </div>
+                <div class="form-group">
+                    <label>Описание книги:</label>
+                    <textarea id="bookDescription" placeholder="Введите описание"></textarea>
+                </div>
+                <button class="btn" onclick="addBook()">Добавить Книгу</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>Добавить Дату Выхода</h3>
+                <div class="form-group">
+                    <label>Дата:</label>
+                    <input type="date" id="releaseDate">
+                </div>
+                <div class="form-group">
+                    <label>Описание:</label>
+                    <input type="text" id="releaseDescription" placeholder="Введите описание">
+                </div>
+                <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
+            </div>
+            
+            <button class="btn" onclick="logout()" style="background: linear-gradient(45deg, #ef4444, #dc2626); width: 100%;">Выйти</button>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="mainContent">
-        <!-- Admin Toggle Button -->
-        <button class="admin-toggle" onclick="toggleAdminPanel()">⚙️</button>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleAdminPanel()"></div>
 
-        <!-- Admin Panel -->
-        <div class="admin-panel" id="adminPanel">
-            <div class="admin-header">
-                <h2>Админ Панель</h2>
-                <button class="close-admin" onclick="toggleAdminPanel()">×</button>
-            </div>
-            <div class="admin-content">
-                <div class="loading" id="adminLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка...</p>
-                </div>
-                <div class="error-message" id="adminError"></div>
-                
-                <div class="admin-section">
-                    <h3>Добавить Главу</h3>
-                    <div class="form-group">
-                        <label>Номер главы:</label>
-                        <input type="number" id="chapterNumber" placeholder="Введите номер">
-                    </div>
-                    <div class="form-group">
-                        <label>Название главы:</label>
-                        <input type="text" id="chapterTitle" placeholder="Введите название">
-                    </div>
-                    <div class="form-group">
-                        <label>Описание главы:</label>
-                        <textarea id="chapterDescription" placeholder="Введите описание"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Текст главы:</label>
-                        <textarea id="chapterContent" placeholder="Введите текст главы"></textarea>
-                    </div>
-                    <button class="btn" onclick="addChapter()">Добавить Главу</button>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Добавить Персонажа</h3>
-                    <div class="form-group">
-                        <label>Имя персонажа:</label>
-                        <input type="text" id="characterName" placeholder="Введите имя">
-                    </div>
-                    <div class="form-group">
-                        <label>Описание персонажа:</label>
-                        <textarea id="characterDescription" placeholder="Введите описание"></textarea>
-                    </div>
-                    <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Добавить Факт в Википедию</h3>
-                    <div class="form-group">
-                        <label>Заголовок:</label>
-                        <input type="text" id="wikiTitle" placeholder="Введите заголовок">
-                    </div>
-                    <div class="form-group">
-                        <label>Содержание:</label>
-                        <textarea id="wikiContent" placeholder="Введите содержание"></textarea>
-                    </div>
-                    <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Добавить Книгу в Серии</h3>
-                    <div class="form-group">
-                        <label>Номер в серии:</label>
-                        <input type="number" id="bookNumber" placeholder="Введите номер">
-                    </div>
-                    <div class="form-group">
-                        <label>Название книги:</label>
-                        <input type="text" id="bookTitle" placeholder="Введите название">
-                    </div>
-                    <div class="form-group">
-                        <label>Описание книги:</label>
-                        <textarea id="bookDescription" placeholder="Введите описание"></textarea>
-                    </div>
-                    <button class="btn" onclick="addBook()">Добавить Книгу</button>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Добавить Дату Выхода</h3>
-                    <div class="form-group">
-                        <label>Дата:</label>
-                        <input type="date" id="releaseDate">
-                    </div>
-                    <div class="form-group">
-                        <label>Описание:</label>
-                        <input type="text" id="releaseDescription" placeholder="Введите описание">
-                    </div>
-                    <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
-                </div>
-                
-                <button class="btn" onclick="logout()" style="background: #ef4444; width: 100%;">Выйти</button>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Сердце Эфира: Селлестиал</a>
             </div>
         </div>
+    </header>
 
-        <!-- Overlay -->
-        <div class="overlay" id="overlay" onclick="toggleAdminPanel()"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Сердце Эфира: Селлестиал</h1>
+            <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
+        </div>
+    </section>
 
-        <!-- Header -->
-        <header>
-            <div class="container">
-                <div class="header-content">
-                    <a href="#" class="logo">Моя Книга</a>
-                    <div class="nav-links">
-                        <a href="#home">Главная</a>
-                        <a href="#characters">Персонажи</a>
-                        <a href="#wiki">Википедия</a>
-                        <a href="#books">Серия книг</a>
-                        <a href="#schedule">Расписание</a>
-                        <a href="#chapters">Главы</a>
+    <!-- Book Description Input -->
+    <div class="container">
+        <div class="book-description-input">
+            <div class="description-label">Описание книги</div>
+            <textarea class="description-textarea" id="bookDescriptionInput" placeholder="Введите описание вашей книги..."></textarea>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="showSection('chapters')">Главы</div>
+            <div class="tab" onclick="showSection('characters')">Персонажи</div>
+            <div class="tab" onclick="showSection('wiki')">Википедия</div>
+            <div class="tab" onclick="showSection('books')">Серия книг</div>
+            <div class="tab" onclick="showSection('schedule')">Расписание</div>
+        </div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Chapters Section -->
+                <section class="section" id="chaptersSection">
+                    <h2 class="section-title">Главы книги</h2>
+                    <div class="loading" id="chaptersLoading">
+                        <div class="spinner"></div>
+                        <p>Загрузка глав...</p>
                     </div>
-                </div>
-            </div>
-        </header>
+                    <div class="chapters-grid" id="chaptersGrid">
+                        <!-- Chapters will be added here dynamically -->
+                    </div>
+                </section>
 
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="container">
-                <h1>Добро пожаловать в мир моей книги</h1>
-                <p>Здесь вы найдете все о моем литературном произведении, персонажах, мире и многом другом.</p>
-                <a href="#chapters" class="btn">Читать главы</a>
-            </div>
-        </section>
+                <!-- Characters Section -->
+                <section class="section" id="charactersSection" style="display: none;">
+                    <h2 class="section-title">Персонажи</h2>
+                    <div class="loading" id="charactersLoading">
+                        <div class="spinner"></div>
+                        <p>Загрузка персонажей...</p>
+                    </div>
+                    <div class="characters-grid" id="charactersGrid">
+                        <!-- Characters will be added here dynamically -->
+                    </div>
+                </section>
 
-        <!-- Characters Section -->
-        <section class="section" id="characters">
-            <div class="container">
-                <h2 class="section-title">Персонажи</h2>
-                <div class="loading" id="charactersLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка персонажей...</p>
-                </div>
-                <div class="characters-grid" id="charactersGrid">
-                    <!-- Characters will be added here dynamically -->
-                </div>
-            </div>
-        </section>
+                <!-- Wiki Section -->
+                <section class="section" id="wikiSection" style="display: none;">
+                    <h2 class="section-title">Википедия</h2>
+                    <div class="loading" id="wikiLoading">
+                        <div class="spinner"></div>
+                        <p>Загрузка википедии...</p>
+                    </div>
+                    <div class="wiki-content" id="wikiContent">
+                        <!-- Wiki items will be added here dynamically -->
+                    </div>
+                </section>
 
-        <!-- Wiki Section -->
-        <section class="section" id="wiki">
-            <div class="container">
-                <h2 class="section-title">Википедия</h2>
-                <div class="loading" id="wikiLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка википедии...</p>
-                </div>
-                <div class="wiki-content" id="wikiContent">
-                    <!-- Wiki items will be added here dynamically -->
-                </div>
-            </div>
-        </section>
+                <!-- Books Series Section -->
+                <section class="section" id="booksSection" style="display: none;">
+                    <h2 class="section-title">Серия книг</h2>
+                    <div class="loading" id="booksLoading">
+                        <div class="spinner"></div>
+                        <p>Загрузка книг...</p>
+                    </div>
+                    <div class="books-list" id="booksList">
+                        <!-- Books will be added here dynamically -->
+                    </div>
+                </section>
 
-        <!-- Books Series Section -->
-        <section class="section" id="books">
-            <div class="container">
-                <h2 class="section-title">Серия книг</h2>
-                <div class="loading" id="booksLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка книг...</p>
-                </div>
-                <div class="books-list" id="booksList">
-                    <!-- Books will be added here dynamically -->
-                </div>
+                <!-- Release Schedule Section -->
+                <section class="section" id="scheduleSection" style="display: none;">
+                    <h2 class="section-title">Расписание выхода глав</h2>
+                    <div class="loading" id="scheduleLoading">
+                        <div class="spinner"></div>
+                        <p>Загрузка расписания...</p>
+                    </div>
+                    <div class="schedule-table-container">
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Описание</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleTable">
+                                <!-- Schedule items will be added here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
-        </section>
 
-        <!-- Release Schedule Section -->
-        <section class="section" id="schedule">
-            <div class="container">
-                <h2 class="section-title">Расписание выхода глав</h2>
-                <div class="loading" id="scheduleLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка расписания...</p>
-                </div>
-                <div class="schedule-table-container">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Дата</th>
-                                <th>Описание</th>
-                            </tr>
-                        </thead>
-                        <tbody id="scheduleTable">
-                            <!-- Schedule items will be added here dynamically -->
-                        </tbody>
-                    </table>
+            <!-- Sidebar with Chapters List -->
+            <div class="sidebar">
+                <h3 class="sidebar-title">Все главы</h3>
+                <div class="chapters-list" id="sidebarChapters">
+                    <!-- Chapters list will be added here dynamically -->
                 </div>
             </div>
-        </section>
-
-        <!-- Chapters Section -->
-        <section class="section" id="chapters">
-            <div class="container">
-                <h2 class="section-title">Главы книги</h2>
-                <div class="loading" id="chaptersLoading">
-                    <div class="spinner"></div>
-                    <p>Загрузка глав...</p>
-                </div>
-                <div class="chapters-grid" id="chaptersGrid">
-                    <!-- Chapters will be added here dynamically -->
-                </div>
-            </div>
-        </section>
+        </div>
     </div>
 
     <script>
@@ -762,65 +990,77 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // Check if user is admin
+        let isAdmin = false;
+
         // Toggle Admin Panel
         function toggleAdminPanel() {
+            if (!isAdmin) return; // Только админ может открыть панель
+            
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
+            const toggle = document.getElementById('adminToggle');
             
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
+            toggle.classList.toggle('active');
         }
 
         // Authentication Functions
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
+        function checkAdminStatus() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // Проверяем, является ли пользователь админом
+                    // В реальной системе это можно сделать через Firestore
+                    isAdmin = true;
+                    document.getElementById('adminToggle').classList.add('show');
+                } else {
+                    isAdmin = false;
+                    document.getElementById('adminToggle').classList.remove('show');
+                }
+            });
         }
 
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('mainContent').style.display = 'none';
-        }
-
-        function hideAuthForms() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-        }
-
-        async function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+        function login() {
+            // В реальной системе здесь будет форма входа
+            // Для тестирования используем простой вход
+            const email = prompt('Введите email администратора:');
+            const password = prompt('Введите пароль:');
             
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                hideAuthForms();
-                loadAllData();
-            } catch (error) {
-                document.getElementById('loginError').textContent = error.message;
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
-
-        async function register() {
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            
-            try {
-                await auth.createUserWithEmailAndPassword(email, password);
-                hideAuthForms();
-                loadAllData();
-            } catch (error) {
-                document.getElementById('registerError').textContent = error.message;
-                document.getElementById('registerError').style.display = 'block';
+            if (email && password) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(() => {
+                        alert('Вы вошли как администратор');
+                    })
+                    .catch(error => {
+                        alert('Ошибка входа: ' + error.message);
+                    });
             }
         }
 
         function logout() {
             auth.signOut();
-            showLogin();
+            toggleAdminPanel();
+            alert('Вы вышли из системы');
+        }
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
         }
 
         // Show loading indicator
@@ -836,9 +1076,7 @@
         // Show error message
         function showError(section, message) {
             const errorElement = document.getElementById(`${section}Error`) || 
-                               document.getElementById('adminError') ||
-                               document.getElementById('loginError') ||
-                               document.getElementById('registerError');
+                               document.getElementById('adminError');
             if (errorElement) {
                 errorElement.textContent = message;
                 errorElement.style.display = 'block';
@@ -850,43 +1088,54 @@
 
         // CRUD Functions for Chapters
         async function addChapter() {
-    const chapterCode = document.getElementById('chapterNumber').value; // Например: "7.1"
-    const title = document.getElementById('chapterTitle').value;
-    const description = document.getElementById('chapterDescription').value;
-    const content = document.getElementById('chapterContent').value;
+            if (!isAdmin) return;
+            
+            const chapterInput = document.getElementById('chapterNumber').value;
+            const title = document.getElementById('chapterTitle').value;
+            const description = document.getElementById('chapterDescription').value;
+            const content = document.getElementById('chapterContent').value;
 
-    if (!chapterCode || !title || !content) {
-        showError('admin', 'Пожалуйста, заполните все обязательные поля');
-        return;
-    }
+            if (!chapterInput || !title || !content) {
+                showError('admin', 'Пожалуйста, заполните все обязательные поля');
+                return;
+            }
 
-    try {
-        showLoading('admin');
-        await db.collection('chapters').add({
-            chapterCode: chapterCode, // "7.1", "7.2", "8.1" и т.д.
-            title: title,
-            description: description,
-            content: content,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        await loadChapters();
-        clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
-        hideLoading('admin');
-    } catch (error) {
-        hideLoading('admin');
-        showError('admin', 'Ошибка при добавлении главы: ' + error.message);
-    }
-}
+            try {
+                showLoading('admin');
+                
+                const chapterData = {
+                    title: title,
+                    description: description,
+                    content: content,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                if (chapterInput.includes('.')) {
+                    chapterData.chapterCode = chapterInput;
+                } else {
+                    chapterData.number = parseInt(chapterInput);
+                }
+
+                await db.collection('chapters').add(chapterData);
+                await loadChapters();
+                clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении главы: ' + error.message);
+            }
+        }
 
         async function loadChapters() {
             try {
                 showLoading('chapters');
-                const snapshot = await db.collection('chapters').orderBy('number').get();
+                const snapshot = await db.collection('chapters').get();
                 const chapters = [];
                 snapshot.forEach(doc => {
                     chapters.push({ id: doc.id, ...doc.data() });
                 });
                 renderChapters(chapters);
+                renderSidebarChapters(chapters);
                 hideLoading('chapters');
             } catch (error) {
                 hideLoading('chapters');
@@ -894,40 +1143,78 @@
             }
         }
 
-       function renderChapters(chapters) {
-    const container = document.getElementById('chaptersGrid');
-    container.innerHTML = '';
+        function renderChapters(chapters) {
+            const container = document.getElementById('chaptersGrid');
+            container.innerHTML = '';
 
-    // Сортировка с поддержкой обеих структур
-    chapters.sort((a, b) => {
-        const numA = a.chapterCode ? parseFloat(a.chapterCode) : a.number;
-        const numB = b.chapterCode ? parseFloat(b.chapterCode) : b.number;
-        return numA - numB;
-    });
+            // Сортировка с поддержкой обеих структур
+            chapters.sort((a, b) => {
+                const numA = a.chapterCode !== undefined ? 
+                    (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
+                    a.number;
+                const numB = b.chapterCode !== undefined ? 
+                    (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
+                    b.number;
+                
+                if (numA === numB) {
+                    return a.id.localeCompare(b.id);
+                }
+                return numA - numB;
+            });
 
-    chapters.forEach(chapter => {
-        // Определение номера главы
-        const chapterNumber = chapter.chapterCode || chapter.number;
-        
-        const chapterCard = document.createElement('div');
-        chapterCard.className = 'chapter-card';
-        chapterCard.innerHTML = `
-            <div class="chapter-number">Глава ${chapterNumber}</div>
-            <h3 class="chapter-title">${chapter.title}</h3>
-            <p class="chapter-description">${chapter.description}</p>
-            <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
-        `;
-        container.appendChild(chapterCard);
-    });
-}
+            chapters.forEach(chapter => {
+                const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
+                const chapterCard = document.createElement('div');
+                chapterCard.className = 'chapter-card';
+                chapterCard.innerHTML = `
+                    <div class="chapter-number">Глава ${chapterNumber}</div>
+                    <h3 class="chapter-title">${chapter.title}</h3>
+                    <p class="chapter-description">${chapter.description}</p>
+                    <button class="btn" onclick="showChapter('${chapter.id}')">Читать</button>
+                `;
+                container.appendChild(chapterCard);
+            });
+        }
+
+        function renderSidebarChapters(chapters) {
+            const container = document.getElementById('sidebarChapters');
+            container.innerHTML = '';
+
+            // Сортировка
+            chapters.sort((a, b) => {
+                const numA = a.chapterCode !== undefined ? 
+                    (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
+                    a.number;
+                const numB = b.chapterCode !== undefined ? 
+                    (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
+                    b.number;
+                
+                return numA - numB;
+            });
+
+            chapters.forEach(chapter => {
+                const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
+                const chapterItem = document.createElement('div');
+                chapterItem.className = 'chapter-item';
+                chapterItem.innerHTML = `
+                    <div class="chapter-number">Глава ${chapterNumber}</div>
+                    <div class="chapter-title">${chapter.title}</div>
+                `;
+                chapterItem.onclick = () => showChapter(chapter.id);
+                container.appendChild(chapterItem);
+            });
+        }
 
         function showChapter(id) {
-            // В реальной реализации это будет загружать главу с сервера
             window.location.href = `chapter.html?id=${id}`;
         }
 
         // CRUD Functions for Characters
         async function addCharacter() {
+            if (!isAdmin) return;
+            
             const name = document.getElementById('characterName').value;
             const description = document.getElementById('characterDescription').value;
 
@@ -986,6 +1273,8 @@
 
         // CRUD Functions for Wiki
         async function addWikiItem() {
+            if (!isAdmin) return;
+            
             const title = document.getElementById('wikiTitle').value;
             const content = document.getElementById('wikiContent').value;
 
@@ -1035,7 +1324,7 @@
                 wikiItem.className = 'wiki-item';
                 wikiItem.innerHTML = `
                     <h3 class="wiki-title">${item.title}</h3>
-                    <p>${item.content}</p>
+                    <div class="wiki-text">${item.content}</div>
                 `;
                 container.appendChild(wikiItem);
             });
@@ -1043,6 +1332,8 @@
 
         // CRUD Functions for Books
         async function addBook() {
+            if (!isAdmin) return;
+            
             const number = document.getElementById('bookNumber').value;
             const title = document.getElementById('bookTitle').value;
             const description = document.getElementById('bookDescription').value;
@@ -1095,7 +1386,7 @@
                 bookCard.innerHTML = `
                     <div class="book-number">${book.number}</div>
                     <h3 class="book-title">${book.title}</h3>
-                    <p>${book.description}</p>
+                    <p class="book-description">${book.description}</p>
                 `;
                 container.appendChild(bookCard);
             });
@@ -1103,6 +1394,8 @@
 
         // CRUD Functions for Schedule
         async function addReleaseDate() {
+            if (!isAdmin) return;
+            
             const date = document.getElementById('releaseDate').value;
             const description = document.getElementById('releaseDescription').value;
 
@@ -1149,8 +1442,11 @@
 
             schedule.forEach(date => {
                 const row = document.createElement('tr');
+                const dateStr = date.date instanceof Date ? 
+                    date.date.toLocaleDateString('ru-RU') : 
+                    new Date(date.date.seconds * 1000).toLocaleDateString('ru-RU');
                 row.innerHTML = `
-                    <td>${new Date(date.date.seconds * 1000).toLocaleDateString('ru-RU')}</td>
+                    <td>${dateStr}</td>
                     <td>${date.description}</td>
                 `;
                 container.appendChild(row);
@@ -1175,19 +1471,21 @@
             ]);
         }
 
-        // Auth state listener
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                hideAuthForms();
-                loadAllData();
-            } else {
-                showLogin();
-            }
-        });
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Firebase will handle auth state
+            // Hide loading overlay after 2 seconds
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 2000);
+            
+            // Check admin status
+            checkAdminStatus();
+            
+            // Load all data
+            loadAllData();
+            
+            // Show initial section
+            showSection('chapters');
         });
     </script>
 </body>
