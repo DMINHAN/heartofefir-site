@@ -75,6 +75,30 @@
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
             animation: pulse 2s infinite, fadeInOut 3s forwards;
         }
+        /* Progress Bar */
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            margin: 30px auto 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--gold));
+            border-radius: 4px;
+            animation: progressFill 3s ease-in-out forwards;
+        }
+        @keyframes progressFill {
+            0% { width: 0%; }
+            20% { width: 20%; }
+            40% { width: 40%; }
+            60% { width: 60%; }
+            80% { width: 80%; }
+            100% { width: 100%; }
+        }
         /* Stars animation */
         .stars {
             position: absolute;
@@ -148,27 +172,6 @@
         .logo:hover {
             transform: scale(1.05);
             text-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
-        }
-        /* Auth Buttons */
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .auth-btn {
-            padding: 8px 15px;
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 20px;
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .auth-btn:hover {
-            background: rgba(139, 92, 246, 0.3);
-            transform: translateY(-2px);
         }
         /* Menu Button */
         .menu-btn {
@@ -262,7 +265,7 @@
             text-align: center;
             position: relative;
             opacity: 0;
-            animation: fadeIn 1s ease-out 3.5s forwards;
+            animation: fadeIn 0.5s ease-out 3.5s forwards;
         }
         .hero h1 {
             font-family: 'Cinzel', serif;
@@ -271,14 +274,14 @@
             margin-bottom: 20px;
             color: var(--gold);
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-            animation: fadeInUp 1s ease-out 3.5s both;
+            animation: fadeInUp 0.5s ease-out 3.5s both;
         }
         .hero-description {
             font-size: 1.3rem;
             color: var(--gray);
             max-width: 700px;
             margin: 0 auto 40px;
-            animation: fadeInUp 1s ease-out 3.7s both;
+            animation: fadeInUp 0.5s ease-out 3.7s both;
         }
         /* Navigation Tabs */
         .tabs {
@@ -287,7 +290,7 @@
             gap: 10px;
             margin-bottom: 40px;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 3.9s both;
+            animation: fadeInUp 0.5s ease-out 3.9s both;
         }
         .tab {
             padding: 12px 25px;
@@ -313,10 +316,10 @@
         /* Sections */
         .section {
             padding: 60px 0;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 0.5s ease-out;
             display: none;
             opacity: 0;
-            animation: fadeIn 1s ease-out 3.5s forwards;
+            animation: fadeIn 0.5s ease-out 3.5s forwards;
         }
         .section.active {
             display: block;
@@ -400,6 +403,7 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             text-align: center;
+            cursor: pointer;
         }
         .character-card:hover {
             transform: translateY(-5px);
@@ -644,106 +648,6 @@
             transform: scale(1.1) rotate(90deg);
             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
         }
-        /* Auth Modal */
-        .auth-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            display: none;
-        }
-        .auth-modal-content {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid var(--primary);
-            max-width: 400px;
-            width: 90%;
-        }
-        .auth-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .auth-modal-header h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.5rem;
-        }
-        .close-auth-modal {
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .close-auth-modal:hover {
-            background: rgba(236, 72, 153, 0.2);
-        }
-        .auth-form {
-            margin-bottom: 20px;
-        }
-        .auth-form input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(15, 14, 36, 0.5);
-            color: var(--light);
-            font-family: 'Inter', sans-serif;
-        }
-        .auth-toggle {
-            text-align: center;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .auth-toggle:hover {
-            color: var(--primary);
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-        .logout-btn {
-            background: rgba(236, 72, 153, 0.2);
-            border: 1px solid rgba(236, 72, 153, 0.3);
-            color: var(--light);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-        .logout-btn:hover {
-            background: rgba(236, 72, 153, 0.3);
-        }
         /* Overlay */
         .overlay {
             position: fixed;
@@ -870,136 +774,66 @@
             border-top: 1px solid rgba(139, 92, 246, 0.2);
             margin-top: 50px;
             opacity: 0;
-            animation: fadeIn 1s ease-out 4s forwards;
+            animation: fadeIn 0.5s ease-out 4s forwards;
         }
-        /* Color Settings */
-        .color-setting {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .color-setting label {
-            min-width: 120px;
-        }
-        .color-picker {
-            width: 50px;
-            height: 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        /* Comments Section */
-        .comments-section {
-            margin-top: 50px;
+        /* Character Detail Page */
+        .character-detail {
             background: rgba(30, 27, 75, 0.5);
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px;
             border: 1px solid rgba(139, 92, 246, 0.2);
             backdrop-filter: blur(10px);
+            margin-top: 30px;
         }
-        .comments-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .comment-form {
+        .character-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
             margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
         }
-        .comment-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(15, 14, 36, 0.5);
-            color: var(--light);
-            font-family: 'Inter', sans-serif;
-            margin-bottom: 10px;
-            resize: vertical;
-            min-height: 80px;
+        .character-detail-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
         }
-        .comment-item {
-            background: rgba(30, 27, 75, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+        .character-detail-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            border: 3px solid var(--gold);
+        }
+        .character-info {
+            flex: 1;
+        }
+        .character-detail-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
             margin-bottom: 15px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
         }
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-        .comment-author {
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .comment-date {
+        .character-detail-description {
             color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.7;
         }
-        .comment-text {
-            color: var(--light);
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-        .comments-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .rating-stars {
-            color: #f59e0b;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .rating-stars .star {
+        .back-link {
             display: inline-block;
-            transition: transform 0.2s;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
         }
-        .rating-stars .star:hover {
-            transform: scale(1.2);
-        }
-        .like-button {
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 20px;
-            padding: 5px 15px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        .like-button:hover {
-            background: rgba(139, 92, 246, 0.3);
-        }
-        .like-button.liked {
-            background: rgba(236, 72, 153, 0.2);
-            border-color: var(--secondary);
-        }
-        .comment-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .comment-rating {
-            color: #f59e0b;
-            font-size: 0.9rem;
-        }
-        .login-prompt {
-            text-align: center;
-            color: var(--gray);
-            padding: 20px;
-            font-style: italic;
+        .back-link:hover {
+            text-decoration: underline;
         }
         /* Responsive */
         @media (max-width: 768px) {
@@ -1025,9 +859,9 @@
                 width: 100%;
                 left: -100%;
             }
-            .auth-buttons {
+            .character-header {
                 flex-direction: column;
-                gap: 5px;
+                text-align: center;
             }
         }
     </style>
@@ -1038,8 +872,12 @@
         <div class="stars" id="stars"></div>
         <div class="welcome-screen">
             <div class="welcome-text">Добро пожаловать на сайт!</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
         </div>
     </div>
+
     <!-- Chapters Menu -->
     <div class="chapters-menu" id="chaptersMenu">
         <div class="menu-header">
@@ -1052,26 +890,10 @@
             </div>
         </div>
     </div>
-    <!-- Auth Modal -->
-    <div class="auth-modal" id="authModal">
-        <div class="auth-modal-content">
-            <div class="auth-modal-header">
-                <h3 id="authModalTitle">Вход</h3>
-                <button class="close-auth-modal" onclick="closeAuthModal()">×</button>
-            </div>
-            <div class="auth-form">
-                <input type="email" id="authEmail" placeholder="Email">
-                <input type="password" id="authPassword" placeholder="Пароль">
-                <div class="error-message" id="authError"></div>
-                <button class="btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Войти</button>
-            </div>
-            <div class="auth-toggle" id="authToggle" onclick="toggleAuthMode()">
-                Нет аккаунта? Зарегистрируйтесь
-            </div>
-        </div>
-    </div>
+
     <!-- Admin Toggle Button (только для админа) -->
     <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()">⚙️</button>
+
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
@@ -1084,35 +906,7 @@
                 <p>Загрузка...</p>
             </div>
             <div class="error-message" id="adminError"></div>
-            <!-- Color Settings -->
-            <div class="admin-section">
-                <h3>Настройки цветов</h3>
-                <div class="color-setting">
-                    <label>Основной цвет:</label>
-                    <input type="color" class="color-picker" id="primaryColor" value="#8B5CF6" onchange="updateColor('--primary', this.value)">
-                </div>
-                <div class="color-setting">
-                    <label>Темный основной:</label>
-                    <input type="color" class="color-picker" id="primaryDarkColor" value="#7C3AED" onchange="updateColor('--primary-dark', this.value)">
-                </div>
-                <div class="color-setting">
-                    <label>Вторичный цвет:</label>
-                    <input type="color" class="color-picker" id="secondaryColor" value="#EC4899" onchange="updateColor('--secondary', this.value)">
-                </div>
-                <div class="color-setting">
-                    <label>Золотой цвет:</label>
-                    <input type="color" class="color-picker" id="goldColor" value="#f59e0b" onchange="updateColor('--gold', this.value)">
-                </div>
-                <div class="color-setting">
-                    <label>Темный фон:</label>
-                    <input type="color" class="color-picker" id="darkColor" value="#1e1b4b" onchange="updateColor('--dark', this.value)">
-                </div>
-                <div class="color-setting">
-                    <label>Очень темный:</label>
-                    <input type="color" class="color-picker" id="darkerColor" value="#0f0e24" onchange="updateColor('--darker', this.value)">
-                </div>
-                <button class="btn" onclick="resetColors()">Сбросить цвета</button>
-            </div>
+            
             <div class="admin-section">
                 <h3>Добавить Главу</h3>
                 <div class="form-group">
@@ -1133,6 +927,7 @@
                 </div>
                 <button class="btn" onclick="addChapter()">Добавить Главу</button>
             </div>
+
             <div class="admin-section">
                 <h3>Добавить Персонажа</h3>
                 <div class="form-group">
@@ -1150,6 +945,7 @@
                 </div>
                 <button class="btn" onclick="addCharacter()">Добавить Персонажа</button>
             </div>
+
             <div class="admin-section">
                 <h3>Добавить Факт в Википедию</h3>
                 <div class="form-group">
@@ -1162,6 +958,7 @@
                 </div>
                 <button class="btn" onclick="addWikiItem()">Добавить Факт</button>
             </div>
+
             <div class="admin-section">
                 <h3>Добавить Книгу в Серии</h3>
                 <div class="form-group">
@@ -1178,6 +975,7 @@
                 </div>
                 <button class="btn" onclick="addBook()">Добавить Книгу</button>
             </div>
+
             <div class="admin-section">
                 <h3>Добавить Дату Выхода</h3>
                 <div class="form-group">
@@ -1190,9 +988,11 @@
                 </div>
                 <button class="btn" onclick="addReleaseDate()">Добавить Дату</button>
             </div>
+            
             <button class="btn" onclick="logout()" style="background: linear-gradient(45deg, #ef4444, #dc2626); width: 100%;">Выйти</button>
         </div>
     </div>
+
     <!-- Modals -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -1204,20 +1004,20 @@
             </div>
         </div>
     </div>
+
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
+
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
                 <button class="menu-btn" onclick="toggleChaptersMenu()">☰</button>
                 <a href="#" class="logo">Сердце Эфира: Селлестиал</a>
-                <div class="auth-buttons" id="authButtons">
-                    <!-- Auth buttons will be rendered here -->
-                </div>
             </div>
         </div>
     </header>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
@@ -1225,6 +1025,7 @@
             <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
         </div>
     </section>
+
     <!-- Navigation Tabs -->
     <div class="container">
         <div class="tabs">
@@ -1235,6 +1036,7 @@
             <div class="tab" onclick="showSection('schedule')">Расписание</div>
         </div>
     </div>
+
     <!-- Main Content Layout -->
     <div class="container">
         <div class="main-layout">
@@ -1251,6 +1053,7 @@
                         <!-- Chapters will be added here dynamically -->
                     </div>
                 </section>
+
                 <!-- Characters Section -->
                 <section class="section" id="charactersSection">
                     <h2 class="section-title">Персонажи</h2>
@@ -1262,6 +1065,7 @@
                         <!-- Characters will be added here dynamically -->
                     </div>
                 </section>
+
                 <!-- Wiki Section -->
                 <section class="section" id="wikiSection">
                     <h2 class="section-title">Википедия</h2>
@@ -1273,6 +1077,7 @@
                         <!-- Wiki items will be added here dynamically -->
                     </div>
                 </section>
+
                 <!-- Books Series Section -->
                 <section class="section" id="booksSection">
                     <h2 class="section-title">Серия книг</h2>
@@ -1284,6 +1089,7 @@
                         <!-- Books will be added here dynamically -->
                     </div>
                 </section>
+
                 <!-- Release Schedule Section -->
                 <section class="section" id="scheduleSection">
                     <h2 class="section-title">Расписание выхода глав</h2>
@@ -1305,43 +1111,18 @@
                         </table>
                     </div>
                 </section>
+
+                <!-- Character Detail Section -->
+                <section class="section" id="characterDetailSection" style="display: none;">
+                    <a href="#" class="back-link" onclick="goBackToCharacters()">← Назад к персонажам</a>
+                    <div class="character-detail" id="characterDetail">
+                        <!-- Character detail will be loaded here -->
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-    <!-- Comments Section -->
-    <div class="container">
-        <section class="comments-section">
-            <h2 class="comments-title">Комментарии</h2>
-            
-            <!-- Comment Form (только для авторизованных пользователей) -->
-            <div class="comment-form" id="commentForm" style="display: none;">
-                <div class="rating-stars" id="ratingStars">
-                    <span class="star" onclick="setRating(1)">☆</span>
-                    <span class="star" onclick="setRating(2)">☆</span>
-                    <span class="star" onclick="setRating(3)">☆</span>
-                    <span class="star" onclick="setRating(4)">☆</span>
-                    <span class="star" onclick="setRating(5)">☆</span>
-                </div>
-                <textarea class="comment-input" id="commentText" placeholder="Оставьте свой комментарий..."></textarea>
-                <button class="btn" onclick="addCommentWithRating()">Отправить</button>
-            </div>
-            
-            <!-- Login prompt for non-authenticated users -->
-            <div class="login-prompt" id="loginPrompt">
-                <p>Пожалуйста, <a href="#" onclick="openAuthModal()" style="color: var(--primary);">войдите</a> чтобы оставлять комментарии.</p>
-            </div>
-            
-            <!-- Comments List -->
-            <div class="comments-list" id="commentsList">
-                <!-- Comments will be loaded here -->
-            </div>
-            
-            <div class="loading" id="commentsLoading" style="display: none;">
-                <div class="spinner"></div>
-                <p>Загрузка комментариев...</p>
-            </div>
-        </section>
-    </div>
+
     <!-- Footer -->
     <div class="container">
         <div class="footer">
@@ -1349,6 +1130,7 @@
             <p>@WhiteX author: WhiteMeovv</p>
         </div>
     </div>
+
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -1359,20 +1141,22 @@
             messagingSenderId: "296902937897",
             appId: "1:296902937897:web:11de57e0de55eb84a63b38"
         };
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
         const storage = firebase.storage();
+
         // Check if user is admin
         let isAdmin = false;
         let deleteCallback = null;
-        let currentRating = 0;
-        let isLoginMode = true; // true for login, false for register
+
         // Create stars for welcome screen
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const starCount = 100;
+            
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -1385,106 +1169,69 @@
                 starsContainer.appendChild(star);
             }
         }
+
         // Toggle Chapters Menu
         function toggleChaptersMenu() {
             const menu = document.getElementById('chaptersMenu');
             const overlay = document.getElementById('overlay');
+            
             menu.classList.toggle('open');
             overlay.classList.toggle('active');
         }
+
         // Toggle Admin Panel
         function toggleAdminPanel() {
-            if (!isAdmin) return;
+            if (!isAdmin) return; // Только админ может открыть панель
+            
             const panel = document.getElementById('adminPanel');
             const overlay = document.getElementById('overlay');
+            
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
+
         // Close all panels
         function closeAllPanels() {
             document.getElementById('chaptersMenu').classList.remove('open');
             document.getElementById('adminPanel').classList.remove('open');
             document.getElementById('overlay').classList.remove('active');
-            closeAuthModal();
         }
-        // Update color
-        function updateColor(variable, value) {
-            document.documentElement.style.setProperty(variable, value);
-        }
-        // Reset colors
-        function resetColors() {
-            updateColor('--primary', '#8B5CF6');
-            updateColor('--primary-dark', '#7C3AED');
-            updateColor('--secondary', '#EC4899');
-            updateColor('--gold', '#f59e0b');
-            updateColor('--dark', '#1e1b4b');
-            updateColor('--darker', '#0f0e24');
-            document.getElementById('primaryColor').value = '#8B5CF6';
-            document.getElementById('primaryDarkColor').value = '#7C3AED';
-            document.getElementById('secondaryColor').value = '#EC4899';
-            document.getElementById('goldColor').value = '#f59e0b';
-            document.getElementById('darkColor').value = '#1e1b4b';
-            document.getElementById('darkerColor').value = '#0f0e24';
-        }
-        // Auth Modal Functions
-        function openAuthModal() {
-            document.getElementById('authModal').style.display = 'flex';
-            resetAuthForm();
-        }
-        function closeAuthModal() {
-            document.getElementById('authModal').style.display = 'none';
-            resetAuthForm();
-        }
-        function resetAuthForm() {
-            document.getElementById('authEmail').value = '';
-            document.getElementById('authPassword').value = '';
-            document.getElementById('authError').style.display = 'none';
-            isLoginMode = true;
-            document.getElementById('authModalTitle').textContent = 'Вход';
-            document.getElementById('authSubmitBtn').textContent = 'Войти';
-            document.getElementById('authToggle').innerHTML = 'Нет аккаунта? <a href="#" onclick="toggleAuthMode(); return false;">Зарегистрируйтесь</a>';
-        }
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            if (isLoginMode) {
-                document.getElementById('authModalTitle').textContent = 'Вход';
-                document.getElementById('authSubmitBtn').textContent = 'Войти';
-                document.getElementById('authToggle').innerHTML = 'Нет аккаунта? <a href="#" onclick="toggleAuthMode(); return false;">Зарегистрируйтесь</a>';
-            } else {
-                document.getElementById('authModalTitle').textContent = 'Регистрация';
-                document.getElementById('authSubmitBtn').textContent = 'Зарегистрироваться';
-                document.getElementById('authToggle').innerHTML = 'Уже есть аккаунт? <a href="#" onclick="toggleAuthMode(); return false;">Войдите</a>';
-            }
-        }
-        async function handleAuthSubmit() {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
             
-            if (!email || !password) {
-                showError('auth', 'Пожалуйста, заполните все поля');
-                return;
-            }
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
             
-            try {
-                if (isLoginMode) {
-                    await auth.signInWithEmailAndPassword(email, password);
-                } else {
-                    await auth.createUserWithEmailAndPassword(email, password);
-                }
-                closeAuthModal();
-            } catch (error) {
-                showError('auth', error.message);
+            // Show selected section
+            document.getElementById(sectionId + 'Section').classList.add('active');
+            
+            // Add active class to clicked tab
+            if (event && event.target) {
+                event.target.classList.add('active');
             }
         }
+
+        // Show loading indicator
+        function showLoading(section) {
+            document.getElementById(`${section}Loading`).style.display = 'block';
+        }
+
+        // Hide loading indicator
+        function hideLoading(section) {
+            document.getElementById(`${section}Loading`).style.display = 'none';
+        }
+
+        // Show error message
         function showError(section, message) {
-            let errorElement;
-            if (section === 'auth') {
-                errorElement = document.getElementById('authError');
-            } else {
-                errorElement = document.getElementById(`${section}Error`) || 
+            const errorElement = document.getElementById(`${section}Error`) || 
                                document.getElementById('adminError');
-            }
-            
             if (errorElement) {
                 errorElement.textContent = message;
                 errorElement.style.display = 'block';
@@ -1493,120 +1240,26 @@
                 }, 5000);
             }
         }
-        // Authentication Functions
-        function checkAdminStatus() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    // Check if user is admin (you can implement your own logic here)
-                    // For now, we'll assume admin if email contains "admin"
-                    isAdmin = user.email.includes('admin');
-                    if (isAdmin) {
-                        document.getElementById('adminToggle').classList.add('show');
-                    } else {
-                        document.getElementById('adminToggle').classList.remove('show');
-                    }
-                } else {
-                    isAdmin = false;
-                    document.getElementById('adminToggle').classList.remove('show');
-                }
-                // Update auth buttons
-                updateAuthButtons();
-                // Update comment form visibility
-                updateCommentFormVisibility();
-                // Load comments when auth state changes
-                loadComments();
-            });
-        }
-        function updateAuthButtons() {
-            const user = auth.currentUser;
-            const container = document.getElementById('authButtons');
-            
-            if (user) {
-                // User is logged in
-                const displayName = user.email.split('@')[0];
-                container.innerHTML = `
-                    <div class="user-info">
-                        <div class="user-avatar">${displayName.charAt(0).toUpperCase()}</div>
-                        <span>${displayName}</span>
-                        <button class="logout-btn" onclick="logoutUser()">Выйти</button>
-                    </div>
-                `;
-            } else {
-                // User is not logged in
-                container.innerHTML = `
-                    <button class="auth-btn" onclick="openAuthModal()">Войти</button>
-                `;
-            }
-        }
-        function logoutUser() {
-            auth.signOut();
-        }
-        function logout() {
-            auth.signOut();
-            toggleAdminPanel();
-            alert('Вы вышли из системы');
-        }
-        // Navigation Functions - ИСПРАВЛЕНА ОШИБКА
-        function showSection(sectionId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            // Show selected section
-            const targetSection = document.getElementById(sectionId + 'Section');
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-            // Add active class to clicked tab (if event exists)
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
-        }
-        // Show loading indicator
-        function showLoading(section) {
-            const loadingElement = document.getElementById(`${section}Loading`);
-            if (loadingElement) {
-                loadingElement.style.display = 'block';
-            }
-        }
-        // Hide loading indicator
-        function hideLoading(section) {
-            const loadingElement = document.getElementById(`${section}Loading`);
-            if (loadingElement) {
-                loadingElement.style.display = 'none';
-            }
-        }
+
         // Modal functions
         function openDeleteModal(message, callback) {
             deleteCallback = callback;
-            const messageElement = document.getElementById('deleteMessage');
-            if (messageElement) {
-                messageElement.textContent = message;
-            }
-            const modalElement = document.getElementById('deleteModal');
-            if (modalElement) {
-                modalElement.style.display = 'flex';
-            }
+            document.getElementById('deleteMessage').textContent = message;
+            document.getElementById('deleteModal').style.display = 'flex';
         }
+        
         function closeDeleteModal() {
-            const modalElement = document.getElementById('deleteModal');
-            if (modalElement) {
-                modalElement.style.display = 'none';
-            }
+            document.getElementById('deleteModal').style.display = 'none';
             deleteCallback = null;
         }
+        
         function confirmDelete() {
             if (deleteCallback) {
                 deleteCallback();
             }
             closeDeleteModal();
         }
+
         // Image preview
         document.addEventListener('DOMContentLoaded', function() {
             const characterImage = document.getElementById('characterImage');
@@ -1627,38 +1280,90 @@
                 });
             }
         });
+
+        // Go back to characters section
+        function goBackToCharacters() {
+            event.preventDefault();
+            document.getElementById('characterDetailSection').style.display = 'none';
+            showSection('characters');
+        }
+
+        // Show character detail
+        function showCharacterDetail(characterId) {
+            loadCharacterDetail(characterId);
+            document.getElementById('characterDetailSection').style.display = 'block';
+            document.getElementById('charactersSection').classList.remove('active');
+        }
+
+        // Load character detail
+        async function loadCharacterDetail(characterId) {
+            try {
+                const doc = await db.collection('characters').doc(characterId).get();
+                if (doc.exists) {
+                    const character = doc.data();
+                    renderCharacterDetail(character);
+                }
+            } catch (error) {
+                console.error('Error loading character detail:', error);
+            }
+        }
+
+        // Render character detail
+        function renderCharacterDetail(character) {
+            const container = document.getElementById('characterDetail');
+            
+            let imageHtml = '';
+            if (character.imageUrl) {
+                imageHtml = `<img src="${character.imageUrl}" alt="${character.name}" class="character-detail-image">`;
+            } else {
+                imageHtml = `<div class="character-detail-avatar">${character.name.charAt(0)}</div>`;
+            }
+            
+            container.innerHTML = `
+                <div class="character-header">
+                    ${imageHtml}
+                    <div class="character-info">
+                        <h1 class="character-detail-name">${character.name}</h1>
+                        <p class="character-detail-description">${character.description}</p>
+                    </div>
+                </div>
+                <div class="character-bio">
+                    <h2 style="color: var(--gold); margin-bottom: 20px;">Биография</h2>
+                    <p style="line-height: 1.8;">${character.bio || 'Информация о персонаже пока недоступна.'}</p>
+                </div>
+            `;
+        }
+
         // CRUD Functions for Chapters
         async function addChapter() {
             if (!isAdmin) return;
-            const chapterInput = document.getElementById('chapterNumber');
-            const titleInput = document.getElementById('chapterTitle');
-            const descriptionInput = document.getElementById('chapterDescription');
-            const contentInput = document.getElementById('chapterContent');
-            if (!chapterInput || !titleInput || !descriptionInput || !contentInput) {
-                showError('admin', 'Ошибка: не найдены поля формы');
-                return;
-            }
-            const chapterInputValue = chapterInput.value;
-            const title = titleInput.value;
-            const description = descriptionInput.value;
-            const content = contentInput.value;
-            if (!chapterInputValue || !title || !content) {
+            
+            const chapterInput = document.getElementById('chapterNumber').value;
+            const title = document.getElementById('chapterTitle').value;
+            const description = document.getElementById('chapterDescription').value;
+            const content = document.getElementById('chapterContent').value;
+
+            if (!chapterInput || !title || !content) {
                 showError('admin', 'Пожалуйста, заполните все обязательные поля');
                 return;
             }
+
             try {
                 showLoading('admin');
+                
                 const chapterData = {
                     title: title,
                     description: description,
                     content: content,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
-                if (chapterInputValue.includes('.')) {
-                    chapterData.chapterCode = chapterInputValue;
+
+                if (chapterInput.includes('.')) {
+                    chapterData.chapterCode = chapterInput;
                 } else {
-                    chapterData.number = parseInt(chapterInputValue);
+                    chapterData.number = parseInt(chapterInput);
                 }
+
                 await db.collection('chapters').add(chapterData);
                 await loadChapters();
                 clearForm(['chapterNumber', 'chapterTitle', 'chapterDescription', 'chapterContent']);
@@ -1668,6 +1373,7 @@
                 showError('admin', 'Ошибка при добавлении главы: ' + error.message);
             }
         }
+
         async function loadChapters() {
             try {
                 showLoading('chapters');
@@ -1684,10 +1390,12 @@
                 showError('chapters', 'Ошибка при загрузке глав: ' + error.message);
             }
         }
+
         function renderChapters(chapters) {
             const container = document.getElementById('chaptersGrid');
-            if (!container) return;
             container.innerHTML = '';
+
+            // Сортировка с поддержкой обеих структур
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1695,29 +1403,34 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
+                
                 if (numA === numB) {
                     return a.id.localeCompare(b.id);
                 }
                 return numA - numB;
             });
+
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'chapter-card';
                 chapterCard.onclick = () => showChapter(chapter.id);
                 chapterCard.innerHTML = `
                     <div class="chapter-number">Глава ${chapterNumber}</div>
-                    <h3 class="chapter-title">${chapter.title || 'Без названия'}</h3>
-                    <p class="chapter-description">${chapter.description || ''}</p>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteChapter('${chapter.id}', '${chapter.title || 'Без названия'}')">Удалить</button>` : ''}
+                    <h3 class="chapter-title">${chapter.title}</h3>
+                    <p class="chapter-description">${chapter.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteChapter('${chapter.id}', '${chapter.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(chapterCard);
             });
         }
+
         function renderMenuChapters(chapters) {
             const container = document.getElementById('menuChaptersList');
-            if (!container) return;
             container.innerHTML = '';
+
+            // Сортировка
             chapters.sort((a, b) => {
                 const numA = a.chapterCode !== undefined ? 
                     (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
@@ -1725,15 +1438,18 @@
                 const numB = b.chapterCode !== undefined ? 
                     (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
                     b.number;
+                
                 return numA - numB;
             });
+
             chapters.forEach(chapter => {
                 const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
+                
                 const chapterItem = document.createElement('div');
                 chapterItem.className = 'chapter-item';
                 chapterItem.innerHTML = `
                     <div class="chapter-number">Глава ${chapterNumber}</div>
-                    <div class="chapter-title">${chapter.title || 'Без названия'}</div>
+                    <div class="chapter-title">${chapter.title}</div>
                 `;
                 chapterItem.onclick = (e) => {
                     if (!e.target.classList.contains('delete-btn')) {
@@ -1745,11 +1461,14 @@
                 container.appendChild(chapterItem);
             });
         }
+
         function showChapter(id) {
             window.location.href = `chapter.html?id=${id}`;
         }
+
         async function deleteChapter(chapterId, chapterTitle) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить главу "${chapterTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1763,30 +1482,29 @@
                 }
             });
         }
+
         // CRUD Functions for Characters
         async function addCharacter() {
             if (!isAdmin) return;
-            const nameInput = document.getElementById('characterName');
-            const descriptionInput = document.getElementById('characterDescription');
-            const imageInput = document.getElementById('characterImage');
-            if (!nameInput || !descriptionInput) {
-                showError('admin', 'Ошибка: не найдены поля формы');
-                return;
-            }
-            const name = nameInput.value;
-            const description = descriptionInput.value;
-            const imageFile = imageInput ? imageInput.files[0] : null;
+            
+            const name = document.getElementById('characterName').value;
+            const description = document.getElementById('characterDescription').value;
+            const imageFile = document.getElementById('characterImage').files[0];
+
             if (!name || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
+                
                 const characterData = {
                     name: name,
                     description: description,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
+
                 // Upload image if provided
                 if (imageFile) {
                     try {
@@ -1800,18 +1518,19 @@
                         // Продолжаем без изображения
                     }
                 }
+
                 await db.collection('characters').add(characterData);
                 await loadCharacters();
                 clearForm(['characterName', 'characterDescription']);
-                if (imageInput) imageInput.value = '';
-                const preview = document.getElementById('characterImagePreview');
-                if (preview) preview.style.display = 'none';
+                document.getElementById('characterImage').value = '';
+                document.getElementById('characterImagePreview').style.display = 'none';
                 hideLoading('admin');
             } catch (error) {
                 hideLoading('admin');
                 showError('admin', 'Ошибка при добавлении персонажа: ' + error.message);
             }
         }
+
         async function loadCharacters() {
             try {
                 showLoading('characters');
@@ -1827,31 +1546,36 @@
                 showError('characters', 'Ошибка при загрузке персонажей: ' + error.message);
             }
         }
+
         function renderCharacters(characters) {
             const container = document.getElementById('charactersGrid');
-            if (!container) return;
             container.innerHTML = '';
+
             characters.forEach(character => {
-                const characterElement = document.createElement('div');
-                characterElement.className = 'character-card';
+                const characterCard = document.createElement('div');
+                characterCard.className = 'character-card';
+                characterCard.onclick = () => showCharacterDetail(character.id);
+                
                 let imageHtml = '';
                 if (character.imageUrl) {
-                    imageHtml = `<img src="${character.imageUrl}" alt="${character.name || 'Персонаж'}" class="character-image" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
-                    imageHtml += `<div class="character-avatar" style="display:none;">${(character.name || '?').charAt(0)}</div>`;
+                    imageHtml = `<img src="${character.imageUrl}" alt="${character.name}" class="character-image">`;
                 } else {
-                    imageHtml = `<div class="character-avatar">${(character.name || '?').charAt(0)}</div>`;
+                    imageHtml = `<div class="character-avatar">${character.name.charAt(0)}</div>`;
                 }
-                characterElement.innerHTML = `
+                
+                characterCard.innerHTML = `
                     ${imageHtml}
-                    <h3 class="character-name">${character.name || 'Без имени'}</h3>
-                    <p class="character-description">${character.description || ''}</p>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteCharacter('${character.id}', '${character.name || 'Без имени'}')">Удалить</button>` : ''}
+                    <h3 class="character-name">${character.name}</h3>
+                    <p class="character-description">${character.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteCharacter('${character.id}', '${character.name}')">Удалить</button>` : ''}
                 `;
-                container.appendChild(characterElement);
+                container.appendChild(characterCard);
             });
         }
+
         async function deleteCharacter(characterId, characterName) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить персонажа "${characterName}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1865,21 +1589,19 @@
                 }
             });
         }
+
         // CRUD Functions for Wiki
         async function addWikiItem() {
             if (!isAdmin) return;
-            const titleInput = document.getElementById('wikiTitle');
-            const contentInput = document.getElementById('wikiContent');
-            if (!titleInput || !contentInput) {
-                showError('admin', 'Ошибка: не найдены поля формы');
-                return;
-            }
-            const title = titleInput.value;
-            const content = contentInput.value;
+            
+            const title = document.getElementById('wikiTitle').value;
+            const content = document.getElementById('wikiContent').value;
+
             if (!title || !content) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('wiki').add({
@@ -1895,6 +1617,7 @@
                 showError('admin', 'Ошибка при добавлении факта: ' + error.message);
             }
         }
+
         async function loadWiki() {
             try {
                 showLoading('wiki');
@@ -1910,23 +1633,26 @@
                 showError('wiki', 'Ошибка при загрузке википедии: ' + error.message);
             }
         }
+
         function renderWiki(wikiItems) {
             const container = document.getElementById('wikiContent');
-            if (!container) return;
             container.innerHTML = '';
+
             wikiItems.forEach(item => {
                 const wikiItem = document.createElement('div');
                 wikiItem.className = 'wiki-item';
                 wikiItem.innerHTML = `
-                    <h3 class="wiki-title">${item.title || 'Без заголовка'}</h3>
-                    <div class="wiki-text">${item.content || ''}</div>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteWikiItem('${item.id}', '${item.title || 'Без заголовка'}')">Удалить</button>` : ''}
+                    <h3 class="wiki-title">${item.title}</h3>
+                    <div class="wiki-text">${item.content}</div>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteWikiItem('${item.id}', '${item.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(wikiItem);
             });
         }
+
         async function deleteWikiItem(wikiId, wikiTitle) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${wikiTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -1940,23 +1666,20 @@
                 }
             });
         }
+
         // CRUD Functions for Books
         async function addBook() {
             if (!isAdmin) return;
-            const numberInput = document.getElementById('bookNumber');
-            const titleInput = document.getElementById('bookTitle');
-            const descriptionInput = document.getElementById('bookDescription');
-            if (!numberInput || !titleInput || !descriptionInput) {
-                showError('admin', 'Ошибка: не найдены поля формы');
-                return;
-            }
-            const number = numberInput.value;
-            const title = titleInput.value;
-            const description = descriptionInput.value;
+            
+            const number = document.getElementById('bookNumber').value;
+            const title = document.getElementById('bookTitle').value;
+            const description = document.getElementById('bookDescription').value;
+
             if (!number || !title) {
                 showError('admin', 'Пожалуйста, заполните обязательные поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('books').add({
@@ -1973,6 +1696,7 @@
                 showError('admin', 'Ошибка при добавлении книги: ' + error.message);
             }
         }
+
         async function loadBooks() {
             try {
                 showLoading('books');
@@ -1988,24 +1712,27 @@
                 showError('books', 'Ошибка при загрузке книг: ' + error.message);
             }
         }
+
         function renderBooks(books) {
             const container = document.getElementById('booksList');
-            if (!container) return;
             container.innerHTML = '';
+
             books.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'book-card';
                 bookCard.innerHTML = `
-                    <div class="book-number">${book.number || '?'}</div>
-                    <h3 class="book-title">${book.title || 'Без названия'}</h3>
-                    <p class="book-description">${book.description || ''}</p>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteBook('${book.id}', '${book.title || 'Без названия'}')">Удалить</button>` : ''}
+                    <div class="book-number">${book.number}</div>
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-description">${book.description}</p>
+                    ${isAdmin ? `<button class="btn delete-btn" onclick="deleteBook('${book.id}', '${book.title}')">Удалить</button>` : ''}
                 `;
                 container.appendChild(bookCard);
             });
         }
+
         async function deleteBook(bookId, bookTitle) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить книгу "${bookTitle}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -2019,21 +1746,19 @@
                 }
             });
         }
+
         // CRUD Functions for Schedule
         async function addReleaseDate() {
             if (!isAdmin) return;
-            const dateInput = document.getElementById('releaseDate');
-            const descriptionInput = document.getElementById('releaseDescription');
-            if (!dateInput || !descriptionInput) {
-                showError('admin', 'Ошибка: не найдены поля формы');
-                return;
-            }
-            const date = dateInput.value;
-            const description = descriptionInput.value;
+            
+            const date = document.getElementById('releaseDate').value;
+            const description = document.getElementById('releaseDescription').value;
+
             if (!date || !description) {
                 showError('admin', 'Пожалуйста, заполните все поля');
                 return;
             }
+
             try {
                 showLoading('admin');
                 await db.collection('schedule').add({
@@ -2049,6 +1774,7 @@
                 showError('admin', 'Ошибка при добавлении даты: ' + error.message);
             }
         }
+
         async function loadSchedule() {
             try {
                 showLoading('schedule');
@@ -2064,10 +1790,11 @@
                 showError('schedule', 'Ошибка при загрузке расписания: ' + error.message);
             }
         }
+
         function renderSchedule(schedule) {
             const container = document.getElementById('scheduleTable');
-            if (!container) return;
             container.innerHTML = '';
+
             schedule.forEach(date => {
                 const row = document.createElement('tr');
                 const dateStr = date.date instanceof Date ? 
@@ -2075,14 +1802,16 @@
                     new Date(date.date.seconds * 1000).toLocaleDateString('ru-RU');
                 row.innerHTML = `
                     <td>${dateStr}</td>
-                    <td>${date.description || ''}</td>
-                    ${isAdmin ? `<td><button class="btn delete-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteScheduleItem('${date.id}', '${date.description || 'Без описания'}')">Удалить</button></td>` : '<td></td>'}
+                    <td>${date.description}</td>
+                    ${isAdmin ? `<td><button class="btn delete-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="deleteScheduleItem('${date.id}', '${date.description}')">Удалить</button></td>` : '<td></td>'}
                 `;
                 container.appendChild(row);
             });
         }
+
         async function deleteScheduleItem(scheduleId, scheduleDescription) {
             if (!isAdmin) return;
+            
             openDeleteModal(`Вы уверены, что хотите удалить запись "${scheduleDescription}"?`, async () => {
                 try {
                     showLoading('admin');
@@ -2096,173 +1825,14 @@
                 }
             });
         }
+
         // Clear form fields
         function clearForm(fields) {
-            fields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.value = '';
-                }
+            fields.forEach(field => {
+                document.getElementById(field).value = '';
             });
         }
-        // Comments Functions
-        function updateCommentFormVisibility() {
-            const user = auth.currentUser;
-            const commentForm = document.getElementById('commentForm');
-            const loginPrompt = document.getElementById('loginPrompt');
-            
-            if (user) {
-                commentForm.style.display = 'block';
-                loginPrompt.style.display = 'none';
-            } else {
-                commentForm.style.display = 'none';
-                loginPrompt.style.display = 'block';
-            }
-        }
-        function setRating(rating) {
-            currentRating = rating;
-            updateRatingDisplay();
-        }
-        function updateRatingDisplay() {
-            const stars = document.querySelectorAll('#ratingStars .star');
-            stars.forEach((star, index) => {
-                star.textContent = index < currentRating ? '★' : '☆';
-            });
-        }
-        function resetRatingStars() {
-            currentRating = 0;
-            updateRatingDisplay();
-        }
-        async function addCommentWithRating() {
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Пожалуйста, войдите для добавления комментариев');
-                return;
-            }
-            
-            const commentText = document.getElementById('commentText').value.trim();
-            if (!commentText) {
-                alert('Пожалуйста, введите текст комментария');
-                return;
-            }
-            
-            try {
-                const commentData = {
-                    text: commentText,
-                    rating: currentRating,
-                    likes: 0,
-                    likedBy: [],
-                    author: user.email.split('@')[0],
-                    authorId: user.uid,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                await db.collection('comments').add(commentData);
-                document.getElementById('commentText').value = '';
-                resetRatingStars();
-                await loadComments();
-            } catch (error) {
-                console.error('Error adding comment:', error);
-                alert('Ошибка при добавлении комментария: ' + error.message);
-            }
-        }
-        async function likeComment(commentId, currentUserId) {
-            try {
-                const commentRef = db.collection('comments').doc(commentId);
-                const doc = await commentRef.get();
-                
-                if (doc.exists) {
-                    const comment = doc.data();
-                    let likedBy = comment.likedBy || [];
-                    let likes = comment.likes || 0;
-                    
-                    const userIndex = likedBy.indexOf(currentUserId);
-                    if (userIndex === -1) {
-                        // User hasn't liked yet
-                        likedBy.push(currentUserId);
-                        likes++;
-                    } else {
-                        // User already liked, remove like
-                        likedBy.splice(userIndex, 1);
-                        likes--;
-                    }
-                    
-                    await commentRef.update({
-                        likes: likes,
-                        likedBy: likedBy
-                    });
-                    
-                    // Reload comments to update UI
-                    await loadComments();
-                }
-            } catch (error) {
-                console.error('Error liking comment:', error);
-            }
-        }
-        async function loadComments() {
-            try {
-                showLoading('comments');
-                
-                const snapshot = await db.collection('comments')
-                    .orderBy('createdAt', 'desc')
-                    .limit(50)
-                    .get();
-                
-                const comments = [];
-                snapshot.forEach(doc => {
-                    comments.push({ id: doc.id, ...doc.data() });
-                });
-                
-                renderComments(comments);
-                hideLoading('comments');
-            } catch (error) {
-                console.error('Error loading comments:', error);
-                hideLoading('comments');
-            }
-        }
-        function renderComments(comments) {
-            const container = document.getElementById('commentsList');
-            const user = auth.currentUser;
-            container.innerHTML = '';
-            
-            if (comments.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--gray);">Пока нет комментариев. Будьте первым!</p>';
-                return;
-            }
-            
-            comments.forEach(comment => {
-                const date = comment.createdAt ? 
-                    new Date(comment.createdAt.seconds * 1000).toLocaleString('ru-RU') : 
-                    'Только что';
-                
-                // Render stars based on rating
-                let starsHtml = '';
-                for (let i = 1; i <= 5; i++) {
-                    starsHtml += `<span style="color: #f59e0b;">${i <= comment.rating ? '★' : '☆'}</span>`;
-                }
-                
-                // Check if current user has liked this comment
-                const hasLiked = user && comment.likedBy && comment.likedBy.includes(user.uid);
-                const likeButtonClass = hasLiked ? 'like-button liked' : 'like-button';
-                
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment-item';
-                commentElement.innerHTML = `
-                    <div class="comment-header">
-                        <span class="comment-author">${comment.author || 'Аноним'}</span>
-                        <span class="comment-date">${date}</span>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                    <div class="comment-rating">${starsHtml} (${comment.rating}/5)</div>
-                    <div class="comment-actions">
-                        <button class="${likeButtonClass}" onclick="likeComment('${comment.id}', '${user ? user.uid : ''}')">
-                            ❤️ ${comment.likes || 0}
-                        </button>
-                    </div>
-                `;
-                container.appendChild(commentElement);
-            });
-        }
+
         // Load all data
         async function loadAllData() {
             await Promise.all([
@@ -2273,30 +1843,24 @@
                 loadSchedule()
             ]);
         }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
+            
             // Hide loading overlay after 3 seconds
             setTimeout(() => {
-                const overlay = document.getElementById('loadingOverlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
-                }
+                document.getElementById('loadingOverlay').style.display = 'none';
             }, 3000);
+            
             // Check admin status
             checkAdminStatus();
+            
             // Load all data
             loadAllData();
+            
             // Show initial section
             showSection('chapters');
-            // Load comments
-            loadComments();
-            // Add event listener for Enter key in auth form
-            document.getElementById('authPassword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    handleAuthSubmit();
-                }
-            });
         });
     </script>
 </body>
