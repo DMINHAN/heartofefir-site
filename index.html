@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сердце Эфира</title>
+    <title>Сердце Эфира: Селлестиал</title>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -56,7 +56,65 @@
                 radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
             z-index: -1;
         }
-        /* Loading Animation */
+        /* Animated Background Waves */
+        .background-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            border-radius: 45%;
+            animation: wave 15s ease-in-out infinite;
+            opacity: 0.5;
+        }
+        .wave:nth-child(1) {
+            top: -50%;
+            left: -25%;
+            animation-duration: 18s;
+            animation-delay: 0s;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+        }
+        .wave:nth-child(2) {
+            top: -30%;
+            right: -25%;
+            animation-duration: 22s;
+            animation-delay: 2s;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+        }
+        .wave:nth-child(3) {
+            bottom: -40%;
+            left: -15%;
+            animation-duration: 25s;
+            animation-delay: 4s;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+        }
+        @keyframes wave {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(5%, 5%) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 10%) rotate(180deg);
+            }
+            75% {
+                transform: translate(-5%, 5%) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        /* Loading Animation with Progress Bar */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -65,6 +123,7 @@
             height: 100%;
             background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -74,6 +133,7 @@
             text-align: center;
             position: relative;
             z-index: 1001;
+            margin-bottom: 40px;
         }
         .welcome-text {
             font-family: 'Cinzel', serif;
@@ -82,6 +142,43 @@
             color: var(--gold);
             text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
             animation: pulse 2s infinite, fadeInOut 3s forwards;
+        }
+        /* Progress Bar */
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(30, 27, 75, 0.5);
+            border-radius: 10px;
+            padding: 3px;
+            border: 1px solid var(--primary);
+        }
+        .progress-bar {
+            height: 20px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progressShine 2s infinite;
+        }
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .progress-text {
+            color: var(--light);
+            margin-top: 10px;
+            font-size: 1.1rem;
         }
         /* Stars animation */
         .stars {
@@ -373,44 +470,112 @@
             margin-bottom: 20px;
             font-size: 0.9rem;
         }
-        /* Book Separator */
+        /* Book Separator - Enhanced Design */
         .book-separator {
             grid-column: 1 / -1;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
-            padding: 25px 0;
-            margin: 30px 0;
+            padding: 40px 0;
+            margin: 50px 0;
             text-align: center;
-            border-radius: 10px;
             position: relative;
+            overflow: hidden;
         }
         .book-separator::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        .book-separator-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.7);
+            display: inline-block;
+            padding: 0 40px;
+            position: relative;
+            z-index: 2;
+            background: transparent; /* Убрали черный блок */
+            border: none;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(245, 158, 11, 0.5), 0 0 20px rgba(245, 158, 11, 0.3);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.8), 0 0 30px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+            }
         }
         .book-separator::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: 50%;
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        }
-        .book-separator-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            color: var(--gold);
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-            display: inline-block;
-            padding: 0 20px;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            position: relative;
+            background: linear-gradient(90deg, transparent, var(--secondary), var(--primary), var(--secondary), transparent);
+            transform: translateY(50%);
             z-index: 1;
+        }
+        /* Floating Orbs around separator */
+        .separator-orb {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            z-index: 0;
+            animation: floatOrb 8s ease-in-out infinite;
+        }
+        .separator-orb:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            background: var(--primary);
+            animation-delay: 0s;
+        }
+        .separator-orb:nth-child(2) {
+            top: 30%;
+            right: 15%;
+            background: var(--secondary);
+            animation-delay: 2s;
+        }
+        .separator-orb:nth-child(3) {
+            bottom: 25%;
+            left: 20%;
+            background: var(--accent);
+            animation-delay: 4s;
+        }
+        .separator-orb:nth-child(4) {
+            bottom: 35%;
+            right: 10%;
+            background: var(--gold);
+            animation-delay: 6s;
+        }
+        @keyframes floatOrb {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translate(20px, -20px) scale(1.2);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(0, -40px) scale(1);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translate(-20px, -20px) scale(0.8);
+                opacity: 0.6;
+            }
         }
         /* Characters Section */
         .characters-grid {
@@ -990,16 +1155,30 @@
                 width: 100%;
                 left: -100%;
             }
+            .book-separator-title {
+                font-size: 1.8rem;
+                padding: 0 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Animation -->
+    <!-- Animated Background Waves -->
+    <div class="background-waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    <!-- Loading Animation with Progress Bar -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="stars" id="stars"></div>
         <div class="welcome-screen">
             <div class="welcome-text">Добро пожаловать на сайт!</div>
         </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="loadingProgressBar"></div>
+        </div>
+        <div class="progress-text" id="loadingProgressText">0%</div>
     </div>
     <!-- Maintenance Mode -->
     <div class="maintenance-mode" id="maintenanceMode">
@@ -1189,15 +1368,15 @@
         <div class="container">
             <div class="header-content">
                 <button class="menu-btn" onclick="toggleChaptersMenu()">☰</button>
-                <a href="#" class="logo">Сердце Эфира.</a>
+                <a href="#" class="logo">Сердце Эфира: Селлестиал</a>
             </div>
         </div>
     </header>
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Сердце Эфира</h1>
-            <p class="hero-description" id="bookDescription">История Вайта и о его перерождении в другой мир.</p>
+            <h1>Сердце Эфира: Селлестиал</h1>
+            <p class="hero-description" id="bookDescription">Фентезийная история о приключениях в мире магии и тайн</p>
         </div>
     </section>
     <!-- Navigation Tabs -->
@@ -1217,7 +1396,7 @@
             <div class="content-area">
                 <!-- Chapters Section -->
                 <section class="section active" id="chaptersSection">
-                    <h2 class="section-title">Сердце Эфира: Аеверия</h2>
+                    <h2 class="section-title">Главы книги</h2>
                     <div class="loading" id="chaptersLoading">
                         <div class="spinner"></div>
                         <p>Загрузка глав...</p>
@@ -1324,6 +1503,21 @@
                 star.style.animationDelay = `${Math.random() * 2}s`;
                 starsContainer.appendChild(star);
             }
+        }
+        // Simulate loading progress
+        function simulateLoading() {
+            const progressBar = document.getElementById('loadingProgressBar');
+            const progressText = document.getElementById('loadingProgressText');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }, 200);
         }
         // Toggle Chapters Menu
         function toggleChaptersMenu() {
@@ -1772,10 +1966,14 @@
             
             chapters.forEach(item => {
                 if (item.type === 'separator') {
-                    // Создаем разделитель книги
+                    // Создаем красивый разделитель книги
                     const separator = document.createElement('div');
                     separator.className = 'book-separator';
                     separator.innerHTML = `
+                        <div class="separator-orb"></div>
+                        <div class="separator-orb"></div>
+                        <div class="separator-orb"></div>
+                        <div class="separator-orb"></div>
                         <h3 class="book-separator-title">${item.title}</h3>
                     `;
                     container.appendChild(separator);
@@ -2212,6 +2410,8 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
+            simulateLoading(); // Запускаем прогресс-бар
+            
             // Hide loading overlay after 3 seconds
             setTimeout(() => {
                 const overlay = document.getElementById('loadingOverlay');
@@ -2219,6 +2419,7 @@
                     overlay.style.display = 'none';
                 }
             }, 3000);
+            
             // Check admin status
             checkAdminStatus();
             // Check maintenance mode
