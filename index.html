@@ -373,6 +373,45 @@
             margin-bottom: 20px;
             font-size: 0.9rem;
         }
+        /* Book Separator */
+        .book-separator {
+            grid-column: 1 / -1;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+            padding: 25px 0;
+            margin: 30px 0;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+        }
+        .book-separator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        .book-separator::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        .book-separator-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+            display: inline-block;
+            padding: 0 20px;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            position: relative;
+            z-index: 1;
+        }
         /* Characters Section */
         .characters-grid {
             display: grid;
@@ -927,142 +966,7 @@
         .neon-grid::after {
             transform: rotate(90deg);
         }
-
-        /* Chat Widget Styles */
-        .chat-toggle-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 998;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .chat-toggle-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
-            background: var(--primary-dark);
-        }
-        .chat-widget {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 350px;
-            height: 500px;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 997;
-            display: none;
-            flex-direction: column;
-            border: 1px solid var(--primary);
-            backdrop-filter: blur(10px);
-        }
-        .chat-widget.open {
-            display: flex;
-            animation: fadeInUp 0.3s ease-out;
-        }
-        .chat-header {
-            background: rgba(139, 92, 246, 0.2);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--primary);
-        }
-        .chat-header h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            color: var(--gold);
-            margin: 0;
-        }
-        .close-chat {
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        .close-chat:hover {
-            background: rgba(236, 72, 153, 0.2);
-            transform: rotate(90deg);
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .chat-message {
-            background: rgba(30, 27, 75, 0.5);
-            border-radius: 10px;
-            padding: 12px 15px;
-            max-width: 85%;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            position: relative;
-        }
-        .chat-message.own {
-            align-self: flex-end;
-            background: rgba(139, 92, 246, 0.3);
-            border-color: var(--primary);
-        }
-        .chat-message-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-        .chat-message-username {
-            font-weight: 600;
-            color: var(--gold);
-        }
-        .chat-message-time {
-            opacity: 0.7;
-        }
-        .chat-message-text {
-            line-height: 1.5;
-        }
-        .chat-input-area {
-            padding: 15px;
-            background: rgba(15, 14, 36, 0.5);
-            border-top: 1px solid rgba(139, 92, 246, 0.2);
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(15, 14, 36, 0.5);
-            color: var(--light);
-            font-family: 'Inter', sans-serif;
-        }
-        .send-btn {
-            padding: 12px 20px;
-            font-size: 0.9rem;
-        }
-        /* Медиа-запрос для мобильных устройств */
+        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -1085,12 +989,6 @@
             .chapters-menu {
                 width: 100%;
                 left: -100%;
-            }
-            .chat-widget {
-                width: 90%;
-                height: 70vh;
-                bottom: 80px;
-                right: 5%;
             }
         }
     </style>
@@ -1186,6 +1084,14 @@
                 <button class="btn" onclick="resetColors()">Сбросить цвета</button>
             </div>
             <div class="admin-section">
+                <h3>Добавить Разделитель Книги</h3>
+                <div class="form-group">
+                    <label>Название книги:</label>
+                    <input type="text" id="bookSeparatorTitle" placeholder="Введите название книги (например: Сердце Эфира: Аеверия)">
+                </div>
+                <button class="btn" onclick="addBookSeparator()">Добавить Разделитель</button>
+            </div>
+            <div class="admin-section">
                 <h3>Добавить Главу</h3>
                 <div class="form-group">
                     <label>Номер главы (например: 7 или 7.1):</label>
@@ -1278,28 +1184,6 @@
     </div>
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
-
-    <!-- Chat Widget Button -->
-    <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChatWidget()">💬</button>
-    <!-- Chat Widget -->
-    <div class="chat-widget" id="chatWidget">
-        <div class="chat-header">
-            <h3>Чат сообщества</h3>
-            <button class="close-chat" onclick="toggleChatWidget()">×</button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <!-- Сообщения будут загружаться сюда динамически -->
-            <div class="loading" id="chatLoading">
-                <div class="spinner"></div>
-                <p>Загрузка сообщений...</p>
-            </div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chatMessageInput" placeholder="Введите сообщение..." onkeypress="handleChatKeypress(event)">
-            <button class="btn send-btn" onclick="sendChatMessage()">Отправить</button>
-        </div>
-    </div>
-
     <!-- Header -->
     <header>
         <div class="container">
@@ -1425,7 +1309,6 @@
         let isAdmin = false;
         let deleteCallback = null;
         let isMaintenanceMode = false;
-
         // Create stars for welcome screen
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -1442,7 +1325,6 @@
                 starsContainer.appendChild(star);
             }
         }
-
         // Toggle Chapters Menu
         function toggleChaptersMenu() {
             const menu = document.getElementById('chaptersMenu');
@@ -1450,7 +1332,6 @@
             menu.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
         // Toggle Admin Panel
         function toggleAdminPanel() {
             if (!isAdmin) return; // Только админ может открыть панель
@@ -1459,19 +1340,16 @@
             panel.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
         // Close all panels
         function closeAllPanels() {
             document.getElementById('chaptersMenu').classList.remove('open');
             document.getElementById('adminPanel').classList.remove('open');
             document.getElementById('overlay').classList.remove('active');
         }
-
         // Update color
         function updateColor(variable, value) {
             document.documentElement.style.setProperty(variable, value);
         }
-
         // Reset colors
         function resetColors() {
             updateColor('--primary', '#8B5CF6');
@@ -1487,7 +1365,6 @@
             document.getElementById('darkColor').value = '#1e1b4b';
             document.getElementById('darkerColor').value = '#0f0e24';
         }
-
         // Authentication Functions
         function checkAdminStatus() {
             auth.onAuthStateChanged(user => {
@@ -1501,7 +1378,6 @@
                 }
             });
         }
-
         function login() {
             const email = prompt('Введите email администратора:');
             const password = prompt('Введите пароль:');
@@ -1515,13 +1391,11 @@
                     });
             }
         }
-
         function logout() {
             auth.signOut();
             toggleAdminPanel();
             alert('Вы вышли из системы');
         }
-
         // Maintenance Mode Functions
         async function checkMaintenanceMode() {
             try {
@@ -1541,7 +1415,6 @@
                 console.log('Ошибка проверки режима тех. работ:', error);
             }
         }
-
         function updateMaintenanceToggleButton() {
             const button = document.getElementById('maintenanceToggleBtn');
             if (button) {
@@ -1551,7 +1424,6 @@
                     'linear-gradient(45deg, var(--primary), var(--secondary))';
             }
         }
-
         async function toggleMaintenanceMode() {
             if (!isAdmin) return;
             try {
@@ -1578,7 +1450,6 @@
                 updateMaintenanceToggleButton();
             }
         }
-
         function showMaintenanceMode() {
             const maintenanceMode = document.getElementById('maintenanceMode');
             if (maintenanceMode) {
@@ -1588,14 +1459,12 @@
                 createNeonGrid();
             }
         }
-
         function hideMaintenanceMode() {
             const maintenanceMode = document.getElementById('maintenanceMode');
             if (maintenanceMode) {
                 maintenanceMode.classList.remove('active');
             }
         }
-
         function exitMaintenanceMode() {
             if (!isAdmin) return;
             const maintenanceMode = document.getElementById('maintenanceMode');
@@ -1608,7 +1477,6 @@
                 exitBtn.style.display = 'block';
             }
         }
-
         function startTerminalSimulation() {
             const terminalContent = document.getElementById('terminalContent');
             if (!terminalContent) return;
@@ -1667,7 +1535,6 @@
                 terminalContent.scrollTop = terminalContent.scrollHeight;
             }, 2000);
         }
-
         function createMatrixEffect() {
             const matrixEffect = document.getElementById('matrixEffect');
             if (!matrixEffect) return;
@@ -1688,7 +1555,6 @@
                 animateMatrixChar(char);
             }
         }
-
         function createNeonGrid() {
             const neonGrid = document.querySelector('.neon-grid');
             if (!neonGrid) return;
@@ -1701,7 +1567,6 @@
             // Очищаем интервал при уничтожении элемента
             neonGrid.addEventListener('remove', () => clearInterval(interval));
         }
-
         function animateMatrixChar(char) {
             let posY = -20;
             const speed = Math.random() * 2 + 1;
@@ -1717,7 +1582,6 @@
             }
             fall();
         }
-
         // Navigation Functions
         function showSection(sectionId) {
             // Hide all sections
@@ -1740,7 +1604,6 @@
                 event.target.classList.add('active');
             }
         }
-
         // Show loading indicator
         function showLoading(section) {
             const loadingElement = document.getElementById(`${section}Loading`);
@@ -1748,7 +1611,6 @@
                 loadingElement.style.display = 'block';
             }
         }
-
         // Hide loading indicator
         function hideLoading(section) {
             const loadingElement = document.getElementById(`${section}Loading`);
@@ -1756,7 +1618,6 @@
                 loadingElement.style.display = 'none';
             }
         }
-
         // Show error message
         function showError(section, message) {
             const errorElement = document.getElementById(`${section}Error`) || 
@@ -1769,7 +1630,6 @@
                 }, 5000);
             }
         }
-
         // Modal functions
         function openDeleteModal(message, callback) {
             deleteCallback = callback;
@@ -1782,7 +1642,6 @@
                 modalElement.style.display = 'flex';
             }
         }
-
         function closeDeleteModal() {
             const modalElement = document.getElementById('deleteModal');
             if (modalElement) {
@@ -1790,14 +1649,12 @@
             }
             deleteCallback = null;
         }
-
         function confirmDelete() {
             if (deleteCallback) {
                 deleteCallback();
             }
             closeDeleteModal();
         }
-
         // Image preview
         document.addEventListener('DOMContentLoaded', function() {
             const characterImage = document.getElementById('characterImage');
@@ -1818,7 +1675,35 @@
                 });
             }
         });
-
+        // CRUD Functions for Book Separators
+        async function addBookSeparator() {
+            if (!isAdmin) return;
+            const titleInput = document.getElementById('bookSeparatorTitle');
+            if (!titleInput) {
+                showError('admin', 'Ошибка: не найдено поле формы');
+                return;
+            }
+            const title = titleInput.value;
+            if (!title) {
+                showError('admin', 'Пожалуйста, введите название книги');
+                return;
+            }
+            try {
+                showLoading('admin');
+                await db.collection('chapters').add({
+                    type: 'separator',
+                    title: title,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    separatorId: Date.now().toString()
+                });
+                await loadChapters();
+                titleInput.value = '';
+                hideLoading('admin');
+            } catch (error) {
+                hideLoading('admin');
+                showError('admin', 'Ошибка при добавлении разделителя: ' + error.message);
+            }
+        }
         // CRUD Functions for Chapters
         async function addChapter() {
             if (!isAdmin) return;
@@ -1841,6 +1726,7 @@
             try {
                 showLoading('admin');
                 const chapterData = {
+                    type: 'chapter',
                     title: title,
                     description: description,
                     content: content,
@@ -1860,11 +1746,10 @@
                 showError('admin', 'Ошибка при добавлении главы: ' + error.message);
             }
         }
-
         async function loadChapters() {
             try {
                 showLoading('chapters');
-                const snapshot = await db.collection('chapters').get();
+                const snapshot = await db.collection('chapters').orderBy('createdAt').get();
                 const chapters = [];
                 snapshot.forEach(doc => {
                     chapters.push({ id: doc.id, ...doc.data() });
@@ -1877,74 +1762,86 @@
                 showError('chapters', 'Ошибка при загрузке глав: ' + error.message);
             }
         }
-
         function renderChapters(chapters) {
             const container = document.getElementById('chaptersGrid');
             if (!container) return;
             container.innerHTML = '';
-            chapters.sort((a, b) => {
-                const numA = a.chapterCode !== undefined ? 
-                    (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
-                    a.number;
-                const numB = b.chapterCode !== undefined ? 
-                    (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
-                    b.number;
-                if (numA === numB) {
-                    return a.id.localeCompare(b.id);
+            
+            let currentBookNumber = 1;
+            let chapterNumberInBook = 1;
+            
+            chapters.forEach(item => {
+                if (item.type === 'separator') {
+                    // Создаем разделитель книги
+                    const separator = document.createElement('div');
+                    separator.className = 'book-separator';
+                    separator.innerHTML = `
+                        <h3 class="book-separator-title">${item.title}</h3>
+                    `;
+                    container.appendChild(separator);
+                    
+                    // Сбрасываем счетчик глав для новой книги
+                    chapterNumberInBook = 1;
+                    currentBookNumber++;
+                } else if (item.type === 'chapter' || !item.type) {
+                    // Создаем карточку главы
+                    const chapterNumber = item.chapterCode !== undefined ? item.chapterCode : chapterNumberInBook;
+                    const chapterCard = document.createElement('div');
+                    chapterCard.className = 'chapter-card';
+                    chapterCard.onclick = () => showChapter(item.id);
+                    chapterCard.innerHTML = `
+                        <div class="chapter-number">Глава ${chapterNumber}</div>
+                        <h3 class="chapter-title">${item.title || 'Без названия'}</h3>
+                        <p class="chapter-description">${item.description || ''}</p>
+                        ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteChapter('${item.id}', '${item.title || 'Без названия'}')">Удалить</button>` : ''}
+                    `;
+                    container.appendChild(chapterCard);
+                    
+                    // Увеличиваем счетчик глав для текущей книги
+                    chapterNumberInBook++;
                 }
-                return numA - numB;
-            });
-            chapters.forEach(chapter => {
-                const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
-                const chapterCard = document.createElement('div');
-                chapterCard.className = 'chapter-card';
-                chapterCard.onclick = () => showChapter(chapter.id);
-                chapterCard.innerHTML = `
-                    <div class="chapter-number">Глава ${chapterNumber}</div>
-                    <h3 class="chapter-title">${chapter.title || 'Без названия'}</h3>
-                    <p class="chapter-description">${chapter.description || ''}</p>
-                    ${isAdmin ? `<button class="btn delete-btn" onclick="event.stopPropagation(); deleteChapter('${chapter.id}', '${chapter.title || 'Без названия'}')">Удалить</button>` : ''}
-                `;
-                container.appendChild(chapterCard);
             });
         }
-
         function renderMenuChapters(chapters) {
             const container = document.getElementById('menuChaptersList');
             if (!container) return;
             container.innerHTML = '';
-            chapters.sort((a, b) => {
-                const numA = a.chapterCode !== undefined ? 
-                    (typeof a.chapterCode === 'string' ? parseFloat(a.chapterCode) : a.chapterCode) : 
-                    a.number;
-                const numB = b.chapterCode !== undefined ? 
-                    (typeof b.chapterCode === 'string' ? parseFloat(b.chapterCode) : b.chapterCode) : 
-                    b.number;
-                return numA - numB;
-            });
-            chapters.forEach(chapter => {
-                const chapterNumber = chapter.chapterCode !== undefined ? chapter.chapterCode : chapter.number;
-                const chapterItem = document.createElement('div');
-                chapterItem.className = 'chapter-item';
-                chapterItem.innerHTML = `
-                    <div class="chapter-number">Глава ${chapterNumber}</div>
-                    <div class="chapter-title">${chapter.title || 'Без названия'}</div>
-                `;
-                chapterItem.onclick = (e) => {
-                    if (!e.target.classList.contains('delete-btn')) {
-                        e.stopPropagation();
-                        showChapter(chapter.id);
-                        toggleChaptersMenu();
-                    }
-                };
-                container.appendChild(chapterItem);
+            
+            let currentBookTitle = "Книга 1";
+            let chapterNumberInBook = 1;
+            
+            chapters.forEach(item => {
+                if (item.type === 'separator') {
+                    // Добавляем заголовок книги в меню
+                    const bookHeader = document.createElement('div');
+                    bookHeader.innerHTML = `<h3 style="color: var(--gold); margin: 20px 0 10px 0; text-align: center;">${item.title}</h3>`;
+                    container.appendChild(bookHeader);
+                    currentBookTitle = item.title;
+                    chapterNumberInBook = 1;
+                } else if (item.type === 'chapter' || !item.type) {
+                    // Добавляем главу в меню
+                    const chapterNumber = item.chapterCode !== undefined ? item.chapterCode : chapterNumberInBook;
+                    const chapterItem = document.createElement('div');
+                    chapterItem.className = 'chapter-item';
+                    chapterItem.innerHTML = `
+                        <div class="chapter-number">Глава ${chapterNumber}</div>
+                        <div class="chapter-title">${item.title || 'Без названия'}</div>
+                    `;
+                    chapterItem.onclick = (e) => {
+                        if (!e.target.classList.contains('delete-btn')) {
+                            e.stopPropagation();
+                            showChapter(item.id);
+                            toggleChaptersMenu();
+                        }
+                    };
+                    container.appendChild(chapterItem);
+                    chapterNumberInBook++;
+                }
             });
         }
-
         function showChapter(id) {
             window.location.href = `chapter.html?id=${id}`;
         }
-
         async function deleteChapter(chapterId, chapterTitle) {
             if (!isAdmin) return;
             openDeleteModal(`Вы уверены, что хотите удалить главу "${chapterTitle}"?`, async () => {
@@ -1960,7 +1857,6 @@
                 }
             });
         }
-
         // CRUD Functions for Characters
         async function addCharacter() {
             if (!isAdmin) return;
@@ -2010,7 +1906,6 @@
                 showError('admin', 'Ошибка при добавлении персонажа: ' + error.message);
             }
         }
-
         async function loadCharacters() {
             try {
                 showLoading('characters');
@@ -2026,7 +1921,6 @@
                 showError('characters', 'Ошибка при загрузке персонажей: ' + error.message);
             }
         }
-
         function renderCharacters(characters) {
             const container = document.getElementById('charactersGrid');
             if (!container) return;
@@ -2050,7 +1944,6 @@
                 container.appendChild(characterElement);
             });
         }
-
         async function deleteCharacter(characterId, characterName) {
             if (!isAdmin) return;
             openDeleteModal(`Вы уверены, что хотите удалить персонажа "${characterName}"?`, async () => {
@@ -2066,7 +1959,6 @@
                 }
             });
         }
-
         // CRUD Functions for Wiki
         async function addWikiItem() {
             if (!isAdmin) return;
@@ -2097,7 +1989,6 @@
                 showError('admin', 'Ошибка при добавлении факта: ' + error.message);
             }
         }
-
         async function loadWiki() {
             try {
                 showLoading('wiki');
@@ -2113,7 +2004,6 @@
                 showError('wiki', 'Ошибка при загрузке википедии: ' + error.message);
             }
         }
-
         function renderWiki(wikiItems) {
             const container = document.getElementById('wikiContent');
             if (!container) return;
@@ -2129,7 +2019,6 @@
                 container.appendChild(wikiItem);
             });
         }
-
         async function deleteWikiItem(wikiId, wikiTitle) {
             if (!isAdmin) return;
             openDeleteModal(`Вы уверены, что хотите удалить запись "${wikiTitle}"?`, async () => {
@@ -2145,7 +2034,6 @@
                 }
             });
         }
-
         // CRUD Functions for Books
         async function addBook() {
             if (!isAdmin) return;
@@ -2179,7 +2067,6 @@
                 showError('admin', 'Ошибка при добавлении книги: ' + error.message);
             }
         }
-
         async function loadBooks() {
             try {
                 showLoading('books');
@@ -2195,7 +2082,6 @@
                 showError('books', 'Ошибка при загрузке книг: ' + error.message);
             }
         }
-
         function renderBooks(books) {
             const container = document.getElementById('booksList');
             if (!container) return;
@@ -2212,7 +2098,6 @@
                 container.appendChild(bookCard);
             });
         }
-
         async function deleteBook(bookId, bookTitle) {
             if (!isAdmin) return;
             openDeleteModal(`Вы уверены, что хотите удалить книгу "${bookTitle}"?`, async () => {
@@ -2228,7 +2113,6 @@
                 }
             });
         }
-
         // CRUD Functions for Schedule
         async function addReleaseDate() {
             if (!isAdmin) return;
@@ -2259,7 +2143,6 @@
                 showError('admin', 'Ошибка при добавлении даты: ' + error.message);
             }
         }
-
         async function loadSchedule() {
             try {
                 showLoading('schedule');
@@ -2275,7 +2158,6 @@
                 showError('schedule', 'Ошибка при загрузке расписания: ' + error.message);
             }
         }
-
         function renderSchedule(schedule) {
             const container = document.getElementById('scheduleTable');
             if (!container) return;
@@ -2293,7 +2175,6 @@
                 container.appendChild(row);
             });
         }
-
         async function deleteScheduleItem(scheduleId, scheduleDescription) {
             if (!isAdmin) return;
             openDeleteModal(`Вы уверены, что хотите удалить запись "${scheduleDescription}"?`, async () => {
@@ -2309,7 +2190,6 @@
                 }
             });
         }
-
         // Clear form fields
         function clearForm(fields) {
             fields.forEach(fieldId => {
@@ -2319,7 +2199,6 @@
                 }
             });
         }
-
         // Load all data
         async function loadAllData() {
             await Promise.all([
@@ -2330,136 +2209,6 @@
                 loadSchedule()
             ]);
         }
-
-        // Chat Widget Functions
-        let currentUser = null; // Будет хранить информацию о текущем пользователе (если авторизован)
-        let chatUnsubscribe = null; // Для отписки от обновлений чата
-
-        // Инициализация чата
-        async function initChat() {
-            // Проверяем, авторизован ли пользователь
-            auth.onAuthStateChanged(user => {
-                currentUser = user;
-            });
-
-            // Загружаем сообщения
-            loadChatMessages();
-        }
-
-        // Переключение видимости виджета чата
-        function toggleChatWidget() {
-            const widget = document.getElementById('chatWidget');
-            const overlay = document.getElementById('overlay');
-            widget.classList.toggle('open');
-            if (widget.classList.contains('open')) {
-                overlay.classList.add('active');
-                // Прокручиваем чат вниз
-                const messagesContainer = document.getElementById('chatMessages');
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            } else {
-                overlay.classList.remove('active');
-            }
-        }
-
-        // Отправка сообщения
-        async function sendChatMessage() {
-            const messageInput = document.getElementById('chatMessageInput');
-            const messageText = messageInput.value.trim();
-
-            if (!messageText) return;
-
-            try {
-                const messageData = {
-                    text: messageText,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    userId: currentUser ? currentUser.uid : 'anonymous',
-                    username: currentUser ? (currentUser.displayName || currentUser.email || 'User') : 'Аноним'
-                };
-
-                await db.collection('chatMessages').add(messageData);
-                messageInput.value = ''; // Очищаем поле ввода
-            } catch (error) {
-                console.error("Ошибка отправки сообщения: ", error);
-                alert('Не удалось отправить сообщение. Попробуйте позже.');
-            }
-        }
-
-        // Обработка нажатия Enter в поле ввода чата
-        function handleChatKeypress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        // Загрузка и отображение сообщений
-        async function loadChatMessages() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const loadingElement = document.getElementById('chatLoading');
-
-            try {
-                loadingElement.style.display = 'block';
-
-                // Отписываемся от предыдущей подписки, если она есть
-                if (chatUnsubscribe) {
-                    chatUnsubscribe();
-                }
-
-                // Подписываемся на обновления в реальном времени
-                chatUnsubscribe = db.collection('chatMessages')
-                    .orderBy('createdAt', 'asc')
-                    .onSnapshot(snapshot => {
-                        messagesContainer.innerHTML = ''; // Очищаем контейнер
-
-                        snapshot.forEach(doc => {
-                            const message = doc.data();
-                            const messageElement = createMessageElement(message, doc.id);
-                            messagesContainer.appendChild(messageElement);
-                        });
-
-                        // Прокручиваем вниз
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                        loadingElement.style.display = 'none';
-                    }, error => {
-                        console.error("Ошибка загрузки сообщений: ", error);
-                        loadingElement.style.display = 'none';
-                        messagesContainer.innerHTML = '<p style="color: var(--secondary);">Ошибка загрузки чата.</p>';
-                    });
-
-            } catch (error) {
-                console.error("Ошибка при инициализации чата: ", error);
-                loadingElement.style.display = 'none';
-                messagesContainer.innerHTML = '<p style="color: var(--secondary);">Ошибка инициализации чата.</p>';
-            }
-        }
-
-        // Создание HTML-элемента для одного сообщения
-        function createMessageElement(message, messageId) {
-            const isOwnMessage = currentUser && message.userId === currentUser.uid;
-
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${isOwnMessage ? 'own' : ''}`;
-
-            const date = message.createdAt?.toDate ? message.createdAt.toDate() : new Date();
-            const timeString = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-
-            messageDiv.innerHTML = `
-                <div class="chat-message-info">
-                    <span class="chat-message-username">${escapeHtml(message.username)}</span>
-                    <span class="chat-message-time">${timeString}</span>
-                </div>
-                <div class="chat-message-text">${escapeHtml(message.text)}</div>
-            `;
-
-            return messageDiv;
-        }
-
-        // Функция для экранирования HTML, чтобы предотвратить XSS-атаки
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
@@ -2476,8 +2225,6 @@
             checkMaintenanceMode();
             // Load all data
             loadAllData();
-            // Initialize chat
-            initChat();
             // Show initial section
             showSection('chapters');
         });
