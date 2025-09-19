@@ -43,6 +43,19 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            /* Пульсирующий градиент для фона */
+            animation: pulseGradient 15s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGradient {
+            0% {
+                background: linear-gradient(135deg, #0f0e24, #1e1b4b, #2a0a4a);
+            }
+            50% {
+                background: linear-gradient(135deg, #1e1b4b, #4a148c, #7c3aed);
+            }
+            100% {
+                background: linear-gradient(135deg, #0f0e24, #1e1b4b, #2a0a4a);
+            }
         }
         body::before {
             content: '';
@@ -56,65 +69,56 @@
                 radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
             z-index: -1;
         }
-        /* Animated Background Waves */
-        .background-waves {
+        /* Floating Particles (Golden and Purple Sparks) */
+        .floating-particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            overflow: hidden;
+            z-index: -1;
             pointer-events: none;
+            overflow: hidden;
         }
-        .wave {
+        .particle {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-            border-radius: 45%;
-            animation: wave 15s ease-in-out infinite;
-            opacity: 0.5;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: floatParticle 15s infinite linear;
         }
-        .wave:nth-child(1) {
-            top: -50%;
-            left: -25%;
-            animation-duration: 18s;
-            animation-delay: 0s;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+        .particle.gold {
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold), 0 0 16px rgba(245, 158, 11, 0.5);
         }
-        .wave:nth-child(2) {
-            top: -30%;
-            right: -25%;
-            animation-duration: 22s;
-            animation-delay: 2s;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+        .particle.purple {
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary), 0 0 16px rgba(139, 92, 246, 0.5);
         }
-        .wave:nth-child(3) {
-            bottom: -40%;
-            left: -15%;
-            animation-duration: 25s;
-            animation-delay: 4s;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
-        }
-        @keyframes wave {
+        @keyframes floatParticle {
             0% {
-                transform: translate(0, 0) rotate(0deg);
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.7;
             }
             25% {
-                transform: translate(5%, 5%) rotate(90deg);
+                transform: translateY(-20vh) translateX(10vw) scale(1.2);
+                opacity: 1;
             }
             50% {
-                transform: translate(0, 10%) rotate(180deg);
+                transform: translateY(-40vh) translateX(20vw) scale(0.8);
+                opacity: 0.7;
             }
             75% {
-                transform: translate(-5%, 5%) rotate(270deg);
+                transform: translateY(-60vh) translateX(30vw) scale(1.1);
+                opacity: 0.9;
             }
             100% {
-                transform: translate(0, 0) rotate(360deg);
+                transform: translateY(-100vh) translateX(40vw) scale(1);
+                opacity: 0.7;
             }
         }
-        /* Loading Animation with Progress Bar */
+        /* Loading Animation with Magical Circle and Glowing Text */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -135,52 +139,83 @@
             z-index: 1001;
             margin-bottom: 40px;
         }
-        .welcome-text {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
-            animation: pulse 2s infinite, fadeInOut 3s forwards;
-        }
-        /* Progress Bar */
-        .progress-container {
-            width: 80%;
-            max-width: 600px;
-            background: rgba(30, 27, 75, 0.5);
-            border-radius: 10px;
-            padding: 3px;
-            border: 1px solid var(--primary);
-        }
-        .progress-bar {
-            height: 20px;
-            border-radius: 8px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            width: 0%;
-            transition: width 0.3s ease;
+        /* Magical Circle Spinner */
+        .magical-circle {
+            width: 120px;
+            height: 120px;
+            border: 3px solid transparent;
+            border-radius: 50%;
             position: relative;
-            overflow: hidden;
+            margin-bottom: 30px;
+            animation: rotateCircle 3s linear infinite;
         }
-        .progress-bar::after {
+        .magical-circle::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: progressShine 2s infinite;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--primary);
+            border-right-color: var(--gold);
+            border-bottom-color: var(--secondary);
+            animation: rotateCircle 2s linear infinite;
         }
-        @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        .magical-circle::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-left-color: var(--gold);
+            border-bottom-color: var(--primary);
+            animation: rotateCircle 4s linear infinite reverse;
         }
-        .progress-text {
+        @keyframes rotateCircle {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Glowing Animated Text Lines */
+        .loading-text-lines {
+            text-align: center;
             color: var(--light);
-            margin-top: 10px;
-            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            margin-top: 20px;
         }
-        /* Stars animation */
+        .loading-line {
+            opacity: 0;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            animation: glowText 2s ease-in-out infinite alternate, fadeInLine 1s forwards;
+        }
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 10px rgba(245, 158, 11, 0.5), 0 0 20px rgba(245, 158, 11, 0.3);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.8), 0 0 30px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+            }
+        }
+        @keyframes fadeInLine {
+            to {
+                opacity: 1;
+            }
+        }
+        .line-1 { animation-delay: 0.5s; }
+        .line-2 { animation-delay: 1.5s; }
+        .line-3 { animation-delay: 2.5s; }
+        .line-4 { animation-delay: 3.5s; }
+        /* Stars animation (оставляем для фона загрузки) */
         .stars {
             position: absolute;
             top: 0;
@@ -1163,22 +1198,20 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background Waves -->
-    <div class="background-waves">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
-    <!-- Loading Animation with Progress Bar -->
+    <!-- Floating Particles for Background -->
+    <div class="floating-particles" id="floatingParticles"></div>
+    <!-- Loading Animation with Magical Circle and Glowing Text -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="stars" id="stars"></div>
         <div class="welcome-screen">
-            <div class="welcome-text">Добро пожаловать на сайт!</div>
+            <div class="magical-circle"></div>
+            <div class="loading-text-lines">
+                <div class="loading-line line-1">Добро пожаловать</div>
+                <div class="loading-line line-2">в мир магии и тайн</div>
+                <div class="loading-line line-3">Сердце Эфира: Селлестиал</div>
+                <div class="loading-line line-4">Загрузка...</div>
+            </div>
         </div>
-        <div class="progress-container">
-            <div class="progress-bar" id="loadingProgressBar"></div>
-        </div>
-        <div class="progress-text" id="loadingProgressText">0%</div>
     </div>
     <!-- Maintenance Mode -->
     <div class="maintenance-mode" id="maintenanceMode">
@@ -1504,20 +1537,19 @@
                 starsContainer.appendChild(star);
             }
         }
-        // Simulate loading progress
-        function simulateLoading() {
-            const progressBar = document.getElementById('loadingProgressBar');
-            const progressText = document.getElementById('loadingProgressText');
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 5;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                }
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = `${Math.round(progress)}%`;
-            }, 200);
+        // Create floating particles for background
+        function createFloatingParticles() {
+            const container = document.getElementById('floatingParticles');
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${Math.random() > 0.5 ? 'gold' : 'purple'}`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 15}s`;
+                container.appendChild(particle);
+            }
         }
         // Toggle Chapters Menu
         function toggleChaptersMenu() {
@@ -2410,15 +2442,15 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
-            simulateLoading(); // Запускаем прогресс-бар
+            createFloatingParticles(); // Создаем плавающие частицы
             
-            // Hide loading overlay after 3 seconds
+            // Hide loading overlay after 4 seconds
             setTimeout(() => {
                 const overlay = document.getElementById('loadingOverlay');
                 if (overlay) {
                     overlay.style.display = 'none';
                 }
-            }, 3000);
+            }, 4000);
             
             // Check admin status
             checkAdminStatus();
